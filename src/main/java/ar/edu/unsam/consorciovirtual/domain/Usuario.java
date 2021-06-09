@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 public class Usuario {
@@ -16,5 +18,10 @@ public class Usuario {
     private String username;
     private String password;
     private Boolean enabled;
+    private String nombre;
+    private String apellido;
+    private String correo;
+    private String dni;
+    private LocalDate fechaNacimiento;
 }
 
