@@ -28,5 +28,6 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
 }
