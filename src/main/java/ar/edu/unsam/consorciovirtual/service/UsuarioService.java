@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 @Transactional
 public class UsuarioService {
-
     private final UsuarioRepository usuarioRepository;
 
     public List<Usuario> buscarTodos() {
