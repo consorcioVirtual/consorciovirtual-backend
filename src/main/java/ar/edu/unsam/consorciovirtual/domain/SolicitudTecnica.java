@@ -16,10 +16,8 @@ public class SolicitudTecnica {
     private String titulo;
     private String detalle;
     private LocalDate fecha;
-    private List<String> comentarios;
+//    private List<String> comentarios;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="idComentario")
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="idAutor")

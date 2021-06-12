@@ -94,7 +94,7 @@ public class Bootstrap implements InitializingBean {
         newRequest.setTitulo(titulo);
         newRequest.setDetalle(detalle);
         newRequest.setFecha(fecha);
-        newRequest.setComentarios(comentarios);
+//        newRequest.setComentarios(comentarios);
         newRequest.setAutor(autor);
         newRequest.setEstado(estado);
 
