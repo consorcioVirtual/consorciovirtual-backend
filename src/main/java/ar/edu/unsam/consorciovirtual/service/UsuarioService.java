@@ -27,8 +27,8 @@ public class UsuarioService {
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
-    public Usuario loguearUsuario(String username, String password){
-        Usuario user = usuarioRepository.findByUsernameAndPassword(username, password);
+    public Usuario loguearUsuario(Usuario usuario){
+        Usuario user = usuarioRepository.findByUsernameAndPassword(usuario.getUsername(), usuario.getPassword());
 
         if(user != null) {
             return user;

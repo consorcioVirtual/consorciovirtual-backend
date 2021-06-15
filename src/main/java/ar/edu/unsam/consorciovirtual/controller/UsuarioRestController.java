@@ -35,14 +35,10 @@ public class UsuarioRestController {
         return this.usuarioService.buscarPorUsername(username);
     }
 
-
-    //TODO: Ver como sacar el string del json
-//    @PostMapping("/login/{username}")
-//    public Usuario login(@RequestBody String _password, @PathVariable String username) throws JsonProcessingException {
-//        String password = new ObjectMapper().readValue(_password, String.class);
-//        System.out.println(_password);
-//        return usuarioService.loguearUsuario(username, _password);
-//    }
+    @PostMapping("/login")
+    public Usuario login(@RequestBody Usuario usuario) {
+       return usuarioService.loguearUsuario(usuario);
+   }
 
     //TODO: No está probado, pero va por ahí 
 //    @PutMapping("/usuario/create")
