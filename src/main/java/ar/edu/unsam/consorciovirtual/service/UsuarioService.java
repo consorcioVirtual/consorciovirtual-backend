@@ -15,9 +15,7 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
-    public List<Usuario> buscarTodos() {
-        return usuarioRepository.findAll();
-    }
+    public List<Usuario> buscarTodos() { return usuarioRepository.findByBajaLogicaFalse(); }
 
     public Usuario buscarPorUsername(String username) {
         return usuarioRepository.findByUsername(username);
@@ -29,4 +27,11 @@ public class UsuarioService {
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
+    public Usuario loguearUsuario(String username, String password){
+        Usuario user = usuarioRepository.findByUsernameAndPassword(username, password);
+
+        if(user != null) {
+            return user;
+        } else throw new SecurityException("Usuario o contraseña incorrectos");
+    }
 }

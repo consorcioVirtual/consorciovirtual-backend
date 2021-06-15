@@ -18,6 +18,9 @@ public class SolicitudTecnica {
     private LocalDate fecha;
 //    private List<String> comentarios;
 
+    @JsonIgnore
+    private Boolean bajaLogica = false;
+
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="idAutor")

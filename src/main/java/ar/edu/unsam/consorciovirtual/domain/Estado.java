@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,4 +18,7 @@ public class Estado {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="idEstadoAnterior")
     private Estado estadoAnterior;
+
+    @JsonIgnore
+    private Boolean bajaLogica = false;
 }

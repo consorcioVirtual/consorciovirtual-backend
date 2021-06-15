@@ -16,7 +16,7 @@ public class DepartamentoService {
     private final DepartamentoRepository departamentoRepository;
 
     public List<Departamento> buscarTodos() {
-        return departamentoRepository.findAll();
+        return departamentoRepository.findByBajaLogicaFalse();
     }
 
     public List<Departamento> registrarTodos(List <Departamento> listaDepartamentos) {

@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,9 +17,14 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+
+    @JsonIgnore
+    private Boolean bajaLogica = false;
+
+    @JsonIgnore
     private String password;
-    private Boolean enabled;
+
+    private String username;
     private String nombre;
     private String apellido;
     private String correo;

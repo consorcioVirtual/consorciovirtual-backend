@@ -25,6 +25,9 @@ public class Departamento {
     private Integer metrosCuadrados;
 
     @JsonIgnore
+    private Boolean bajaLogica = false;
+
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="idPropietario")
     private Usuario propietario;

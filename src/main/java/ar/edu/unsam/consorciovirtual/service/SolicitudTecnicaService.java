@@ -18,7 +18,7 @@ public class SolicitudTecnicaService {
 //    private final EstadoRepository estadoRepository; //Para filtrar por estado
 
     public List<SolicitudTecnica> buscarTodos() {
-        return solicitudTecnicaRepository.findAll();
+        return solicitudTecnicaRepository.findByBajaLogicaFalse();
     }
 
     public List<SolicitudTecnica> registrarTodos(List <SolicitudTecnica> listaSolicitudes) {
