@@ -1,9 +1,6 @@
 package ar.edu.unsam.consorciovirtual;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
-import ar.edu.unsam.consorciovirtual.domain.Estado;
-import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnica;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
 import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.SolicitudTecnicaService;
