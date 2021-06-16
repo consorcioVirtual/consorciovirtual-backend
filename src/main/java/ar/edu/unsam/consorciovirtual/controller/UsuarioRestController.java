@@ -26,8 +26,8 @@ public class UsuarioRestController {
     private final UsuarioService usuarioService;
 
     @GetMapping("/usuarios")
-    public List<Usuario> buscarTodos() {
-        return this.usuarioService.buscarTodos();
+    public List<Usuario> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
+        return this.usuarioService.buscarTodos(palabraBuscada);
     }
 
     @GetMapping("/usuario/{username}")
@@ -45,12 +45,12 @@ public class UsuarioRestController {
        return usuarioService.loguearUsuario(usuario);
    }
 
-    //TODO: No está probado, pero va por ahí 
-//    @PutMapping("/usuario/create")
-//    public void crearUsuario(@RequestBody String body) throws JsonProcessingException {
-//        Usuario newUser = new ObjectMapper().readValue(body, Usuario.class);
-//        usuarioService.registrar(newUser);
-//    }
+
+    @PutMapping("/usuario/create")
+    public Usuario crearUsuario(@RequestBody String body) throws JsonProcessingException {
+        Usuario newUser = new ObjectMapper().readValue(body, Usuario.class);
+        return usuarioService.registrar(newUser);
+    }
 
 
 

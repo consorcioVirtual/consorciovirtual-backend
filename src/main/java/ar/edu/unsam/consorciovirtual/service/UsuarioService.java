@@ -19,7 +19,9 @@ public class UsuarioService {
 
     public static Usuario usuarioLogueado;
 
-    public List<Usuario> buscarTodos() { return usuarioRepository.findByBajaLogicaFalse(); }
+    public List<Usuario> buscarTodos(String palabraBuscada) {
+        return usuarioRepository.findByNombreContainingAndBajaLogicaFalseOrApellidoContainingOrDniContainingOrCorreoContaining(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+    }
 
     public Usuario buscarPorUsername(String username) {
         return usuarioRepository.findByUsername(username);
