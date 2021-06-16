@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin()
-public class SolicitudTecnicaController {
+public class SolicitudTecnicaRestController {
 
     private final SolicitudTecnicaService solicitudTecnicaService;
 

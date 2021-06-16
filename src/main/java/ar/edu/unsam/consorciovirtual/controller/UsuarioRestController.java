@@ -35,6 +35,11 @@ public class UsuarioRestController {
         return this.usuarioService.buscarPorUsername(username);
     }
 
+    @PutMapping("/usuario/modificar")
+    public Usuario modificar(@RequestBody Usuario usuario) {
+        return this.usuarioService.modificar(usuario);
+    }
+
     @PostMapping("/login")
     public Usuario login(@RequestBody Usuario usuario) {
        return usuarioService.loguearUsuario(usuario);
