@@ -21,7 +21,7 @@ public class RegistroModificacionService {
     }
 
     public List<RegistroModificacion> buscarPorTipoYId(TipoRegistro tipoRegistro, Long idModificado) {
-        return registroModificacionRepository.findByTipoRegistroAndIdModificado(tipoRegistro, idModificado);
+        return registroModificacionRepository.findByTipoRegistroAndIdModificadoOrderByFechaModificacionAsc(tipoRegistro, idModificado);
     }
 
     public RegistroModificacion guardarPorTipoYId(TipoRegistro tipoRegistro, Long idModificado) {

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface RegistroModificacionRepository extends JpaRepository<RegistroModificacion, Long> {
 
-    List<RegistroModificacion> findByTipoRegistroAndIdModificado(TipoRegistro tipoRegistro, Long idModificado);
+    List<RegistroModificacion> findByTipoRegistroAndIdModificadoOrderByFechaModificacionAsc(TipoRegistro tipoRegistro, Long idModificado);
 }
