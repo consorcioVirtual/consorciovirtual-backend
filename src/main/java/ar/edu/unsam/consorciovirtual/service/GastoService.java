@@ -30,4 +30,8 @@ public class GastoService {
     public List<Gasto> buscarTodos() {
         return gastoRepository.findAll();
     }
+
+    public void registrarTodos(List<Gasto> gastos) {
+        gastoRepository.saveAll(gastos);
+    }
 }
