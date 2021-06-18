@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,16 +23,17 @@ public class Gasto {
 
     private String titulo;
     private Rubro rubro;
-    private String periodo; //Definir formato de periodo y hacer validación
+    private String tipo;//(extraordinaria/comun) agregar al DER
+    private String periodo; // Definir formato de periodo y hacer validación
     private Double importe;
-    //Definir si va la fecha de creación (diferencia entre DER y Vista)
+    private LocalDate fechaDeCreacion; // (diferencia entre DER y Vista)
     //falta relacionarlo con la/s factura/s
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idItem")
+    @JoinColumn(name = "idGasto")
     private List<Item> items;
 
-    /*Verificar que el importe coincida con los valores de los item, no podemos sacra el importe en base a los items dado
+    /*Verificar que el importe coincida con los valores de los item, no podemos sacar el importe en base a los items dado
     que la relación la marcamos como parcial*/
     public Boolean importeCoincideConSumaDeIntems(){
         double sumaDeItems = items.stream().mapToDouble(item->item.importeTotalItem()).sum();

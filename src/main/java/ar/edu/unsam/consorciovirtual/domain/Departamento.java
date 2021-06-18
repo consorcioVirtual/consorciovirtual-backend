@@ -1,15 +1,13 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
+
+import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 
 @Data
@@ -37,6 +35,17 @@ public class Departamento {
     @JoinColumn(name="idInquilino")
     private Usuario inquilino;
 
+    //Definir si la hacemos bidirecional con mappedBy
+    @JsonIgnore
+    @OneToMany()
+    @JoinColumn(name = "idDepartamento")
+    private List<Expensa> listaDeExpensas;
+
+    /*METODOS*/
+    public List<Expensa> getListaDeExpensas(){
+        return listaDeExpensas;
+    }
+
     @JsonProperty("nombrePropietario")
     public String getNombrePropietario(){
         return obtenerNombreYApellido(propietario);
@@ -57,6 +66,19 @@ public class Departamento {
         return nombre;
     }
 
+    public Boolean tieneExpensasImpagas(){
+        return getListaDeExpensas().stream().anyMatch(exp -> !exp.estaAnulada() && !exp.estaPaga());
+    }
 
-
+    @JsonProperty("estadoDeCuenta")
+    public String getEstadoDeCuenta(){
+        String estadoDeCuenta;
+        if (tieneExpensasImpagas()){
+            estadoDeCuenta="Pendiente";
+        }else{
+            estadoDeCuenta="Pagado";
+        }
+        return estadoDeCuenta;
+    }
+    
 }
