@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.time.YearMonth;
 import java.util.stream.Collectors;
 
 @Data
@@ -24,7 +25,7 @@ public class Gasto {
     private String titulo;
     private Rubro rubro;
     private String tipo;//(extraordinaria/comun) agregar al DER
-    private String periodo; // Definir formato de periodo y hacer validación
+    private YearMonth periodo; // Definir formato de periodo y hacer validación
     private Double importe;
     private LocalDate fechaDeCreacion; // (diferencia entre DER y Vista)
     //falta relacionarlo con la/s factura/s

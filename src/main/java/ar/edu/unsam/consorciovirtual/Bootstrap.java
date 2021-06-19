@@ -8,6 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,15 +47,15 @@ public class Bootstrap implements InitializingBean {
 
     //Gastos
     private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
-            "marzo 2021",500.25, LocalDate.of(2021,03,15), new ArrayList<>());
+            YearMonth.of(2021,03),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
     private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            "marzo 2021",50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+            YearMonth.of(2021,03),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
     private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            "marzo 2021",25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+            YearMonth.of(2021,03),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
     private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
-            "marzo 2021",310.60, LocalDate.of(2021,03,31), new ArrayList<>());
+            YearMonth.of(2021,03),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
     private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
-            "marzo 2021",3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
+            YearMonth.of(2021,03),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
 
     //Expensas
     private final Expensa expensaImpaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
@@ -145,7 +146,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private Gasto createGasto(String _titulo, Rubro _rubro, String _tipo,
-                       String _periodo, Double _importe, LocalDate _fechaDeCreacion, List<Item> _items){
+                              YearMonth _periodo, Double _importe, LocalDate _fechaDeCreacion, List<Item> _items){
         Gasto unGasto = new Gasto();
         unGasto.setTitulo(_titulo);
         unGasto.setRubro(_rubro);
