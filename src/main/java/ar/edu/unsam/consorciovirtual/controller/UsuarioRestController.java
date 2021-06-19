@@ -31,9 +31,9 @@ public class UsuarioRestController {
         return this.usuarioService.buscarTodos(palabraBuscada);
     }
 
-    @GetMapping("/usuario/{username}")
-    public Usuario buscarPorUsername(@PathVariable String username) {
-        return this.usuarioService.buscarPorUsername(username);
+    @GetMapping("/usuario/{id}")
+    public Usuario buscarPorUsername(@PathVariable Long id) {
+        return this.usuarioService.buscarPorId(id);
     }
 
     @PutMapping("/usuario/modificar")
