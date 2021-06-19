@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
+import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
@@ -27,11 +28,15 @@ public class GastoService {
         } else throw new IllegalArgumentException("Error en los importes ingresados");
     }
 
-    public List<Gasto> buscarTodos() {
+    public List<Gasto> buscarTodos(String palabraBuscada) {
         return gastoRepository.findAll();
     }
 
     public void registrarTodos(List<Gasto> gastos) {
         gastoRepository.saveAll(gastos);
+    }
+
+    public Gasto buscarPorId(Long id) {
+        return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
     }
 }

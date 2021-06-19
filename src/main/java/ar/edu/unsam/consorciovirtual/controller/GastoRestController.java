@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
+import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.service.GastoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,12 @@ public class GastoRestController {
     }
 
     @GetMapping("/gastos")
-    public List<Gasto> buscarTodos() {
-        return this.gastoService.buscarTodos();
+    public List<Gasto> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
+        return this.gastoService.buscarTodos(palabraBuscada);
     }
 
+    @GetMapping("/gasto/{id}")
+    public Gasto buscarPorId(@PathVariable Long id) {
+        return this.gastoService.buscarPorId(id);
+    }
 }
