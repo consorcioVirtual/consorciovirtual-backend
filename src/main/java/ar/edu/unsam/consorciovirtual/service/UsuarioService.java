@@ -36,7 +36,7 @@ public class UsuarioService {
 
         usuarioActualizado.setUsername(usuarioAnterior.getUsername());
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
+       // registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
 
         return usuarioRepository.save(usuarioActualizado);
     }
