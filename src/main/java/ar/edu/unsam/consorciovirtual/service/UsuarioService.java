@@ -50,7 +50,10 @@ public class UsuarioService {
         } else throw new SecurityException("Usuario o contraseña incorrectos");
     }
 
-    public void eliminar(Long id){
-        usuarioRepository.deleteById(id);
+    public void bajaLogica(Long id){
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setBajaLogica(true);
+
+        usuarioRepository.save(usuario);
     }
 }
