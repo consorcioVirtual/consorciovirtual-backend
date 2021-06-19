@@ -55,7 +55,7 @@ public class UsuarioRestController {
 
     @DeleteMapping("/usuario/delete/{id}")
     public void delete(@PathVariable Long id) {
-       usuarioService.eliminar(id);
+       usuarioService.bajaLogica(id);
     }
 
 }
