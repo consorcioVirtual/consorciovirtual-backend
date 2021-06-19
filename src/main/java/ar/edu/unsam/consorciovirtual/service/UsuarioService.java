@@ -27,7 +27,7 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
-    public Usuario registrar(Usuario usuario) { return usuarioRepository.save(usuario); }
+    public Usuario registrarUsuario(Usuario usuario) { return usuarioRepository.save(usuario); }
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
@@ -56,4 +56,5 @@ public class UsuarioService {
 
         usuarioRepository.save(usuario);
     }
+
 }

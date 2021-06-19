@@ -42,18 +42,7 @@ public class Departamento {
     @OneToMany(mappedBy = "departamento")
     private List<Expensa> listaDeExpensas;
 
-
     /*METODOS*/
-//    @JsonProperty("nombrePropietario")
-//    public String getNombrePropietario(){
-//        return obtenerNombreYApellido(propietario);
-//    }
-//
-//    @JsonProperty("nombreInquilino")
-//    public String getNombreInquilino(){
-//        return obtenerNombreYApellido(inquilino);
-//    }
-
     public Boolean tieneExpensasImpagas(){
         return getListaDeExpensas().stream().anyMatch(exp -> !exp.getAnulada() && !exp.estaPaga());
     }

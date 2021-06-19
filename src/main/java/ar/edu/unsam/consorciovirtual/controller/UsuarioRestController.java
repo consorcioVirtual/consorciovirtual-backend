@@ -50,11 +50,11 @@ public class UsuarioRestController {
     @PutMapping("/usuario/create")
     public Usuario crearUsuario(@RequestBody String body) throws JsonProcessingException {
         Usuario newUser = new ObjectMapper().readValue(body, Usuario.class);
-        return usuarioService.registrar(newUser);
+        return usuarioService.registrarUsuario(newUser);
     }
 
     @PutMapping("/usuario/delete/{id}")
-    public void bajaLogica(@PathVariable Long id) {
+    public void bajaLogicaUsuario(@PathVariable Long id) {
        usuarioService.bajaLogica(id);
     }
 

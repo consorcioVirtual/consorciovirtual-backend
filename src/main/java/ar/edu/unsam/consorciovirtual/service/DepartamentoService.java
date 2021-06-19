@@ -19,8 +19,6 @@ public class DepartamentoService {
     private final DepartamentoRepository departamentoRepository;
     private final UsuarioService usuarioService;
 
-    //TODO: Como está, rompe muy feo. Ver eso + la  forma de buscar por nombre de inquilino/usuario.
-    //TODO: Se intentó con los ids directamente pero rompe.
     public List<DepartamentoDTOParaListado> buscarTodos(String palabraBuscada) {
         List<Departamento> departamentos = departamentoRepository.findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada);
         return departamentos.stream().map(x -> DepartamentoDTOParaListado.fromDepartamento(x)).collect(Collectors.toList());
@@ -45,6 +43,8 @@ public class DepartamentoService {
     }
 
     public Departamento registrarDepartamento(Departamento departamento) {
+//      TODO: VER SI EL "getInquilino" Y "getPropietario" NO TRAEN LOS ID's.
+//        EN ESE CASO, LLAMAR AL UsuarioService PARA TRAER EL USUARIO CORRESPONDIENTE
         Usuario _inquilino = departamento.getInquilino();
         Usuario _propietario = departamento.getPropietario();
 
@@ -56,12 +56,11 @@ public class DepartamentoService {
         return departamentoRepository.save(departamento);
     }
 
-//    private Integer busquedaToInteger(String palabraBuscada){
-//        try{
-//            return Integer.parseInt(palabraBuscada);
-//        } catch (NumberFormatException ex){
-//            return 0;
-//        }
-//    }
+    public void bajaLogica(Long id){
+        Departamento departamento = departamentoRepository.findById(id).get();
+        departamento.setBajaLogica(true);
+
+        departamentoRepository.save(departamento);
+    }
 
 }
