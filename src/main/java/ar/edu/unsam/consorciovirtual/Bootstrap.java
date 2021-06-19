@@ -47,15 +47,15 @@ public class Bootstrap implements InitializingBean {
 
     //Gastos
     private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
-            YearMonth.of(2021,03),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
+            YearMonth.of(2021,1),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
     private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            YearMonth.of(2021,03),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+            YearMonth.of(2020,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
     private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            YearMonth.of(2021,03),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+            YearMonth.of(2024,8),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
     private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
-            YearMonth.of(2021,03),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
+            YearMonth.of(2029,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
     private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
-            YearMonth.of(2021,03),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
+            YearMonth.of(2019,2),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
 
     //Expensas
     private final Expensa expensaImpaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
