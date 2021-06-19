@@ -8,7 +8,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByUsername(String username);
 
-    List<Usuario> findByNombreContainingAndBajaLogicaFalseOrApellidoContainingOrDniContainingOrCorreoContaining(String nombre, String apellido, String dni, String correo);
+    List<Usuario> findByNombreContainingAndBajaLogicaFalseOrApellidoContainingAndBajaLogicaFalseOrDniContainingAndBajaLogicaFalseOrCorreoContainingAndBajaLogicaFalse(String nombre, String apellido, String dni, String correo);
 
     Usuario findByUsernameAndPassword(String username, String password);
 }

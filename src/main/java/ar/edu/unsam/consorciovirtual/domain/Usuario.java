@@ -36,5 +36,9 @@ public class Usuario {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate fechaNacimiento;
+
+    public String getNombreYApellido(){
+        return nombre +" "+ apellido;
+    }
 }
 

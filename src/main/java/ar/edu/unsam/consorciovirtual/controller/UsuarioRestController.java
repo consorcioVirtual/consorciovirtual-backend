@@ -37,7 +37,7 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/usuario/modificar")
-    public Usuario modificar(@RequestBody Usuario usuario) {
+    public Usuario modificarUsuario(@RequestBody Usuario usuario) {
         return this.usuarioService.modificar(usuario);
     }
 
@@ -53,8 +53,8 @@ public class UsuarioRestController {
         return usuarioService.registrar(newUser);
     }
 
-    @DeleteMapping("/usuario/delete/{id}")
-    public void delete(@PathVariable Long id) {
+    @PutMapping("/usuario/delete/{id}")
+    public void bajaLogica(@PathVariable Long id) {
        usuarioService.bajaLogica(id);
     }
 

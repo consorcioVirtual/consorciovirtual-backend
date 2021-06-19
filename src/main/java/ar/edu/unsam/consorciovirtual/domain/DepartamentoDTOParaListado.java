@@ -9,6 +9,9 @@ public class DepartamentoDTOParaListado {
     private String inquilino;
     private String actividad;
     private String estadoDeCuenta;
+    private String piso;
+    private String nroDepartamento;
+
 
 
     public static DepartamentoDTOParaListado fromDepartamento(Departamento departamento){
@@ -18,6 +21,8 @@ public class DepartamentoDTOParaListado {
         unDepartamentoDto.inquilino = departamento.getNombreInquilino();
         unDepartamentoDto.actividad = "Falta";
         unDepartamentoDto.estadoDeCuenta = departamento.getEstadoDeCuenta();
+        unDepartamentoDto.piso = departamento.getPiso();
+        unDepartamentoDto.nroDepartamento = departamento.getNroDepartamento();
         return unDepartamentoDto;
     }
 

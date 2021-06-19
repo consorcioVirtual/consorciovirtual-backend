@@ -103,6 +103,10 @@ public class Bootstrap implements InitializingBean {
         newDepartamento.setMetrosCuadrados(metrosCuadrados);
         newDepartamento.setPropietario(propietario);
         newDepartamento.setInquilino(inquilino);
+        newDepartamento.setNombrePropietario(propietario.getNombreYApellido());
+        if(inquilino != null){
+            newDepartamento.setNombreInquilino(inquilino.getNombreYApellido());
+        }
 
         return newDepartamento;
     }

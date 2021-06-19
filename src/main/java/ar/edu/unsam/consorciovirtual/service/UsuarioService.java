@@ -20,7 +20,7 @@ public class UsuarioService {
     public static Usuario usuarioLogueado;
 
     public List<Usuario> buscarTodos(String palabraBuscada) {
-        return usuarioRepository.findByNombreContainingAndBajaLogicaFalseOrApellidoContainingOrDniContainingOrCorreoContaining(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        return usuarioRepository.findByNombreContainingAndBajaLogicaFalseOrApellidoContainingAndBajaLogicaFalseOrDniContainingAndBajaLogicaFalseOrCorreoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
     }
 
     public Usuario buscarPorId(Long id) {

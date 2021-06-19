@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @Entity
 public class Departamento {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,8 @@ public class Departamento {
     private String nroDepartamento;
     private Double porcentajeExpensa;
     private Integer metrosCuadrados;
+    private String nombrePropietario;
+    private String nombreInquilino;
 
     @JsonIgnore
     private Boolean bajaLogica = false;
@@ -39,26 +42,17 @@ public class Departamento {
     @OneToMany(mappedBy = "departamento")
     private List<Expensa> listaDeExpensas;
 
+
     /*METODOS*/
-    @JsonProperty("nombrePropietario")
-    public String getNombrePropietario(){
-        return obtenerNombreYApellido(propietario);
-    }
-
-    @JsonProperty("nombreInquilino")
-    public String getNombreInquilino(){
-        return obtenerNombreYApellido(inquilino);
-    }
-
-    private String obtenerNombreYApellido(Usuario usuario){
-        String nombre;
-        if(usuario == null){
-           nombre = "";
-        }else{
-            nombre = usuario.getNombre() +" "+usuario.getApellido();
-        }
-        return nombre;
-    }
+//    @JsonProperty("nombrePropietario")
+//    public String getNombrePropietario(){
+//        return obtenerNombreYApellido(propietario);
+//    }
+//
+//    @JsonProperty("nombreInquilino")
+//    public String getNombreInquilino(){
+//        return obtenerNombreYApellido(inquilino);
+//    }
 
     public Boolean tieneExpensasImpagas(){
         return getListaDeExpensas().stream().anyMatch(exp -> !exp.getAnulada() && !exp.estaPaga());
