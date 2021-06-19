@@ -53,6 +53,9 @@ public class UsuarioRestController {
         return usuarioService.registrar(newUser);
     }
 
-
+    @DeleteMapping("/usuario/delete/{id}")
+    public void delete(@PathVariable Long id) {
+       usuarioService.eliminar(id);
+    }
 
 }

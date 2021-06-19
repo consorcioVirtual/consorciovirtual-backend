@@ -49,4 +49,8 @@ public class UsuarioService {
             return user;
         } else throw new SecurityException("Usuario o contraseña incorrectos");
     }
+
+    public void eliminar(Long id){
+        usuarioRepository.deleteById(id);
+    }
 }
