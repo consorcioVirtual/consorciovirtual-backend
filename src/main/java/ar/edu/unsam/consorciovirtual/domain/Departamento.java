@@ -35,17 +35,11 @@ public class Departamento {
     @JoinColumn(name="idInquilino")
     private Usuario inquilino;
 
-    //Definir si la hacemos bidirecional con mappedBy
     @JsonIgnore
-    @OneToMany()
-    @JoinColumn(name = "idDepartamento")
+    @OneToMany(mappedBy = "departamento")
     private List<Expensa> listaDeExpensas;
 
     /*METODOS*/
-    public List<Expensa> getListaDeExpensas(){
-        return listaDeExpensas;
-    }
-
     @JsonProperty("nombrePropietario")
     public String getNombrePropietario(){
         return obtenerNombreYApellido(propietario);
@@ -67,7 +61,7 @@ public class Departamento {
     }
 
     public Boolean tieneExpensasImpagas(){
-        return getListaDeExpensas().stream().anyMatch(exp -> !exp.estaAnulada() && !exp.estaPaga());
+        return getListaDeExpensas().stream().anyMatch(exp -> !exp.getAnulada() && !exp.estaPaga());
     }
 
     @JsonProperty("estadoDeCuenta")

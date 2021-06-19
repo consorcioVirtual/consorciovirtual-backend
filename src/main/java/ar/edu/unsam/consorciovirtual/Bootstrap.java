@@ -2,10 +2,7 @@ package ar.edu.unsam.consorciovirtual;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
-import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
-import ar.edu.unsam.consorciovirtual.service.GastoService;
-import ar.edu.unsam.consorciovirtual.service.SolicitudTecnicaService;
-import ar.edu.unsam.consorciovirtual.service.UsuarioService;
+import ar.edu.unsam.consorciovirtual.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,7 @@ public class Bootstrap implements InitializingBean {
     private final SolicitudTecnicaService solicitudTecnicaService;
     private final EstadoRepository estadoRepository;
     private final GastoService gastoService;
+    private final ExpensaService expensaService;
 
 
     //Usuarios
@@ -56,6 +54,16 @@ public class Bootstrap implements InitializingBean {
     private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
             "marzo 2021",3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
 
+    //Expensas
+    private final Expensa expensaImpaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
+            null, null, depto1);
+    private final Expensa expensaImpaga2 = createExpensa("febrero 2021", 150000.00, 0.00,
+            null, null, depto1);
+    private final Expensa expensaImpaga3 = createExpensa("enero 2021", 150000.00, 0.00,
+            null, null, depto1);
+    private final Expensa expensaPaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
+            LocalDate.of(2021,03,01), depto2.getInquilino(), depto2);
+
     //Métodos
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -64,6 +72,7 @@ public class Bootstrap implements InitializingBean {
         createAllStates();
         createAllRequests();
         createAllGastos();
+        createAllExpensas();
     }
 
     private Usuario createUser(String nombre, String apellido, String correo, String dni, LocalDate fechaNacimiento, String username, String password) {
@@ -150,4 +159,23 @@ public class Bootstrap implements InitializingBean {
         List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5);
         gastoService.registrarTodos(gastos);
     }
+
+    private Expensa createExpensa(String _periodo, Double _valorTotalOrdinaria, Double _valorTotalExtraordinaria,
+                                  LocalDate _fechaDePago, Usuario _pagador, Departamento _departamento){
+        Expensa unaExpensa = new Expensa();
+        unaExpensa.setPeriodo(_periodo);
+        unaExpensa.setValorTotalOrdinaria(_valorTotalOrdinaria);
+        unaExpensa.setValorTotalExtraordinaria(_valorTotalExtraordinaria);
+        unaExpensa.setFechaDePago(_fechaDePago);
+        unaExpensa.setPagador(_pagador);
+        unaExpensa.setDepartamento(_departamento);
+        unaExpensa.calcularPorcentajeDePago();
+        return unaExpensa;
+    }
+
+    private void createAllExpensas() {
+        List<Expensa> expensas = List.of(expensaImpaga1, expensaImpaga2, expensaImpaga3, expensaPaga1);
+        expensaService.registrarTodos(expensas);
+    }
+
 }
