@@ -23,8 +23,8 @@ public class UsuarioService {
         return usuarioRepository.findByNombreContainingAndBajaLogicaFalseOrApellidoContainingOrDniContainingOrCorreoContaining(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
     }
 
-    public Usuario buscarPorUsername(String username) {
-        return usuarioRepository.findByUsername(username);
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
     public Usuario registrar(Usuario usuario) { return usuarioRepository.save(usuario); }
