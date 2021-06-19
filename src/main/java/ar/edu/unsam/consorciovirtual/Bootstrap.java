@@ -33,6 +33,8 @@ public class Bootstrap implements InitializingBean {
     //Departamentos
     private final Departamento depto1 = createDepartamento(null, "1", "5", 6.5, 35, santil, null);
     private final Departamento depto2 = createDepartamento("1", "5", "1", 3.5, 15, santilr, pablo);
+    private final Departamento depto3 = createDepartamento("1", "6", "A", 4.5, 20, santilr, nahue);
+    private final Departamento depto4 = createDepartamento("1", "2", "C", 8.0, 45, santir, null);
 
     //Estados
     private final Estado estadoPendiente = createState("Pendiente", "Solicitud tecnica", null);
@@ -106,7 +108,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllDepartamentos() {
-        List<Departamento> departamentos = List.of(depto1, depto2);
+        List<Departamento> departamentos = List.of(depto1, depto2, depto3, depto4);
         departamentoService.registrarTodos(departamentos);
     }
 
