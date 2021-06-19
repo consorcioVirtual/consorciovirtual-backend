@@ -39,4 +39,9 @@ public class GastoService {
     public Gasto buscarPorId(Long id) {
         return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
     }
+
+//    public List<Gasto> algo(String palabraBuscada) {
+//        System.out.println(palabraBuscada);
+//        return gastoRepository.findByFechaDeCreacionContaining(palabraBuscada);
+//    }
 }

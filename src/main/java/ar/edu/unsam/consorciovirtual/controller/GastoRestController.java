@@ -31,4 +31,10 @@ public class GastoRestController {
     public Gasto buscarPorId(@PathVariable Long id) {
         return this.gastoService.buscarPorId(id);
     }
+
+//    @GetMapping("/endpointFalopa")
+//    public List<Gasto> buscarPorAlgo(@RequestParam(defaultValue="") String palabraBuscada){
+//        return this.gastoService.algo(palabraBuscada);
+//    }
+
 }
