@@ -23,4 +23,8 @@ public class ExpensaService {
         return expensaRepository.findByAnuladaFalse();
     }
 
+    public void registrarTodos(List<Expensa> expensas) {
+        expensaRepository.saveAll(expensas);
+    }
+
 }

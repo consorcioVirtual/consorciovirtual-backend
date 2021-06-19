@@ -33,6 +33,8 @@ public class Gasto {
     @JoinColumn(name = "idGasto")
     private List<Item> items;
 
+    /*METODOS*/
+
     /*Verificar que el importe coincida con los valores de los item, no podemos sacar el importe en base a los items dado
     que la relación la marcamos como parcial*/
     public Boolean importeCoincideConSumaDeIntems(){
@@ -43,4 +45,6 @@ public class Gasto {
     public Boolean tieneItems(){
         return !items.isEmpty();
     }
+
+
 }

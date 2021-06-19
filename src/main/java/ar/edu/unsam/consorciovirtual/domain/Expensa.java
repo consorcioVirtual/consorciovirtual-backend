@@ -32,12 +32,17 @@ public class Expensa {
     @JoinColumn(name="idUsuarioPagador")
     private Usuario pagador;
 
-    //Es necesario representar la relación calcula con el admin de la app que pusimos en el DER?
+    @JsonIgnore
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name="idDepartamento")
+    private Departamento departamento;
+
+    //Es necesario representar la relación calcula, que pusimos en el DER, con el admin de la app?
 
     /*METODOS*/
-
-    public boolean estaAnulada(){
-        return anulada;
+    public void calcularPorcentajeDePago(){
+        valorDepartamentoOrdinaria= valorTotalOrdinaria*departamento.getPorcentajeExpensa()/100;
+        valorDepartamentoExtraordinaria= valorTotalExtraordinaria*departamento.getPorcentajeExpensa()/100;
     }
 
     public void anularExpensa(){
@@ -51,6 +56,11 @@ public class Expensa {
     @JsonProperty("montoAPagar")
     public Double getMontoAPagar(){
         return (valorDepartamentoExtraordinaria+valorDepartamentoOrdinaria);
+    }
+
+    @JsonProperty("unidad")
+    public String getUnidad(){
+        return departamento.getPiso() + "º " + departamento.getNroDepartamento();
     }
 
 }

@@ -2,14 +2,13 @@ package ar.edu.unsam.consorciovirtual;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
-import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
-import ar.edu.unsam.consorciovirtual.service.SolicitudTecnicaService;
-import ar.edu.unsam.consorciovirtual.service.UsuarioService;
+import ar.edu.unsam.consorciovirtual.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +19,8 @@ public class Bootstrap implements InitializingBean {
     private final DepartamentoService departamentoService;
     private final SolicitudTecnicaService solicitudTecnicaService;
     private final EstadoRepository estadoRepository;
+    private final GastoService gastoService;
+    private final ExpensaService expensaService;
 
 
     //Usuarios
@@ -41,6 +42,27 @@ public class Bootstrap implements InitializingBean {
     private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), null, santir, estadoPendiente);
     private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), null, nahue, estadoAprobado);
 
+    //Gastos
+    private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
+            "marzo 2021",500.25, LocalDate.of(2021,03,15), new ArrayList<>());
+    private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+            "marzo 2021",50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+            "marzo 2021",25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
+            "marzo 2021",310.60, LocalDate.of(2021,03,31), new ArrayList<>());
+    private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
+            "marzo 2021",3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
+
+    //Expensas
+    private final Expensa expensaImpaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
+            null, null, depto1);
+    private final Expensa expensaImpaga2 = createExpensa("febrero 2021", 150000.00, 0.00,
+            null, null, depto1);
+    private final Expensa expensaImpaga3 = createExpensa("enero 2021", 150000.00, 0.00,
+            null, null, depto1);
+    private final Expensa expensaPaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
+            LocalDate.of(2021,03,01), depto2.getInquilino(), depto2);
 
     //Métodos
     @Override
@@ -49,6 +71,8 @@ public class Bootstrap implements InitializingBean {
         createAllDepartamentos();
         createAllStates();
         createAllRequests();
+        createAllGastos();
+        createAllExpensas();
     }
 
     private Usuario createUser(String nombre, String apellido, String correo, String dni, LocalDate fechaNacimiento, String username, String password) {
@@ -117,4 +141,41 @@ public class Bootstrap implements InitializingBean {
         List<Estado> states = List.of(estadoPendiente, estadoAprobado);
         estadoRepository.saveAll(states); // Directo al repo porque no un controller no se usaría para nada más
     }
+
+    private Gasto createGasto(String _titulo, Rubro _rubro, String _tipo,
+                       String _periodo, Double _importe, LocalDate _fechaDeCreacion, List<Item> _items){
+        Gasto unGasto = new Gasto();
+        unGasto.setTitulo(_titulo);
+        unGasto.setRubro(_rubro);
+        unGasto.setTipo(_tipo);
+        unGasto.setPeriodo(_periodo);
+        unGasto.setImporte(_importe);
+        unGasto.setFechaDeCreacion(_fechaDeCreacion);
+        unGasto.setItems(_items);
+        return unGasto;
+    }
+
+    private void createAllGastos() {
+        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5);
+        gastoService.registrarTodos(gastos);
+    }
+
+    private Expensa createExpensa(String _periodo, Double _valorTotalOrdinaria, Double _valorTotalExtraordinaria,
+                                  LocalDate _fechaDePago, Usuario _pagador, Departamento _departamento){
+        Expensa unaExpensa = new Expensa();
+        unaExpensa.setPeriodo(_periodo);
+        unaExpensa.setValorTotalOrdinaria(_valorTotalOrdinaria);
+        unaExpensa.setValorTotalExtraordinaria(_valorTotalExtraordinaria);
+        unaExpensa.setFechaDePago(_fechaDePago);
+        unaExpensa.setPagador(_pagador);
+        unaExpensa.setDepartamento(_departamento);
+        unaExpensa.calcularPorcentajeDePago();
+        return unaExpensa;
+    }
+
+    private void createAllExpensas() {
+        List<Expensa> expensas = List.of(expensaImpaga1, expensaImpaga2, expensaImpaga3, expensaPaga1);
+        expensaService.registrarTodos(expensas);
+    }
+
 }
