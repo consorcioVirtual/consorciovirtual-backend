@@ -21,7 +21,7 @@ public class Bootstrap implements InitializingBean {
     private final SolicitudTecnicaService solicitudTecnicaService;
     private final EstadoRepository estadoRepository;
     private final GastoService gastoService;
-    private final ExpensaService expensaService;
+    private final GeneradorDeExpensas generadorDeExpensas;
 
 
     //Usuarios
@@ -57,15 +57,20 @@ public class Bootstrap implements InitializingBean {
     private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
             YearMonth.of(2019,2),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
 
-    //Expensas
-    private final Expensa expensaImpaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
-            null, null, depto1);
-    private final Expensa expensaImpaga2 = createExpensa("febrero 2021", 150000.00, 0.00,
-            null, null, depto1);
-    private final Expensa expensaImpaga3 = createExpensa("enero 2021", 150000.00, 0.00,
-            null, null, depto1);
-    private final Expensa expensaPaga1 = createExpensa("marzo 2021", 150000.00, 0.00,
-            LocalDate.of(2021,03,01), depto2.getInquilino(), depto2);
+    //Gastos prueba para generar expensa (no cambiar periodo)
+    private final Gasto gasto11 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto12 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto13 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto14 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto15 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto16 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+
 
     //Métodos
     @Override
@@ -75,7 +80,8 @@ public class Bootstrap implements InitializingBean {
         createAllStates();
         createAllRequests();
         createAllGastos();
-        createAllExpensas();
+        generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
+        generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
 
     private Usuario createUser(String nombre, String apellido, String correo, String dni, LocalDate fechaNacimiento, String username, String password) {
@@ -163,26 +169,8 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllGastos() {
-        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5);
+        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5, gasto11, gasto12, gasto13, gasto14, gasto15, gasto16);
         gastoService.registrarTodos(gastos);
-    }
-
-    private Expensa createExpensa(String _periodo, Double _valorTotalOrdinaria, Double _valorTotalExtraordinaria,
-                                  LocalDate _fechaDePago, Usuario _pagador, Departamento _departamento){
-        Expensa unaExpensa = new Expensa();
-        unaExpensa.setPeriodo(_periodo);
-        unaExpensa.setValorTotalOrdinaria(_valorTotalOrdinaria);
-        unaExpensa.setValorTotalExtraordinaria(_valorTotalExtraordinaria);
-        unaExpensa.setFechaDePago(_fechaDePago);
-        unaExpensa.setPagador(_pagador);
-        unaExpensa.setDepartamento(_departamento);
-        unaExpensa.calcularPorcentajeDePago();
-        return unaExpensa;
-    }
-
-    private void createAllExpensas() {
-        List<Expensa> expensas = List.of(expensaImpaga1, expensaImpaga2, expensaImpaga3, expensaPaga1);
-        expensaService.registrarTodos(expensas);
     }
 
 }

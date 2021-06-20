@@ -40,7 +40,7 @@ public class Departamento {
 
     @JsonIgnore
     @OneToMany(mappedBy = "departamento")
-    private List<Expensa> listaDeExpensas;
+    private List<ExpensaDeDepartamento> listaDeExpensas;
 
     /*METODOS*/
     public Boolean tieneExpensasImpagas(){
