@@ -17,7 +17,7 @@ public class GastoRestController {
     @Autowired
     private final GastoService gastoService;
 
-    @PutMapping("/gastos/create")
+    @PutMapping("/gastos/crear")
     public void ingresarNuevoGasto(@RequestBody Gasto nuevoGasto){
         gastoService.ingresarNuevoGasto(nuevoGasto);
     }
@@ -31,6 +31,17 @@ public class GastoRestController {
     public Gasto buscarPorId(@PathVariable Long id) {
         return this.gastoService.buscarPorId(id);
     }
+
+    @PutMapping("/gasto/modificar")
+    public Gasto modificarGasto(@RequestBody Gasto gasto) {
+        return this.gastoService.modificar(gasto);
+    }
+
+    @PutMapping("/gasto/eliminar/{id}")
+    public void bajaLogicaGasto(@PathVariable Long id) {
+        gastoService.bajaLogica(id);
+    }
+
 
 //    @GetMapping("/endpointFalopa")
 //    public List<Gasto> buscarPorAlgo(@RequestParam(defaultValue="") String palabraBuscada){

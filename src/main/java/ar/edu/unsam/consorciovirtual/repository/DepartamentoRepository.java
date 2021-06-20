@@ -7,6 +7,6 @@ import java.util.List;
 public interface DepartamentoRepository extends JpaRepository<Departamento, Long> {
 
 //    List<Departamento> findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrEstadoDeCuentaContainingAndBajaLogicaFalse(String departamento, String propietario, String inquilino, String estadoDeCuenta);
-    List<Departamento> findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalse(String nroDepartamento, String nombrePropietario, String nombreInquilino);
+    List<Departamento> findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(String nroDepartamento, String nombrePropietario, String nombreInquilino, String pisoDepto);
 
 }

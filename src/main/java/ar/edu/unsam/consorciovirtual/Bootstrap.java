@@ -25,11 +25,11 @@ public class Bootstrap implements InitializingBean {
 
 
     //Usuarios
-    private final Usuario santir = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "38.830.200", LocalDate.of(1995, 8, 25), "santiranieri", "123");
-    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40.123.423", LocalDate.of(1995, 8, 25), "santilr", "123");
-    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42.543.231", LocalDate.of(1995, 8, 25), "santil", "123");
-    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36.350.120", LocalDate.of(1995, 8, 25), "pablito", "123");
-    private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36.765.908", LocalDate.of(1995, 8, 25), "nahue", "123");
+    private final Usuario santir = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "38830200", LocalDate.of(1995, 8, 25), "santiranieri", "123");
+    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25), "santilr", "123");
+    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25), "santil", "123");
+    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25), "pablito", "123");
+    private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25), "nahue", "123");
 
     //Departamentos
     private final Departamento depto1 = createDepartamento(null, "1", "D", 6.5, 35, santil, null);

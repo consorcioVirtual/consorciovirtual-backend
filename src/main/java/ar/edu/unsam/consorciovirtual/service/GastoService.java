@@ -40,6 +40,19 @@ public class GastoService {
         return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
     }
 
+    public Gasto modificar(Gasto gastoActualizado) {
+        // registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
+
+        return gastoRepository.save(gastoActualizado);
+    }
+
+    public void bajaLogica(Long id){
+        Gasto gasto = gastoRepository.findById(id).get();
+        //gasto.setBajaLogica(true);
+
+        gastoRepository.save(gasto);
+    }
+
 //    public List<Gasto> algo(String palabraBuscada) {
 //        System.out.println(palabraBuscada);
 //        return gastoRepository.findByFechaDeCreacionContaining(palabraBuscada);

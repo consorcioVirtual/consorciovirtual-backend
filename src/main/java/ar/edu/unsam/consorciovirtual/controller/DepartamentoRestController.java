@@ -35,13 +35,13 @@ public class DepartamentoRestController {
         return this.departamentoService.modificar(departamento);
     }
 
-    @PutMapping("/departamento/create")
+    @PutMapping("/departamento/crear")
     public Departamento crearDepartamento(@RequestBody String body) throws JsonProcessingException {
         Departamento newDepartment = new ObjectMapper().readValue(body, Departamento.class);
         return departamentoService.registrarDepartamento(newDepartment);
     }
 
-    @PutMapping("/departamento/delete/{id}")
+    @PutMapping("/departamento/eliminar/{id}")
     public void bajaLogicaDepartamento(@PathVariable Long id) {
         departamentoService.bajaLogica(id);
     }
