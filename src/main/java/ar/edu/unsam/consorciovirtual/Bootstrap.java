@@ -32,8 +32,8 @@ public class Bootstrap implements InitializingBean {
     private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36.765.908", LocalDate.of(1995, 8, 25), "nahue", "123");
 
     //Departamentos
-    private final Departamento depto1 = createDepartamento(null, "1", "5", 6.5, 35, santil, null);
-    private final Departamento depto2 = createDepartamento("1", "5", "1", 3.5, 15, santilr, pablo);
+    private final Departamento depto1 = createDepartamento(null, "1", "D", 6.5, 35, santil, null);
+    private final Departamento depto2 = createDepartamento("1", "5", "E", 3.5, 15, santilr, pablo);
     private final Departamento depto3 = createDepartamento("1", "6", "A", 4.5, 20, santilr, nahue);
     private final Departamento depto4 = createDepartamento("1", "2", "C", 8.0, 45, santir, null);
 
