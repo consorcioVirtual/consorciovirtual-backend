@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.time.YearMonth;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class Gasto {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idGasto")
-    private List<Item> items;
+    private List<Item> items = new ArrayList<Item>();
 
     /*METODOS*/
 

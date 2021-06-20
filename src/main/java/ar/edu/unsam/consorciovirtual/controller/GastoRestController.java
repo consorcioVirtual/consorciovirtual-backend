@@ -17,7 +17,7 @@ public class GastoRestController {
     @Autowired
     private final GastoService gastoService;
 
-    @PostMapping("/gastos/create")
+    @PutMapping("/gastos/create")
     public void ingresarNuevoGasto(@RequestBody Gasto nuevoGasto){
         gastoService.ingresarNuevoGasto(nuevoGasto);
     }
