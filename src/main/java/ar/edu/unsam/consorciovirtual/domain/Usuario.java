@@ -32,6 +32,7 @@ public class Usuario {
     private String apellido;
     private String correo;
     private String dni;
+    private TipoUsuario tipo;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
