@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
+import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import ar.edu.unsam.consorciovirtual.service.ExpensaDeDepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.GeneradorDeExpensas;
@@ -22,12 +23,12 @@ public class ExpensaDeDepartamentoRestController {
     private final GeneradorDeExpensas generadorDeExpensas;
 
     @GetMapping("/expensas")
-    public List<ExpensaDeDepartamento> buscarTodos() {
+    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos() {
         return this.expensaDeDepartamentoService.buscarTodos();
     }
 
     @GetMapping("/expensas/activas")
-    public List<ExpensaDeDepartamento> buscarTodosSinAnuladas() {
+    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodosSinAnuladas() {
         return this.expensaDeDepartamentoService.buscarTodosSinAnuladas();
     }
 

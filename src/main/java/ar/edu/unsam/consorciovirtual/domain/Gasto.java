@@ -19,7 +19,8 @@ public class Gasto {
 
     private String titulo;
     private Rubro rubro;
-    private String tipo;//(extraordinaria/comun) agregar al DER
+    private String tipo;//(Extraordinaria/Común, si se mantiene el string usar esta nomenclatura
+                        // porque así busca el generador de expensas) agregar al DER
     private YearMonth periodo; // Definir formato de periodo y hacer validación
     private Double importe;
     private LocalDate fechaDeCreacion; // (diferencia entre DER y Vista)

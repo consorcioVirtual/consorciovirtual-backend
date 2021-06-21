@@ -63,6 +63,17 @@ public class ExpensaDeDepartamento {
         return fechaDePago != null;
     }
 
+    @JsonProperty("estado")
+    public String getEstado(){
+        String estado;
+        if(estaPaga()){
+            estado = "Pagada";
+        }else{
+            estado = "Pendiente";
+        }
+        return estado;
+    }
+
     @JsonProperty("montoAPagar")
     public Double getMontoAPagar(){
         return (valorDepartamentoExtraordinaria+valorDepartamentoComun);
