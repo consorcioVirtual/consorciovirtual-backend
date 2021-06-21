@@ -16,6 +16,8 @@ public class SolicitudTecnica {
     private String titulo;
     private String detalle;
     private LocalDate fecha;
+    private String nombreAutor;
+    private String nombreEstado;
 //    private List<String> comentarios;
 
     @JsonIgnore

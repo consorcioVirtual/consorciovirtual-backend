@@ -17,6 +17,10 @@ public class ExtractorDatoDeJSON {
         return extraeDato(elJsonRecibido, nombreDato).getAsBoolean();
     }
 
+    public static Long extraerLongDeJson(String elJsonRecibido, String nombreDato){
+        return extraeDato(elJsonRecibido, nombreDato).getAsLong();
+    }
+
     private static JsonElement extraeDato(String elJsonRecibido, String nombreDato){
         JsonElement jsonElement = new JsonParser().parse(elJsonRecibido);
         JsonObject jsonObject = jsonElement.getAsJsonObject();

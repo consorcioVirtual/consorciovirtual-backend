@@ -95,7 +95,7 @@ public class Bootstrap implements InitializingBean {
         newUser.setFechaNacimiento(fechaNacimiento);
         newUser.setUsername(username);
         newUser.setPassword(password);
-        newUser.setTipo(tipo);
+//        newUser.setTipo(tipo);
         return newUser;
     }
 
@@ -135,6 +135,8 @@ public class Bootstrap implements InitializingBean {
 //        newRequest.setComentarios(comentarios);
         newRequest.setAutor(autor);
         newRequest.setEstado(estado);
+        newRequest.setNombreAutor(autor.getNombreYApellido());
+        newRequest.setNombreEstado(estado.getNombreEstado());
 
         return newRequest;
     }

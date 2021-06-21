@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface SolicitudTecnicaRepository extends JpaRepository<SolicitudTecnica, Long> {
     List<SolicitudTecnica> findByBajaLogicaFalse();
+
+    List<SolicitudTecnica> findByIdAndBajaLogicaFalseOrNombreAutorContainingAndBajaLogicaFalseOrTituloContainingAndBajaLogicaFalseOrNombreEstadoContainingAndBajaLogicaFalse(Long id, String nombreAutor, String titulo, String nombreEstado);
 }
 
