@@ -17,6 +17,7 @@ public class ExpensaDeDepartamento {
     private Double valorDepartamentoComun;
     private Double valorDepartamentoExtraordinaria;
     private YearMonth periodo;
+    @JsonIgnore
     private Boolean anulada=false;
     @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ExpensaGeneralRepository extends JpaRepository<ExpensaGeneral, Long> {
 
-    List<ExpensaGeneral> findByPeriodo(YearMonth periodo);
+    List<ExpensaGeneral> findByPeriodoAndAnuladaFalse(YearMonth periodo);
 }

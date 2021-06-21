@@ -28,7 +28,7 @@ public class GeneradorDeExpensas {
         generarExpensas(importeComun, importeExtraordinaria, periodo);
     }
 
-    public Double calcularValorDeGastos(YearMonth periodo, String tipo){
+    private Double calcularValorDeGastos(YearMonth periodo, String tipo){
         List<Double> gastos = gastoRepository.findImporteByPeriodoAndByTipo(periodo, tipo);
         return  gastos.stream()
                 .mapToDouble(a -> a)
@@ -36,19 +36,23 @@ public class GeneradorDeExpensas {
     }
 
     public void generarExpensasPorImporteDeGastos(YearMonth periodo){
-        Double importeGastosComunes= calcularValorDeGastos(periodo, "Común");
-        Double importeGastosExtraordinarias=calcularValorDeGastos(periodo, "Extraordinaria");
+        Double importeGastosComunes= (double)Math.round(calcularValorDeGastos(periodo, "Común")* 100d) / 100d;
+        Double importeGastosExtraordinarias=(double)Math.round(calcularValorDeGastos(periodo, "Extraordinaria")* 100d) / 100d;
 
         generarExpensas(importeGastosComunes, importeGastosExtraordinarias, periodo);
     }
 
+    @Transactional
     private void generarExpensas(Double importeComun, Double importeExtraordinaria, YearMonth periodo) {
+        if(expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo).size() > 0){
+            throw new IllegalArgumentException("Ya existe una expensa activa de ese periodo");
+        }
         ExpensaGeneral expensaGeneral = new ExpensaGeneral();
         expensaGeneral.setPeriodo(periodo);
         expensaGeneral.setValorTotalExpensaExtraordinaria(importeExtraordinaria);
         expensaGeneral.setValorTotalExpensaComun(importeComun);
         expensaGeneralRepository.save(expensaGeneral);
-        ExpensaGeneral expensaGeneralConId = expensaGeneralRepository.findByPeriodo(periodo).get(0);
+        ExpensaGeneral expensaGeneralConId = expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo).get(0);
         List<Departamento> departamentos = departamentoRepository.findByBajaLogicaFalse();
         int x;
 

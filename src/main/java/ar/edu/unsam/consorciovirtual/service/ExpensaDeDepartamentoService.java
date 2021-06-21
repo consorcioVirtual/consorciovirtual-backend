@@ -2,11 +2,13 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamentoDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domain.ExpensaGeneral;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaDeDepartamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,5 +33,8 @@ public class ExpensaDeDepartamentoService {
         return mapearADTOParaListado(lista);
     }
 
+    public ExpensaDeDepartamento buscarPorId(Long id){
+        return expensaDeDepartamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Expensa no Encontrada"));
+    }
 
 }
