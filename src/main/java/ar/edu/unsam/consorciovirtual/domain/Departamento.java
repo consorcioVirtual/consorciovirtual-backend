@@ -28,13 +28,14 @@ public class Departamento {
     @JsonIgnore
     private Boolean bajaLogica = false;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="idPropietario")
     private Usuario propietario;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="idInquilino")
     private Usuario inquilino;
 
@@ -47,6 +48,7 @@ public class Departamento {
         return getListaDeExpensas().stream().anyMatch(exp -> !exp.getAnulada() && !exp.estaPaga());
     }
 
+    @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.READ_ONLY, namespace = "estadoDeCuenta")
     public String getEstadoDeCuenta(){
         String estadoDeCuenta;
