@@ -27,6 +27,10 @@ public class UsuarioService {
         return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 
+//    public Usuario buscarPorNombre(String nombre){
+//        return usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+//    }
+
     public Usuario registrarUsuario(Usuario usuario) { return usuarioRepository.save(usuario); }
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
@@ -34,7 +38,7 @@ public class UsuarioService {
     public Usuario modificar(Usuario usuarioActualizado) {
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
 
-        usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
+//        usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
        // registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
 

@@ -45,12 +45,13 @@ public class DepartamentoService {
     public Departamento registrarDepartamento(Departamento departamento) {
 //      TODO: VER SI EL "getInquilino" Y "getPropietario" NO TRAEN LOS ID's.
 //        EN ESE CASO, LLAMAR AL UsuarioService PARA TRAER EL USUARIO CORRESPONDIENTE
-        Usuario _inquilino = departamento.getInquilino();
-        Usuario _propietario = departamento.getPropietario();
+        System.out.println(departamento);
+        Usuario _propietario = usuarioService.buscarPorId(departamento.getPropietario().getId());
 
-        if( _inquilino != null){
+        try{
+            Usuario _inquilino = usuarioService.buscarPorId(departamento.getInquilino().getId());
             departamento.setNombreInquilino(_inquilino.getNombreYApellido());
-        }
+        } catch (RuntimeException ignored){}
 
         departamento.setNombrePropietario(_propietario.getNombreYApellido());
         return departamentoRepository.save(departamento);
