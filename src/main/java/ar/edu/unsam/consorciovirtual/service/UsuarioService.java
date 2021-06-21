@@ -34,7 +34,7 @@ public class UsuarioService {
     public Usuario modificar(Usuario usuarioActualizado) {
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
 
-        usuarioActualizado.setUsername(usuarioAnterior.getUsername());
+        usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
        // registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
 
@@ -42,7 +42,7 @@ public class UsuarioService {
     }
 
     public Usuario loguearUsuario(Usuario usuario){
-        Usuario user = usuarioRepository.findByUsernameAndPassword(usuario.getUsername(), usuario.getPassword());
+        Usuario user = usuarioRepository.findByCorreoAndPassword(usuario.getCorreo(), usuario.getPassword());
         usuarioLogueado = user;
 
         if(user != null) {

@@ -27,12 +27,11 @@ public class Usuario {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private String username;
     private String nombre;
     private String apellido;
     private String correo;
     private String dni;
-//    private TipoUsuario tipo;
+    private TipoUsuario tipo;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)

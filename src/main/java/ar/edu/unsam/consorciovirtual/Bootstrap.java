@@ -25,13 +25,13 @@ public class Bootstrap implements InitializingBean {
 
 
     //Usuarios
-    private final Usuario santir = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "38830200", LocalDate.of(1995, 8, 25), "santiranieri", "123", TipoUsuario.Administrador);
-    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25), "santilr", "123", TipoUsuario.Administrador);
-    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25), "santil", "123", TipoUsuario.Administrador);
-    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25), "pablito", "123", TipoUsuario.Administrador);
-    private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25), "nahue", "123", TipoUsuario.Administrador);
-    private final Usuario juan = createUser("Juan", "Perez", "juanperez@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "juan", "123", TipoUsuario.Inquilino);
-    private final Usuario maria = createUser("Maria", "Perez", "mariaperez@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "maria", "123", TipoUsuario.Administrador_consorcio);
+    private final Usuario santir = createUser("Santiago", "Ranieri", "test@test.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario juan = createUser("Juan", "Perez", "juanperez@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
+    private final Usuario maria = createUser("Maria", "Perez", "test", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio);
 
     //Departamentos
     private final Departamento depto1 = createDepartamento(null, "1", "D", 6.5, 35, santil, null);
@@ -86,16 +86,15 @@ public class Bootstrap implements InitializingBean {
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
 
-    private Usuario createUser(String nombre, String apellido, String correo, String dni, LocalDate fechaNacimiento, String username, String password, TipoUsuario tipo) {
+    private Usuario createUser(String nombre, String apellido, String correo, String dni, LocalDate fechaNacimiento, String password, TipoUsuario tipo) {
         Usuario newUser = new Usuario();
         newUser.setNombre(nombre);
         newUser.setApellido(apellido);
         newUser.setCorreo(correo);
         newUser.setDni(dni);
         newUser.setFechaNacimiento(fechaNacimiento);
-        newUser.setUsername(username);
         newUser.setPassword(password);
-//        newUser.setTipo(tipo);
+        newUser.setTipo(tipo);
         return newUser;
     }
 
