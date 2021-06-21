@@ -5,11 +5,10 @@ import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnica;
 import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnicaDTOParaListado;
 import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.SolicitudTecnicaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +23,27 @@ public class SolicitudTecnicaRestController {
     public List<SolicitudTecnicaDTOParaListado> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
         return this.solicitudTecnicaService.buscarTodos(palabraBuscada);
     }
+
+    @GetMapping("/solicitud/{id}")
+    public SolicitudTecnica buscarPorId(@PathVariable Long id) {
+        return this.solicitudTecnicaService.buscarPorId(id);
+    }
+
+    @PutMapping("/solicitud/modificar")
+    public SolicitudTecnica modificarSolicitud(@RequestBody SolicitudTecnica solicitudTecnica) {
+        return this.solicitudTecnicaService.modificarSolicitud(solicitudTecnica);
+    }
+
+    @PutMapping("/solicitud/crear")
+    public SolicitudTecnica crearSolicitud(@RequestBody String body) throws JsonProcessingException {
+        SolicitudTecnica newRequest = new ObjectMapper().readValue(body, SolicitudTecnica.class);
+        return solicitudTecnicaService.registrarSolicitud(newRequest);
+    }
+
+    @PutMapping("/solicitud/eliminar/{id}")
+    public void bajaLogicaSolicitud(@PathVariable Long id) {
+        solicitudTecnicaService.bajaLogicaSolicitud(id);
+    }
+
 
 }

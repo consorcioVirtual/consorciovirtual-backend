@@ -32,7 +32,7 @@ public class DepartamentoService {
         return departamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
     }
 
-    public Departamento modificar(Departamento departamentoActualizado) {
+    public Departamento modificarDepartamento(Departamento departamentoActualizado) {
         Departamento departamentoAnterior = departamentoRepository.findById(departamentoActualizado.getId()).get();
 
         departamentoActualizado.setPropietario(departamentoAnterior.getPropietario());

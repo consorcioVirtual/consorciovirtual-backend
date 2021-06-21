@@ -23,11 +23,12 @@ public class SolicitudTecnica {
     @JsonIgnore
     private Boolean bajaLogica = false;
 
-
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="idAutor")
     private Usuario autor;
 
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="idEstado")
     private Estado estado;

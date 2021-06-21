@@ -32,7 +32,7 @@ public class DepartamentoRestController {
 
     @PutMapping("/departamento/modificar")
     public Departamento modificarDepartamento(@RequestBody Departamento departamento) {
-        return this.departamentoService.modificar(departamento);
+        return this.departamentoService.modificarDepartamento(departamento);
     }
 
     @PutMapping("/departamento/crear")
