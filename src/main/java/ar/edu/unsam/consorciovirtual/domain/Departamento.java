@@ -58,4 +58,8 @@ public class Departamento {
         return estadoDeCuenta;
     }
 
+    public String getUnidad(){
+        return piso + nroDepartamento;
+    }
+
 }

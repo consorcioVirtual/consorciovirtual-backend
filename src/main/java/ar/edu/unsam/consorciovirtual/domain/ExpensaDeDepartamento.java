@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 
 @Data
 @Entity
@@ -27,6 +28,8 @@ public class ExpensaDeDepartamento {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name="idExpensaGeneral")
     private ExpensaGeneral expensaGeneral;
+    private String estado = "Pendiente"; // Ni bien se genera una expensa, esta está como pendiente
+    private String unidad;
 
     //Para definir: Es necesario representar la relación calcula, que pusimos en el DER, con el admin de la app?
 
@@ -56,6 +59,10 @@ public class ExpensaDeDepartamento {
         valorDepartamentoExtraordinaria= (double)Math.round(calcularPorcentajeDePago(montoTotalExpensaExtraordinaria())* 100d) / 100d;
     }
 
+    public void cargarUnidadDepto(){
+        unidad = departamento.getUnidad();
+    }
+
     public void anularExpensa(){
         anulada = true;
     }
@@ -64,24 +71,24 @@ public class ExpensaDeDepartamento {
         return fechaDePago != null;
     }
 
-    @JsonProperty("estado")
-    public String getEstado(){
-        String estado;
-        if(estaPaga()){
-            estado = "Pagada";
-        }else{
-            estado = "Pendiente";
-        }
-        return estado;
+    public void pagarExpensa() {
+        ZoneId zoneIdArgentina = ZoneId.of("America/Argentina/Buenos_Aires");
+        fechaDePago = LocalDate.now(zoneIdArgentina);
+        estado = "Pagada";
     }
+
+//    public String getEstado(){
+//        if(estaPaga()){
+//            estado = "Pagada";
+//        }else{
+//            estado = "Pendiente";
+//        }
+//        return estado;
+//    }
 
     @JsonProperty("montoAPagar")
     public Double getMontoAPagar(){
         return (valorDepartamentoExtraordinaria+valorDepartamentoComun);
     }
 
-    @JsonProperty("unidad")
-    public String getUnidad(){
-        return departamento.getPiso() + "º " + departamento.getNroDepartamento();
-    }
 }

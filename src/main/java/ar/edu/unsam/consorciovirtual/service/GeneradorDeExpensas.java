@@ -61,6 +61,7 @@ public class GeneradorDeExpensas {
             unaExpensa.setExpensaGeneral(expensaGeneralConId);
             unaExpensa.setDepartamento(departamentos.get(x));
             unaExpensa.cargarImportesYPeriodo();
+            unaExpensa.cargarUnidadDepto();
             expensaDeDepartamentoRepository.save(unaExpensa);
         }
     }

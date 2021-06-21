@@ -23,8 +23,8 @@ public class ExpensaRestController {
     private final GeneradorDeExpensas generadorDeExpensas;
 
     @GetMapping("/expensas")
-    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos() {
-        return this.expensaDeDepartamentoService.buscarTodos();
+    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
+        return this.expensaDeDepartamentoService.buscarTodos(palabraBuscada);
     }
 
     @GetMapping("/expensas/activas")

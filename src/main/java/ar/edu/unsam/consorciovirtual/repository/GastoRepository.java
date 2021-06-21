@@ -17,4 +17,7 @@ public interface GastoRepository  extends JpaRepository<Gasto, Long> {
     @Query(value = "SELECT ungasto.importe, ungasto.tipo FROM gasto as ungasto " +
             "WHERE ungasto.periodo = :periodo AND ungasto.tipo = :tipo", nativeQuery = true)
     List<Double> findImporteByPeriodoAndByTipo(@Param("periodo") YearMonth periodo, @Param("tipo") String tipo);
+
+    //TODO: Falta filtrado por períodos. Se va a hacer un desplegable en el front para que venga el tipo de dato que necesitamos
+    List<Gasto> findByTituloContainingOrImporte(String titulo, Double importe);
 }

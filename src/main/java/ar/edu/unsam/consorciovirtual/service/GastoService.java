@@ -29,7 +29,16 @@ public class GastoService {
     }
 
     public List<Gasto> buscarTodos(String palabraBuscada) {
-        return gastoRepository.findAll();
+        Double importe = busquedaToDouble(palabraBuscada);
+        return gastoRepository.findByTituloContainingOrImporte(palabraBuscada, importe);
+    }
+
+    private Double busquedaToDouble(String palabraBuscada) {
+        try {
+            return Double.valueOf(palabraBuscada);
+        } catch (NumberFormatException ex){
+            return null;
+        }
     }
 
     public void registrarTodos(List<Gasto> gastos) {

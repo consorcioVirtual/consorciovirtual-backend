@@ -23,8 +23,8 @@ public class ExpensaDeDepartamentoService {
         return expensas.stream().map(exp -> ExpensaDeDepartamentoDTOParaListado.fromExpensaDeDepartamento(exp)).collect(Collectors.toList());
     }
 
-    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos() {
-        List<ExpensaDeDepartamento> lista = expensaDeDepartamentoRepository.findAll();
+    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos(String palabraBuscada) {
+        List<ExpensaDeDepartamento> lista = expensaDeDepartamentoRepository.findByUnidadContainingAndAnuladaFalseOrEstadoContainingAndAnuladaFalse(palabraBuscada, palabraBuscada);
         return mapearADTOParaListado(lista);
     }
 
