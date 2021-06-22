@@ -21,6 +21,7 @@ public class Bootstrap implements InitializingBean {
     private final SolicitudTecnicaService solicitudTecnicaService;
     private final EstadoRepository estadoRepository;
     private final GastoService gastoService;
+    private final AnuncioService anuncioService;
     private final GeneradorDeExpensas generadorDeExpensas;
 
 
@@ -73,6 +74,15 @@ public class Bootstrap implements InitializingBean {
     private final Gasto gasto16 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
             YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
 
+    //Anuncios
+    private final Anuncio anuncio1 = createAnuncio("Desinfección", "Se desnfectara el 01/08",
+            LocalDate.of(2021,03,05), LocalDate.of(2021,10,02), pablo);
+    private final Anuncio anuncio2 = createAnuncio("Expensas", "En mayo habrá expensas extraordinarias",
+            LocalDate.of(2021,04,25), LocalDate.of(2021,05,25), nahue);
+    private final Anuncio anuncio3 = createAnuncio("Ruidos Molestos", "Se reitera que no se pueden hacer ruidos molestos los días de semana luego de las  21:00hs",
+            LocalDate.of(2021,01,01), LocalDate.of(2021,01,31), santir);
+
+
 
     //Métodos
     @Override
@@ -82,6 +92,7 @@ public class Bootstrap implements InitializingBean {
         createAllStates();
         createAllRequests();
         createAllGastos();
+        createAllAnuncios();
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
@@ -175,6 +186,21 @@ public class Bootstrap implements InitializingBean {
     private void createAllGastos() {
         List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5, gasto11, gasto12, gasto13, gasto14, gasto15, gasto16);
         gastoService.registrarTodos(gastos);
+    }
+
+    private Anuncio createAnuncio(String titulo, String descripcion, LocalDate fechaCreacion, LocalDate fechaVencimiento, Usuario autor){
+        Anuncio unAnuncio = new Anuncio();
+        unAnuncio.setTitulo(titulo);
+        unAnuncio.setDescripcion(descripcion);
+        unAnuncio.setFechaCreacion(fechaCreacion);
+        unAnuncio.setFechaVencimiento(fechaVencimiento);
+        unAnuncio.setAutor(autor);
+        return unAnuncio;
+    }
+
+    private void createAllAnuncios() {
+        List<Anuncio> anuncios = List.of(anuncio1, anuncio2, anuncio3);
+        anuncioService.registrarTodos(anuncios);
     }
 
 }
