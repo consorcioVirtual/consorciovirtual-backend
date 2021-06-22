@@ -31,8 +31,8 @@ public class GeneradorDeExpensas {
     private Double calcularValorDeGastos(YearMonth periodo, String tipo){
         List<Double> gastos = gastoRepository.findImporteByPeriodoAndByTipo(periodo, tipo);
         return  gastos.stream()
-                .mapToDouble(a -> a)
-                .sum();
+                    .mapToDouble(a -> a)
+                    .sum();
     }
 
     public void generarExpensasPorImporteDeGastos(YearMonth periodo){

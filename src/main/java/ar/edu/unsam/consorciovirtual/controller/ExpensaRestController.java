@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -38,9 +39,12 @@ public class ExpensaRestController {
     }
 
     @Transactional
-    @PostMapping("/expensas/createPorImporteDeGastos/{periodo}")
-    public void generarExpensasPorImporteDeGastos(@PathVariable YearMonth periodo){
-        this.generadorDeExpensas.generarExpensasPorImporteDeGastos(periodo);
+    @GetMapping("/expensas/createPorImporteDeGastos")
+    public void generarExpensasPorImporteDeGastos(@RequestParam String periodo){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        var periodoFormat = periodo.replaceAll("^\"+|\"+$", "");
+        YearMonth periodoABuscar = YearMonth.parse(periodoFormat, formatter);
+        this.generadorDeExpensas.generarExpensasPorImporteDeGastos(periodoABuscar);
     }
 
     @Transactional
