@@ -33,12 +33,12 @@ public class DepartamentoService {
     }
 
     public Departamento modificarDepartamento(Departamento departamentoActualizado) {
-        Departamento departamentoAnterior = departamentoRepository.findById(departamentoActualizado.getId()).get();
+//        Departamento departamentoAnterior = departamentoRepository.findById(departamentoActualizado.getId()).get();
+        departamentoActualizado.setNombrePropietario(departamentoActualizado.getPropietario().getNombreYApellido());
+        departamentoActualizado.setNombreInquilino(departamentoActualizado.getInquilino().getNombreYApellido());
 
-        departamentoActualizado.setPropietario(departamentoAnterior.getPropietario());
-        departamentoActualizado.setInquilino(departamentoAnterior.getInquilino());
         // registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamentoActualizado.getId());
-
+        System.out.println(departamentoActualizado);
         return departamentoRepository.save(departamentoActualizado);
     }
 
