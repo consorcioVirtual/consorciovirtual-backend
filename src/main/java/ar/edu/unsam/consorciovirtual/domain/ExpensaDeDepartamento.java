@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 
+import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
+
 @Data
 @Entity
 public class ExpensaDeDepartamento {
@@ -72,8 +74,7 @@ public class ExpensaDeDepartamento {
     }
 
     public void pagarExpensa() {
-        ZoneId zoneIdArgentina = ZoneId.of("America/Argentina/Buenos_Aires");
-        fechaDePago = LocalDate.now(zoneIdArgentina);
+        fechaDePago = LocalDate.now(ZONE_ID_ARGENTINA);
         estado = "Pagada";
     }
 
