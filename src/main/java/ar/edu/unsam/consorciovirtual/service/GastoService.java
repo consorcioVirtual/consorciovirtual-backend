@@ -8,6 +8,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.YearMonth;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -60,6 +61,10 @@ public class GastoService {
         //gasto.setBajaLogica(true);
 
         gastoRepository.save(gasto);
+    }
+
+    public List<Gasto> buscarPorPeriodo(YearMonth periodo){
+        return gastoRepository.findGastosByPeriodo(periodo);
     }
 
 //    public List<Gasto> algo(String palabraBuscada) {
