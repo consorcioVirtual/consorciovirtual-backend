@@ -32,19 +32,18 @@ public class DepartamentoService {
         return departamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
     }
 
-    public Departamento modificarDepartamento(Departamento departamentoActualizado) {
-//        Departamento departamentoAnterior = departamentoRepository.findById(departamentoActualizado.getId()).get();
-        departamentoActualizado.setNombrePropietario(departamentoActualizado.getPropietario().getNombreYApellido());
-        departamentoActualizado.setNombreInquilino(departamentoActualizado.getInquilino().getNombreYApellido());
-
+    public Departamento modificarDepartamento(Departamento departamento) {
+        Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
         // registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamentoActualizado.getId());
-        System.out.println(departamentoActualizado);
-        return departamentoRepository.save(departamentoActualizado);
+        return departamentoRepository.save(updatedDepartment);
     }
 
     public Departamento registrarDepartamento(Departamento departamento) {
-//      TODO: VER SI EL "getInquilino" Y "getPropietario" NO TRAEN LOS ID's.
-//        EN ESE CASO, LLAMAR AL UsuarioService PARA TRAER EL USUARIO CORRESPONDIENTE
+        Departamento newDepartment = asignarPropietarioEInquilino(departamento);
+        return departamentoRepository.save(newDepartment);
+    }
+
+    private Departamento asignarPropietarioEInquilino(Departamento departamento){
         System.out.println(departamento);
         Usuario _propietario = usuarioService.buscarPorId(departamento.getPropietario().getId());
 
@@ -54,7 +53,7 @@ public class DepartamentoService {
         } catch (RuntimeException ignored){}
 
         departamento.setNombrePropietario(_propietario.getNombreYApellido());
-        return departamentoRepository.save(departamento);
+        return departamento;
     }
 
     public void bajaLogica(Long id){

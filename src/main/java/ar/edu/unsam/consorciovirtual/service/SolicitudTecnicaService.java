@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 public class SolicitudTecnicaService {
 
     private final SolicitudTecnicaRepository solicitudTecnicaRepository;
+    private final UsuarioService usuarioService;
+    private final EstadoService estadoService;
 
     public List<SolicitudTecnicaDTOParaListado> buscarTodos(String palabraBuscada) {
         Long idSolicitud = busquedaToLong(palabraBuscada);
@@ -39,23 +41,29 @@ public class SolicitudTecnicaService {
         return solicitudTecnicaRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
     }
 
-    public SolicitudTecnica modificarSolicitud(SolicitudTecnica solicitudActualizada) {
-        SolicitudTecnica solicitudAnterior = solicitudTecnicaRepository.findById(solicitudActualizada.getId()).get();
-
-        solicitudActualizada.setAutor(solicitudAnterior.getAutor());
-        //TODO: Como encaramos el tema del estado?
-//        solicitudActualizada.setEstado();
-
-        return solicitudTecnicaRepository.save(solicitudActualizada);
+    public SolicitudTecnica modificarSolicitud(SolicitudTecnica solicitud) {
+        Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
+        solicitud.setAutor(_autor);
+        SolicitudTecnica updatedRequest = asignarEstado(solicitud);
+        return solicitudTecnicaRepository.save(updatedRequest);
     }
 
     public SolicitudTecnica registrarSolicitud(SolicitudTecnica solicitud) {
-//      TODO: VER SI EL "getAutor" NO TRAE EL ID.
-//        EN ESE CASO, LLAMAR AL UsuarioService PARA TRAER EL USUARIO CORRESPONDIENTE
-        Usuario _autor = solicitud.getAutor();
-
+        SolicitudTecnica newRequest = asignarAutorYEstado(solicitud);
+        return solicitudTecnicaRepository.save(newRequest);
+    }
+    
+    private SolicitudTecnica asignarAutorYEstado(SolicitudTecnica solicitud){
+        Usuario _autor = usuarioService.buscarPorId(solicitud.getAutor().getId());
         solicitud.setNombreAutor(_autor.getNombreYApellido());
-        return solicitudTecnicaRepository.save(solicitud);
+
+        return asignarEstado(solicitud);
+    }
+
+    private SolicitudTecnica asignarEstado(SolicitudTecnica solicitud){
+        Estado _estado = estadoService.buscarPorId(solicitud.getEstado().getId());
+        solicitud.setNombreEstado(_estado.getNombreEstado());
+        return solicitud;
     }
 
     public void bajaLogicaSolicitud(Long id){
