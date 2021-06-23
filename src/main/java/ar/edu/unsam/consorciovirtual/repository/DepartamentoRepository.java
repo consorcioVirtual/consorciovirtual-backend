@@ -10,4 +10,5 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
     List<Departamento> findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(String nroDepartamento, String nombrePropietario, String nombreInquilino, String pisoDepto);
 
     List<Departamento> findByBajaLogicaFalse();
+
 }

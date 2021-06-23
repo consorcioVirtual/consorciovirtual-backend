@@ -32,9 +32,15 @@ public class SolicitudTecnica {
     private Usuario autor;
 
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="idEstado")
     private Estado estado;
+
+    @JsonProperty("estado")
+    public String getEstadoActual(){
+        return estado.getNombreEstado();
+    }
 
 //    @ManyToOne(optional = false, fetch = FetchType.LAZY)
 //    @JoinColumn(name="idDocumento")
