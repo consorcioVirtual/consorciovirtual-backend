@@ -44,7 +44,7 @@ public class GeneradorDeExpensas {
 
     @Transactional
     private void generarExpensas(Double importeComun, Double importeExtraordinaria, YearMonth periodo) {
-        if(expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo).size() > 0){
+        if(expensaGeneralRepository.findOneByPeriodoAndAnuladaFalse(periodo) != null){
             throw new IllegalArgumentException("Ya existe una expensa activa de ese periodo");
         }
         ExpensaGeneral expensaGeneral = new ExpensaGeneral();
@@ -52,7 +52,7 @@ public class GeneradorDeExpensas {
         expensaGeneral.setValorTotalExpensaExtraordinaria(importeExtraordinaria);
         expensaGeneral.setValorTotalExpensaComun(importeComun);
         expensaGeneralRepository.save(expensaGeneral);
-        ExpensaGeneral expensaGeneralConId = expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo).get(0);
+        ExpensaGeneral expensaGeneralConId = expensaGeneralRepository.findOneByPeriodoAndAnuladaFalse(periodo);
         List<Departamento> departamentos = departamentoRepository.findByBajaLogicaFalse();
         int x;
 

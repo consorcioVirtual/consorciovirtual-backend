@@ -92,4 +92,9 @@ public class ExpensaDeDepartamento {
         return (valorDepartamentoExtraordinaria+valorDepartamentoComun);
     }
 
+    @JsonProperty("propietario")
+    public String getPropietario(){
+        return (departamento.getNombrePropietario());
+    }
+
 }

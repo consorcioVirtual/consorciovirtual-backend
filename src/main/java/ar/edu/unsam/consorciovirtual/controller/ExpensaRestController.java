@@ -2,6 +2,8 @@ package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamentoDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domain.ExpensaGeneral;
+import ar.edu.unsam.consorciovirtual.domain.Gasto;
 import ar.edu.unsam.consorciovirtual.service.ExpensaDeDepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.ExpensaGeneralService;
 import ar.edu.unsam.consorciovirtual.service.ExtractorDatoDeJSON;
@@ -56,11 +58,28 @@ public class ExpensaRestController {
     }
 
     @Transactional
-    @PutMapping("/expensas/anular/{periodo}")
-    public void anularExpensasDeUnPeriodo(@PathVariable YearMonth periodo){
-        this.expensaGeneralService.anularExpensasPorPeriodo(periodo);
+    @GetMapping("/expensas/anular")
+    public void anularExpensasDeUnPeriodo(@RequestParam String periodo){
+        YearMonth periodoABuscar = stringToYearMonth(periodo);
+        this.expensaGeneralService.anularExpensasPorPeriodo(periodoABuscar);
+    }
+
+    @GetMapping("/expensageneral/periodo")
+    public ExpensaGeneral buscarPorPeriodoGeneral(@RequestParam String periodo) {
+        YearMonth periodoABuscar = stringToYearMonth(periodo);
+        return expensaGeneralService.buscarPorPeriodo(periodoABuscar);
+    }
+    
+    @GetMapping("/expensadepto/periodo")
+    public List<ExpensaDeDepartamento> buscarPorPeriodoDepartamento(@RequestParam String periodo) {
+        YearMonth periodoABuscar = stringToYearMonth(periodo);
+        return expensaDeDepartamentoService.buscarPorPeriodo(periodoABuscar);
     }
 
 
-
+    public YearMonth stringToYearMonth(String periodo){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        var periodoFormat = periodo.replaceAll("^\"+|\"+$", "");
+        return YearMonth.parse(periodoFormat, formatter);
+    }
 }

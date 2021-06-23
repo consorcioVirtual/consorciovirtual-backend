@@ -37,4 +37,8 @@ public class ExpensaDeDepartamentoService {
         return expensaDeDepartamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Expensa no Encontrada"));
     }
 
+    public List<ExpensaDeDepartamento> buscarPorPeriodo(YearMonth periodo){
+        return expensaDeDepartamentoRepository.findByPeriodoAndAnuladaFalse(periodo);
+    }
+
 }

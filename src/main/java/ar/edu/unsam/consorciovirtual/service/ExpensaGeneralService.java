@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.ExpensaGeneral;
+import ar.edu.unsam.consorciovirtual.domain.Gasto;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaGeneralRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,13 @@ public class ExpensaGeneralService {
 
     @Transactional
     public void anularExpensasPorPeriodo(YearMonth periodo) {
-        List<ExpensaGeneral> expensaAAnular = expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo);
-        if(!expensaAAnular.isEmpty()){
-            expensaAAnular.get(0).anularExpensa();
+        ExpensaGeneral expensaAAnular = expensaGeneralRepository.findOneByPeriodoAndAnuladaFalse(periodo);
+        if(expensaAAnular != null){
+            expensaAAnular.anularExpensa();
         } else throw new IllegalArgumentException("No existe expensa activa de ese periodo");
+    }
+
+    public ExpensaGeneral buscarPorPeriodo(YearMonth periodo){
+        return expensaGeneralRepository.findOneByPeriodoAndAnuladaFalse(periodo);
     }
 }
