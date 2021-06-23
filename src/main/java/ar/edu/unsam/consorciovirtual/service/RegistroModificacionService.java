@@ -21,7 +21,7 @@ public class RegistroModificacionService {
     }
 
     public List<RegistroModificacion> buscarPorTipoYId(TipoRegistro tipoRegistro, Long idModificado) {
-        return registroModificacionRepository.findByTipoRegistroAndIdModificadoOrderByFechaModificacionAsc(tipoRegistro, idModificado);
+        return registroModificacionRepository.findByTipoRegistroAndIdModificadoOrderByFechaHoraModificacionAsc(tipoRegistro, idModificado);
     }
 
     public RegistroModificacion guardarPorTipoYId(TipoRegistro tipoRegistro, Long idModificado) {
@@ -29,7 +29,7 @@ public class RegistroModificacionService {
         registroModificacion.setIdModificado(idModificado);
         registroModificacion.setTipoRegistro(tipoRegistro);
         registroModificacion.setUsuarioModificador(UsuarioService.usuarioLogueado.getNombre() + " " + UsuarioService.usuarioLogueado.getApellido());
-        registroModificacion.setFechaModificacion(LocalDateTime.now());
+        registroModificacion.setFechaHoraModificacion(LocalDateTime.now());
         return registroModificacionRepository.save(registroModificacion);
     }
 }

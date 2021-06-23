@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.DepartamentoDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class DepartamentoService {
 
     private final DepartamentoRepository departamentoRepository;
     private final UsuarioService usuarioService;
+    private final RegistroModificacionService registroModificacionService;
 
     public List<DepartamentoDTOParaListado> buscarTodos(String palabraBuscada) {
         List<Departamento> departamentos = departamentoRepository.findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
@@ -34,7 +36,7 @@ public class DepartamentoService {
 
     public Departamento modificarDepartamento(Departamento departamento) {
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
-        // registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamentoActualizado.getId());
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getId());
         return departamentoRepository.save(updatedDepartment);
     }
 

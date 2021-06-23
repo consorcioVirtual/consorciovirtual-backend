@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
+import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class GastoService {
 
     private final GastoRepository gastoRepository;
+    private final RegistroModificacionService registroModificacionService;
 
     private Boolean importeDeGastoValido(Gasto nuevoGasto){
         return (!nuevoGasto.tieneItems() || (nuevoGasto.tieneItems() && nuevoGasto.importeCoincideConSumaDeIntems()))
@@ -51,8 +53,7 @@ public class GastoService {
     }
 
     public Gasto modificar(Gasto gastoActualizado) {
-        // registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
-
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.GASTO, gastoActualizado.getId());
         return gastoRepository.save(gastoActualizado);
     }
 

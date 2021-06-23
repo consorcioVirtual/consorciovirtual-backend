@@ -18,6 +18,7 @@ public class SolicitudTecnicaService {
     private final SolicitudTecnicaRepository solicitudTecnicaRepository;
     private final UsuarioService usuarioService;
     private final EstadoService estadoService;
+    private final RegistroModificacionService registroModificacionService;
 
     public List<SolicitudTecnicaDTOParaListado> buscarTodos(String palabraBuscada) {
         Long idSolicitud = busquedaToLong(palabraBuscada);
@@ -45,6 +46,7 @@ public class SolicitudTecnicaService {
         Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
         solicitud.setAutor(_autor);
         SolicitudTecnica updatedRequest = asignarEstado(solicitud);
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId());
         return solicitudTecnicaRepository.save(updatedRequest);
     }
 

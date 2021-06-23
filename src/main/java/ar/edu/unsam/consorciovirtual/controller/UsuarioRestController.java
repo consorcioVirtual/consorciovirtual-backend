@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin()
+@CrossOrigin
 public class UsuarioRestController {
 
     @Autowired
@@ -37,8 +37,8 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/usuario/modificar")
-    public Usuario modificarUsuario(@RequestBody Usuario usuario) {
-        return this.usuarioService.modificar(usuario);
+    public void modificarUsuario(@RequestBody Usuario usuario) {
+        usuarioService.modificar(usuario);
     }
 
     @PostMapping("/login")

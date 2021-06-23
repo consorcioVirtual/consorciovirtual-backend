@@ -35,14 +35,12 @@ public class UsuarioService {
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
-    public Usuario modificar(Usuario usuarioActualizado) {
+    public void modificar(Usuario usuarioActualizado) {
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
-
-//        usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
+        //usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
-       // registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
-
-        return usuarioRepository.save(usuarioActualizado);
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
+        usuarioRepository.save(usuarioActualizado);
     }
 
     public Usuario loguearUsuario(Usuario usuario){

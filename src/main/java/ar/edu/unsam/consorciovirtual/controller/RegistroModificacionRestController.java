@@ -16,7 +16,7 @@ public class RegistroModificacionRestController {
 
     private final RegistroModificacionService registroModificacionService;
 
-    @GetMapping("/registroModificaciones")
+    @GetMapping("/registroModificacion")
     public List<RegistroModificacion> buscarPorTipoYId(@RequestParam TipoRegistro tipoRegistro, @RequestParam Long idModificado) {
         return registroModificacionService.buscarPorTipoYId(tipoRegistro, idModificado);
     }
