@@ -46,4 +46,9 @@ public class DepartamentoRestController {
         departamentoService.bajaLogica(id);
     }
 
+
+    @GetMapping("/cantidaddepartamentos")
+    public long count() {
+        return this.departamentoService.count();
+    }
 }
