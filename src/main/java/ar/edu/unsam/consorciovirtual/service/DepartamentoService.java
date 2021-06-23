@@ -64,4 +64,8 @@ public class DepartamentoService {
         departamentoRepository.save(departamento);
     }
 
+    public long count(){
+        return departamentoRepository.count();
+    }
+
 }
