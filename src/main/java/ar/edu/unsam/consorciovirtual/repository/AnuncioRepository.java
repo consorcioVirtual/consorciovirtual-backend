@@ -14,4 +14,5 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
             "WHERE unAnuncio.fecha_vencimiento > :fecha", nativeQuery = true)
     List<Anuncio> buscarPorFechaDeVencimientoPosterior(@Param("fecha") LocalDate fecha);
 
+    List<Anuncio> findByBajaLogicaFalse();
 }

@@ -4,10 +4,7 @@ import ar.edu.unsam.consorciovirtual.domain.Anuncio;
 import ar.edu.unsam.consorciovirtual.service.AnuncioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +23,25 @@ public class AnuncioRestController {
     @GetMapping("/anuncios/vigentes")
     public List<Anuncio> buscarTodosLosVigentes() {
         return this.anuncioService.buscarTodosLosVigentes();
+    }
+
+    @PutMapping("/anuncios/eliminar/{id}")
+    public void bajaLogicaAnuncio(@PathVariable Long id) {
+        anuncioService.bajaLogica(id);
+    }
+
+    //No se le pasa el autor desde el front, se le carga en el back por idAutor
+    @PostMapping("/anuncios/crear/{idAutor}")
+    public void createAnuncio(@PathVariable Long idAutor, @RequestBody Anuncio nuevoAnuncio) {
+        anuncioService.crearAnuncio(idAutor, nuevoAnuncio);
+    }
+
+    /* No se le pasa el autor desde el front dado que no es necesario, solo utiliza el id del usuario
+    que intenta la modificación para corroborar que es el mismo que lo creo, si no es el miemo tira
+    una excepción */
+    @PutMapping("/anuncios/modificar/{idUsuario}")
+    public void modificarAnuncio(@PathVariable Long idUsuario, @RequestBody Anuncio anuncioActualizado) {
+        anuncioService.modificarAnuncio(idUsuario, anuncioActualizado);
     }
 
 }

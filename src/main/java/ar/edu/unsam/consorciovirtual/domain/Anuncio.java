@@ -15,13 +15,13 @@ public class Anuncio {
     private Long id;
     private String titulo;
     private String descripcion;
-    private LocalDate fechaCreacion;
+    private LocalDate fechaCreacion = LocalDate.now();
     private LocalDate fechaVencimiento;
     @JsonIgnore()
     private Boolean bajaLogica = false;
 
     @JsonIgnore
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name="idAutor")
     private Usuario autor;
 
