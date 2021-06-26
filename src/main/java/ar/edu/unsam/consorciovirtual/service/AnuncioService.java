@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Anuncio;
+import ar.edu.unsam.consorciovirtual.domain.AnuncioDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.AnuncioRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,13 +22,23 @@ public class AnuncioService {
     private final AnuncioRepository anuncioRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public List<Anuncio> buscarTodos(){
-        return anuncioRepository.findByBajaLogicaFalse();
+    public List<AnuncioDTOParaListado> mapearADTO(List<Anuncio> anuncios){
+        return anuncios.stream().map(anuncio -> AnuncioDTOParaListado.fromAnuncio(anuncio)).collect(Collectors.toList());
     }
 
-    public List<Anuncio> buscarTodosLosVigentes() {
+    public List<AnuncioDTOParaListado> buscarTodos(){
+        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalse();
+        return mapearADTO(anuncios);
+    }
+
+    public List<AnuncioDTOParaListado> buscarTodosLosVigentes() {
         final LocalDate fechaDeHoy = LocalDate.now();
-        return anuncioRepository.buscarPorFechaDeVencimientoPosterior(fechaDeHoy);
+        List<Anuncio> anuncios = anuncioRepository.buscarPorFechaDeVencimientoPosterior(fechaDeHoy);
+        return mapearADTO(anuncios);
+    }
+
+    public Anuncio getAnuncioById(Long idAnuncio) {
+        return anuncioRepository.findById(idAnuncio).orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
     }
 
     public void registrarTodos(List<Anuncio> anuncios) {
@@ -58,4 +70,5 @@ public class AnuncioService {
 
         anuncioRepository.save(anuncioViejo);
     }
+
 }

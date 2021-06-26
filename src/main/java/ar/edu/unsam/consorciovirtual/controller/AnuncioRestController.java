@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Anuncio;
+import ar.edu.unsam.consorciovirtual.domain.AnuncioDTOParaListado;
 import ar.edu.unsam.consorciovirtual.service.AnuncioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,17 @@ public class AnuncioRestController {
     private final AnuncioService anuncioService;
 
     @GetMapping("/anuncios")
-    public List<Anuncio> buscarTodos() {
+    public List<AnuncioDTOParaListado> buscarTodos() {
         return this.anuncioService.buscarTodos();
     }
 
     @GetMapping("/anuncios/vigentes")
-    public List<Anuncio> buscarTodosLosVigentes() {
+    public List<AnuncioDTOParaListado> buscarTodosLosVigentes() {
         return this.anuncioService.buscarTodosLosVigentes();
     }
+
+    @GetMapping("/anuncios/{idAnuncio}")
+    public Anuncio getAnuncioById(@PathVariable Long idAnuncio){ return anuncioService.getAnuncioById(idAnuncio);}
 
     @PutMapping("/anuncios/eliminar/{id}")
     public void bajaLogicaAnuncio(@PathVariable Long id) {
