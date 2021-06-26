@@ -8,6 +8,7 @@ import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -26,14 +27,14 @@ public class AnuncioService {
         return anuncios.stream().map(anuncio -> AnuncioDTOParaListado.fromAnuncio(anuncio)).collect(Collectors.toList());
     }
 
-    public List<AnuncioDTOParaListado> buscarTodos(){
-        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalse();
+    public List<AnuncioDTOParaListado> buscarTodos(String palabraBuscada){
+        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalse(palabraBuscada);
         return mapearADTO(anuncios);
     }
 
-    public List<AnuncioDTOParaListado> buscarTodosLosVigentes() {
+    public List<AnuncioDTOParaListado> buscarTodosLosVigentes(String palabraBuscada) {
         final LocalDate fechaDeHoy = LocalDate.now();
-        List<Anuncio> anuncios = anuncioRepository.buscarPorFechaDeVencimientoPosterior(fechaDeHoy);
+        List<Anuncio> anuncios = anuncioRepository.buscarPorFechaDeVencimientoPosterior(fechaDeHoy, palabraBuscada);
         return mapearADTO(anuncios);
     }
 

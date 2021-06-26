@@ -11,8 +11,12 @@ import java.util.List;
 public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
 
     @Query(value = "SELECT * FROM anuncio as unAnuncio " +
-            "WHERE unAnuncio.fecha_vencimiento > :fecha AND unAnuncio.baja_logica = false", nativeQuery = true)
-    List<Anuncio> buscarPorFechaDeVencimientoPosterior(@Param("fecha") LocalDate fecha);
+            "WHERE unAnuncio.fecha_vencimiento > :fecha AND unAnuncio.baja_logica = false AND " +
+            "(unAnuncio.titulo LIKE %:palabraBuscada% OR unAnuncio.descripcion LIKE %:palabraBuscada%)", nativeQuery = true)
+    List<Anuncio> buscarPorFechaDeVencimientoPosterior(@Param("fecha") LocalDate fecha, @Param("palabraBuscada") String palabraBuscada);
 
-    List<Anuncio> findByBajaLogicaFalse();
+    @Query(value = "SELECT * FROM anuncio as unAnuncio " +
+            "WHERE unAnuncio.baja_logica = false AND " +
+            "(unAnuncio.titulo LIKE %:palabraBuscada% OR unAnuncio.descripcion LIKE %:palabraBuscada%)", nativeQuery = true)
+    List<Anuncio> findByBajaLogicaFalse(@Param("palabraBuscada") String palabraBuscada);
 }

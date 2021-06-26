@@ -17,13 +17,13 @@ public class AnuncioRestController {
     private final AnuncioService anuncioService;
 
     @GetMapping("/anuncios")
-    public List<AnuncioDTOParaListado> buscarTodos() {
-        return this.anuncioService.buscarTodos();
+    public List<AnuncioDTOParaListado> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
+        return this.anuncioService.buscarTodos(palabraBuscada);
     }
 
     @GetMapping("/anuncios/vigentes")
-    public List<AnuncioDTOParaListado> buscarTodosLosVigentes() {
-        return this.anuncioService.buscarTodosLosVigentes();
+    public List<AnuncioDTOParaListado> buscarTodosLosVigentes(@RequestParam(defaultValue="") String palabraBuscada) {
+        return this.anuncioService.buscarTodosLosVigentes(palabraBuscada);
     }
 
     @GetMapping("/anuncios/{idAnuncio}")
