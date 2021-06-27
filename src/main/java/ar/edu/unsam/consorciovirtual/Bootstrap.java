@@ -22,6 +22,7 @@ public class Bootstrap implements InitializingBean {
     private final EstadoRepository estadoRepository;
     private final GastoService gastoService;
     private final AnuncioService anuncioService;
+    private final MensajeService mensajeService;
     private final GeneradorDeExpensas generadorDeExpensas;
 
 
@@ -82,6 +83,10 @@ public class Bootstrap implements InitializingBean {
     private final Anuncio anuncio3 = createAnuncio("Ruidos Molestos", "Se reitera que no se pueden hacer ruidos molestos los días de semana luego de las  21:00hs",
             LocalDate.of(2021,01,01), LocalDate.of(2021,01,31), santir);
 
+    //Mensajes
+    private final Mensaje mensaje1 = createMensaje("Es el primer mensaje", santil, null);
+    private final Mensaje mensaje2 = createMensaje("Es el segundo mensaje", santilr, null);
+    private final Mensaje mensajeCitando1 = createMensaje("Es el primer mensaje que cita a otro", pablo, mensaje1);
 
 
     //Métodos
@@ -93,6 +98,7 @@ public class Bootstrap implements InitializingBean {
         createAllRequests();
         createAllGastos();
         createAllAnuncios();
+        createAllMensajes();
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
@@ -203,4 +209,16 @@ public class Bootstrap implements InitializingBean {
         anuncioService.registrarTodos(anuncios);
     }
 
+    private Mensaje createMensaje(String _contenido, Usuario _autor, Mensaje _mensajeCitado){
+        Mensaje nuevoMensaje = new Mensaje();
+        nuevoMensaje.setContenido(_contenido);
+        nuevoMensaje.setAutor(_autor);
+        nuevoMensaje.setMensajeCitado(_mensajeCitado);
+        return nuevoMensaje;
+    }
+
+    private void createAllMensajes() {
+        List<Mensaje> mensajes = List.of(mensaje1, mensaje2, mensajeCitando1);
+        mensajeService.registrarTodos(mensajes);
+    }
 }
