@@ -22,7 +22,7 @@ public class SolicitudTecnicaService {
 
     public List<SolicitudTecnicaDTOParaListado> buscarTodos(String palabraBuscada) {
         Long idSolicitud = busquedaToLong(palabraBuscada);
-        List<SolicitudTecnica> solicitudes = solicitudTecnicaRepository.findByIdAndBajaLogicaFalseOrNombreAutorContainingAndBajaLogicaFalseOrTituloContainingAndBajaLogicaFalseOrNombreEstadoContainingAndBajaLogicaFalse(idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
+        List<SolicitudTecnica> solicitudes = solicitudTecnicaRepository.findByIdAndBajaLogicaFalseOrNombreAutorContainingAndBajaLogicaFalseOrTituloContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
         return solicitudes.stream().map(x -> SolicitudTecnicaDTOParaListado.fromSolicitudTecnica(x)).collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ public class SolicitudTecnicaService {
 
     private SolicitudTecnica asignarEstado(SolicitudTecnica solicitud){
         Estado _estado = estadoService.buscarPorId(solicitud.getEstado().getId());
-        solicitud.setNombreEstado(_estado.getNombreEstado());
+        solicitud.getEstado().setNombreEstado(_estado.getNombreEstado());
         return solicitud;
     }
 

@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.domain;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 @Data
@@ -19,7 +20,7 @@ public class SolicitudTecnicaDTOParaListado {
         solicitudDTO.titulo = solicitud.getTitulo();
         solicitudDTO.fecha = solicitud.getFecha();
         solicitudDTO.nombreAutor = solicitud.getNombreAutor();
-        solicitudDTO.nombreEstado = solicitud.getNombreEstado();
+        solicitudDTO.nombreEstado = solicitud.getEstado().getNombreEstado();
         return solicitudDTO;
     }
 

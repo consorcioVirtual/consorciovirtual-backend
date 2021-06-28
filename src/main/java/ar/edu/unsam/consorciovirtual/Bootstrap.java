@@ -152,7 +152,7 @@ public class Bootstrap implements InitializingBean {
         newRequest.setAutor(autor);
         newRequest.setEstado(estado);
         newRequest.setNombreAutor(autor.getNombreYApellido());
-        newRequest.setNombreEstado(estado.getNombreEstado());
+        newRequest.getEstado().setNombreEstado(estado.getNombreEstado());
 
         return newRequest;
     }

@@ -1,12 +1,8 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnica;
 import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnicaDTOParaListado;
-import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.SolicitudTecnicaService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +32,8 @@ public class SolicitudTecnicaRestController {
     }
 
     @PutMapping("/solicitud/crear")
-    public SolicitudTecnica crearSolicitud(@RequestBody String body) throws JsonProcessingException {
-        SolicitudTecnica newRequest = new ObjectMapper().readValue(body, SolicitudTecnica.class);
-        return solicitudTecnicaService.registrarSolicitud(newRequest);
+    public SolicitudTecnica crearSolicitud(@RequestBody SolicitudTecnica solicitudTecnica){
+        return solicitudTecnicaService.registrarSolicitud(solicitudTecnica);
     }
 
     @PutMapping("/solicitud/eliminar/{id}")
