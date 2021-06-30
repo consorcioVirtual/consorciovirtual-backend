@@ -1,13 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
-import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
-import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamentoDTOParaListado;
-import ar.edu.unsam.consorciovirtual.domain.ExpensaGeneral;
-import ar.edu.unsam.consorciovirtual.domain.Gasto;
-import ar.edu.unsam.consorciovirtual.service.ExpensaDeDepartamentoService;
-import ar.edu.unsam.consorciovirtual.service.ExpensaGeneralService;
-import ar.edu.unsam.consorciovirtual.service.ExtractorDatoDeJSON;
-import ar.edu.unsam.consorciovirtual.service.GeneradorDeExpensas;
+import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,4 +76,5 @@ public class ExpensaRestController {
         var periodoFormat = periodo.replaceAll("^\"+|\"+$", "");
         return YearMonth.parse(periodoFormat, formatter);
     }
+
 }

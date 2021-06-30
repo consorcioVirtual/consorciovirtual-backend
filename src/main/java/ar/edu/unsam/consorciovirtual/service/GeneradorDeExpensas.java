@@ -1,8 +1,6 @@
 package ar.edu.unsam.consorciovirtual.service;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
-import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
-import ar.edu.unsam.consorciovirtual.domain.ExpensaGeneral;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaDeDepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaGeneralRepository;
@@ -23,6 +21,7 @@ public class GeneradorDeExpensas {
     private final ExpensaGeneralRepository expensaGeneralRepository;
     private final ExpensaDeDepartamentoRepository expensaDeDepartamentoRepository;
     private final DepartamentoRepository departamentoRepository;
+
 
     public void generarExpensasPorImportePredefinido(Double importeComun, Double importeExtraordinaria, YearMonth periodo){
         generarExpensas(importeComun, importeExtraordinaria, periodo);
@@ -54,8 +53,9 @@ public class GeneradorDeExpensas {
         expensaGeneralRepository.save(expensaGeneral);
         ExpensaGeneral expensaGeneralConId = expensaGeneralRepository.findOneByPeriodoAndAnuladaFalse(periodo);
         List<Departamento> departamentos = departamentoRepository.findByBajaLogicaFalse();
-        int x;
 
+        List <Gasto> gastosDelPeriodo = gastoRepository.findGastosByPeriodo(periodo);
+        int x;
         for (x=0; x<departamentos.size(); x++){
             ExpensaDeDepartamento unaExpensa = new ExpensaDeDepartamento();
             unaExpensa.setExpensaGeneral(expensaGeneralConId);
@@ -63,6 +63,7 @@ public class GeneradorDeExpensas {
             unaExpensa.cargarImportesYPeriodo();
             unaExpensa.cargarUnidadDepto();
             expensaDeDepartamentoRepository.save(unaExpensa);
+            CreadorDePDF.createResumenDeExpensa(unaExpensa, gastosDelPeriodo);
         }
     }
 }
