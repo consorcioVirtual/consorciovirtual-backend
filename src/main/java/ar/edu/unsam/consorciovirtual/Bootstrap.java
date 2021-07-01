@@ -77,11 +77,11 @@ public class Bootstrap implements InitializingBean {
 
     //Anuncios
     private final Anuncio anuncio1 = createAnuncio("Desinfección", "Se desnfectara el 01/08",
-            LocalDate.of(2021,03,05), LocalDate.of(2021,10,02), pablo);
+            LocalDate.of(2021,03,05), LocalDate.of(2021,12,02), pablo);
     private final Anuncio anuncio2 = createAnuncio("Expensas", "En mayo habrá expensas extraordinarias",
             LocalDate.of(2021,04,25), LocalDate.of(2021,05,25), nahue);
     private final Anuncio anuncio3 = createAnuncio("Ruidos Molestos", "Se reitera que no se pueden hacer ruidos molestos los días de semana luego de las  21:00hs",
-            LocalDate.of(2021,01,01), LocalDate.of(2021,01,31), santir);
+            LocalDate.of(2021,01,01), LocalDate.of(2021,12,31), santir);
 
     //Mensajes
     private final Mensaje mensaje1 = createMensaje("Es el primer mensaje", santil, null);

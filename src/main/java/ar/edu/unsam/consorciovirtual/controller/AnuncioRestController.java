@@ -11,9 +11,9 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin()
+@CrossOrigin
 public class AnuncioRestController {
-    @Autowired
+
     private final AnuncioService anuncioService;
 
     @GetMapping("/anuncios")

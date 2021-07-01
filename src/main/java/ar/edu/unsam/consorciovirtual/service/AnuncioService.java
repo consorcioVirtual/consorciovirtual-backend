@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Anuncio;
 import ar.edu.unsam.consorciovirtual.domain.AnuncioDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.AnuncioRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
@@ -63,11 +64,13 @@ public class AnuncioService {
 
     public void modificarAnuncio(Long idUsuario, Anuncio anuncioActualizado) {
         Anuncio anuncioViejo = anuncioRepository.findById(anuncioActualizado.getId()).orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
-        if(anuncioViejo.getAutor().getId() == idUsuario && anuncioViejo.getFechaVencimiento().isAfter(LocalDate.now())){
+        TipoUsuario rolUsuarioModificador = usuarioRepository.findById(idUsuario).get().getTipo();
+
+        if( (anuncioViejo.getAutor().getId() == idUsuario || rolUsuarioModificador == TipoUsuario.Administrador) && anuncioViejo.getFechaVencimiento().isAfter(LocalDate.now())){
             anuncioViejo.setDescripcion(anuncioActualizado.getDescripcion());
             anuncioViejo.setTitulo(anuncioActualizado.getTitulo());
             anuncioViejo.setFechaVencimiento(anuncioActualizado.getFechaVencimiento());
-        } else throw new IllegalArgumentException("No puede modificar un anuncio que usted no creo o que tiene una fecha de vencimiento anterior a hoy");
+        } else throw new IllegalArgumentException("No puede modificar un anuncio que usted no creó o que tiene una fecha de vencimiento anterior a hoy");
 
         anuncioRepository.save(anuncioViejo);
     }
