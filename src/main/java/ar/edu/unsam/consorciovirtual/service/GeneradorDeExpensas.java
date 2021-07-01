@@ -1,10 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
-import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
-import ar.edu.unsam.consorciovirtual.repository.ExpensaDeDepartamentoRepository;
-import ar.edu.unsam.consorciovirtual.repository.ExpensaGeneralRepository;
-import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
+import ar.edu.unsam.consorciovirtual.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,8 @@ public class GeneradorDeExpensas {
     private final ExpensaGeneralRepository expensaGeneralRepository;
     private final ExpensaDeDepartamentoRepository expensaDeDepartamentoRepository;
     private final DepartamentoRepository departamentoRepository;
+    private final DocumentoRepository documentoRepository;
+    private final UsuarioRepository usuarioRepository;
 
 
     public void generarExpensasPorImportePredefinido(Double importeComun, Double importeExtraordinaria, YearMonth periodo){
@@ -55,6 +54,7 @@ public class GeneradorDeExpensas {
         List<Departamento> departamentos = departamentoRepository.findByBajaLogicaFalse();
 
         List <Gasto> gastosDelPeriodo = gastoRepository.findGastosByPeriodo(periodo);
+        Usuario administradorConsorcio = usuarioRepository.buscarAdministradorDeConsorcioActivo().orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         int x;
         for (x=0; x<departamentos.size(); x++){
             ExpensaDeDepartamento unaExpensa = new ExpensaDeDepartamento();
@@ -63,7 +63,15 @@ public class GeneradorDeExpensas {
             unaExpensa.cargarImportesYPeriodo();
             unaExpensa.cargarUnidadDepto();
             expensaDeDepartamentoRepository.save(unaExpensa);
-            CreadorDePDF.createResumenDeExpensa(unaExpensa, gastosDelPeriodo);
+            String nombreSimple = "Expensa"+unaExpensa.getPeriodo().toString()+"-"+unaExpensa.getUnidad();
+            String nombreArchivo = "expensas/"+nombreSimple+".pdf";
+            CreadorDePDF.createResumenDeExpensa(unaExpensa, gastosDelPeriodo, nombreArchivo);
+            Documento unDocumento = new Documento();
+            unDocumento.setTitulo(nombreSimple);
+            unDocumento.setDescripcion("Archivo PDF correpsondiente a: " + nombreSimple);
+            unDocumento.setEnlaceDeDescarga(nombreArchivo);
+            unDocumento.setAutor(administradorConsorcio);
+            documentoRepository.save(unDocumento);
         }
     }
 }

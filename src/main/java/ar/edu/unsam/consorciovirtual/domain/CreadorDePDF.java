@@ -20,12 +20,11 @@ public class CreadorDePDF {
         private static final Font blueFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.RED);
         private static final Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 
-        public static void createResumenDeExpensa(ExpensaDeDepartamento expensa, List<Gasto> gastos) {
+        public static void createResumenDeExpensa(ExpensaDeDepartamento expensa, List<Gasto> gastos, String nombreArchivo) {
                 try {
                         Document document = new Document();
-                        String nombreArchivo = "Expensa"+expensa.getPeriodo().toString()+"-"+expensa.getUnidad();
                         try {
-                                PdfWriter.getInstance(document, new FileOutputStream("expensas/"+nombreArchivo+".pdf"));
+                                PdfWriter.getInstance(document, new FileOutputStream(nombreArchivo));
                         } catch (FileNotFoundException fileNotFoundException) {
                                 System.out.println("(No se encontró el fichero para generar el pdf)" + fileNotFoundException);
                         }
