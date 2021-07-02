@@ -91,7 +91,7 @@ public class Bootstrap implements InitializingBean {
 
     //Facturas
     private final Factura factura1 = createFactura("factura 1", "una descripción 1",
-            "enlaceFicticio", santil, LocalDate.of(2021,01,01),
+            "https://firebasestorage.googleapis.com/v0/b/consorciovirtual.appspot.com/o/Gasto_2021-06_undefined?alt=media&token=8d5259b4-a1cd-4cff-9697-90da205bf051", santil, LocalDate.of(2021,01,01),
             "00000001", "0001", "11-11111111-1", "22-22222222-2",
             "11111111111111", 10000.50);
     private final Factura factura2 = createFactura("factura 2", "una descripción 2",

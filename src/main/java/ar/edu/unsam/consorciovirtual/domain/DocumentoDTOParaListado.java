@@ -10,7 +10,6 @@ public class DocumentoDTOParaListado {
 
     private String titulo;
     private String nombreAutor;
-    private String enlaceDeDescarga;
     private LocalDate fechaCreacion;
 
     public static DocumentoDTOParaListado fromDocumento(Documento documento){
@@ -18,7 +17,6 @@ public class DocumentoDTOParaListado {
         documentoDTO.id = documento.getId();
         documentoDTO.titulo = documento.getTitulo();
         documentoDTO.nombreAutor = documento.getNombreAutor();
-        documentoDTO.enlaceDeDescarga = documento.getEnlaceDeDescarga();
         documentoDTO.fechaCreacion = documento.getFechaCreacion();
         return documentoDTO;
     }

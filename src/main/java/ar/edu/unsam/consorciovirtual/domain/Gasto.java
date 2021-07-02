@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,6 +30,11 @@ public class Gasto {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idGasto")
     private List<Item> items = new ArrayList<Item>();
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="idFactura")
+    private Factura factura;
 
     /*METODOS*/
 

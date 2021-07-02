@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.io.FileInputStream;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,8 +38,26 @@ public class DocumentoService {
 
     public void dercargarDocumento(Long id, HttpServletResponse response) {
         Documento documento = this.buscarPorId(id);
+        FileInputStream archivo;
         try{
-            FileInputStream archivo = new FileInputStream(documento.getEnlaceDeDescarga());
+            if (documento.getEnlaceDeDescarga().contains("http")){
+                File file = new File("expensas/"+documento.getTitulo()+".pdf");
+                URLConnection conn = new URL(documento.getEnlaceDeDescarga()).openConnection();
+                conn.connect();
+                InputStream in = conn.getInputStream();
+                OutputStream out = new FileOutputStream(file);
+                int b = 0;
+                while (b != -1) {
+                    b = in.read();
+                    if (b != -1)
+                        out.write(b);
+                }
+                out.close();
+                in.close();
+                archivo= new FileInputStream(file);
+            }else{
+                archivo = new FileInputStream(documento.getEnlaceDeDescarga());
+            }
             int longitud = archivo.available();
             byte[] datos = new byte[longitud];
             archivo.read(datos);

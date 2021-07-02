@@ -1,9 +1,11 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
 
@@ -19,6 +21,10 @@ public class Factura extends Documento{
     private String cuitReceptor;
     private String cae;
     private Double importe;
+
+    @JsonIgnore
+    @OneToOne(mappedBy="factura")
+    private Gasto gasto;
 
     /*METODOS*/
     @Override
