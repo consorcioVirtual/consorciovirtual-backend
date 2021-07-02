@@ -23,6 +23,7 @@ public class Bootstrap implements InitializingBean {
     private final GastoService gastoService;
     private final AnuncioService anuncioService;
     private final MensajeService mensajeService;
+    private final DocumentoService documentoService;
     private final GeneradorDeExpensas generadorDeExpensas;
 
 
@@ -88,6 +89,15 @@ public class Bootstrap implements InitializingBean {
     private final Mensaje mensaje2 = createMensaje("Es el segundo mensaje", santilr, null);
     private final Mensaje mensajeCitando1 = createMensaje("Es el primer mensaje que cita a otro", pablo, mensaje1);
 
+    //Facturas
+    private final Factura factura1 = createFactura("factura 1", "una descripción 1",
+            "enlaceFicticio", santil, LocalDate.of(2021,01,01),
+            "00000001", "0001", "11-11111111-1", "22-22222222-2",
+            "11111111111111", 10000.50);
+    private final Factura factura2 = createFactura("factura 2", "una descripción 2",
+            "enlaceFicticio", santil, LocalDate.of(2021,01,01),
+            "00000002", "0001", "11-11111111-1", "22-22222222-2",
+            "11111111111111", 354.00);
 
     //Métodos
     @Override
@@ -99,6 +109,7 @@ public class Bootstrap implements InitializingBean {
         createAllGastos();
         createAllAnuncios();
         createAllMensajes();
+        createAllFacturas();
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
@@ -221,4 +232,30 @@ public class Bootstrap implements InitializingBean {
         List<Mensaje> mensajes = List.of(mensaje1, mensaje2, mensajeCitando1);
         mensajeService.registrarTodos(mensajes);
     }
+
+    private Factura createFactura(String titulo, String descripcion, String enlace, Usuario autor,
+                                  LocalDate fechaFactura, String nrofactura, String puntoDeVenta,
+                                  String cuitProveedor, String cuitReceptor, String _CAE, Double importe){
+        Factura nuevaFactura = new Factura();
+        nuevaFactura.setTitulo(titulo);
+        nuevaFactura.setDescripcion(descripcion);
+        nuevaFactura.setEnlaceDeDescarga(enlace);
+        nuevaFactura.setAutor(autor);
+        nuevaFactura.setFechaFactura(fechaFactura);
+        nuevaFactura.setNumeroFactura(nrofactura);
+        nuevaFactura.setPuntoDeVenta(puntoDeVenta);
+        nuevaFactura.setCuitProveedor(cuitProveedor);
+        nuevaFactura.setCuitReceptor(cuitReceptor);
+        nuevaFactura.setCae(_CAE);
+        nuevaFactura.setImporte(importe);
+        return nuevaFactura;
+    }
+
+    private void createAllFacturas() {
+        List<Factura> facturas = List.of(factura1, factura2);
+        documentoService.registrarTodos(facturas);
+    }
+
+
+
 }
