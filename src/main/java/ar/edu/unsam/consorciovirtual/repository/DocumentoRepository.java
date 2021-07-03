@@ -16,4 +16,6 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     List<Documento> findByBajaLogicaFalse(String palabraBuscada);
 
     Optional<Documento> findByIdAndBajaLogicaFalse(Long id);
+
+    Optional<Documento> findByTituloContaining(String nombreSimple);
 }

@@ -33,7 +33,12 @@ public class ExpensaDeDepartamento {
     private String estado = "Pendiente"; // Ni bien se genera una expensa, esta está como pendiente
     private String unidad;
 
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="idResumen")
+    private Documento resumenDeExpensa;
     //Para definir: Es necesario representar la relación calcula, que pusimos en el DER, con el admin de la app?
+
 
     /*ATRIBUTOS PARA EL PAGO*/
     private LocalDate fechaDePago;

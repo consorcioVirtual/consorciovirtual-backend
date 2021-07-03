@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import java.time.YearMonth;
 import java.util.List;
 
+import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_EXPENSAS;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -57,21 +59,28 @@ public class GeneradorDeExpensas {
         Usuario administradorConsorcio = usuarioRepository.buscarAdministradorDeConsorcioActivo().orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         int x;
         for (x=0; x<departamentos.size(); x++){
+            //Genera la expensa
             ExpensaDeDepartamento unaExpensa = new ExpensaDeDepartamento();
             unaExpensa.setExpensaGeneral(expensaGeneralConId);
             unaExpensa.setDepartamento(departamentos.get(x));
             unaExpensa.cargarImportesYPeriodo();
             unaExpensa.cargarUnidadDepto();
-            expensaDeDepartamentoRepository.save(unaExpensa);
+            //Genera el resumen de expensa
             String nombreSimple = "Expensa"+unaExpensa.getPeriodo().toString()+"-"+unaExpensa.getUnidad();
-            String nombreArchivo = "expensas/"+nombreSimple+".pdf";
-            CreadorDePDF.createResumenDeExpensa(unaExpensa, gastosDelPeriodo, nombreArchivo);
+            String nombreArchivo = CARPETA_DE_EXPENSAS+nombreSimple+".pdf";
+            CreadorDePDF.createResumenDeExpensa(unaExpensa, gastosDelPeriodo, nombreArchivo, departamentos, importeComun, importeExtraordinaria);
             Documento unDocumento = new Documento();
             unDocumento.setTitulo(nombreSimple);
             unDocumento.setDescripcion("Archivo PDF correpsondiente a: " + nombreSimple);
             unDocumento.setEnlaceDeDescarga(nombreArchivo);
             unDocumento.setAutor(administradorConsorcio);
+            //Guarda el documento y lo trae para agregarlo a la expensa
             documentoRepository.save(unDocumento);
+            Documento resumenExpensas = documentoRepository.findByTituloContaining(nombreSimple).orElseThrow(() -> new RuntimeException("Resumen de expensas no encontrado"));
+            unaExpensa.setResumenDeExpensa(resumenExpensas);
+            //Guarda la expensa.
+            expensaDeDepartamentoRepository.save(unaExpensa);
+
         }
     }
 }
