@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_ARCHIVOS;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -41,7 +43,7 @@ public class DocumentoService {
         FileInputStream archivo;
         try{
             if (documento.getEnlaceDeDescarga().contains("http")){
-                File file = new File("expensas/"+documento.getTitulo()+".pdf");
+                File file = new File(CARPETA_DE_ARCHIVOS+documento.getTitulo()+".pdf");
                 URLConnection conn = new URL(documento.getEnlaceDeDescarga()).openConnection();
                 conn.connect();
                 InputStream in = conn.getInputStream();

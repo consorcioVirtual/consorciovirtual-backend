@@ -76,7 +76,7 @@ public class GeneradorDeExpensas {
             unDocumento.setAutor(administradorConsorcio);
             //Guarda el documento y lo trae para agregarlo a la expensa
             documentoRepository.save(unDocumento);
-            Documento resumenExpensas = documentoRepository.findByTituloContaining(nombreSimple).orElseThrow(() -> new RuntimeException("Resumen de expensas no encontrado"));
+            Documento resumenExpensas = documentoRepository.findByTitulo(nombreSimple).orElseThrow(() -> new RuntimeException("Resumen de expensas no encontrado"));
             unaExpensa.setResumenDeExpensa(resumenExpensas);
             //Guarda la expensa.
             expensaDeDepartamentoRepository.save(unaExpensa);
