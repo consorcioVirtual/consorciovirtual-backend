@@ -1,1 +1,0 @@
-Acá van a guardarse las expensas, dejo el txt para que git tome la carpeta.
