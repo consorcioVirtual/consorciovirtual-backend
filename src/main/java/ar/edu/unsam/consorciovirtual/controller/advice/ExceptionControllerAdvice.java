@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller.advice;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,4 +20,8 @@ public class ExceptionControllerAdvice {
         return new ResponseEntity<String>(excepcion.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(DataConsistencyException.class)
+    public ResponseEntity<String> handleDataConsistencyException(DataConsistencyException excepcion){
+        return new ResponseEntity<String>(excepcion.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

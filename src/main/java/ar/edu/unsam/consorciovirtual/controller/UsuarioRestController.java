@@ -54,8 +54,8 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/usuario/eliminar/{id}")
-    public void bajaLogicaUsuario(@PathVariable Long id) {
-       usuarioService.bajaLogica(id);
+    public void bajaLogicaUsuario(@RequestParam(defaultValue="") Long idLogueado, @PathVariable Long idABorrar) {
+       usuarioService.bajaLogica(idLogueado, idABorrar);
     }
 
 }

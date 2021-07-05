@@ -2,7 +2,9 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import javax.transaction.Transactional;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
+import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final RegistroModificacionService registroModificacionService;
+    private final DepartamentoService departamentoService;
 
     public static Usuario usuarioLogueado;
 
@@ -52,11 +55,30 @@ public class UsuarioService {
         } else throw new SecurityException("Usuario o contraseña incorrectos");
     }
 
-    public void bajaLogica(Long id){
-        Usuario usuario = usuarioRepository.findById(id).get();
+    public void bajaLogica(Long idLogueado, Long idABorrar) throws DataConsistencyException {
+        validarBaja(idLogueado, idABorrar);
+        Usuario usuario = usuarioRepository.findById(idABorrar).get();
         usuario.setBajaLogica(true);
 
         usuarioRepository.save(usuario);
     }
 
+    private void validarBaja(Long idLogueado, Long idABorrar) throws DataConsistencyException {
+        if(!usuarioEsAdmin(idLogueado)){
+            throw new SecurityException("No tiene permisos para eliminar un usuario");
+        }
+        if(usuarioSeRelacionaConDeptos(idABorrar)){
+            throw new DataConsistencyException("El usuario a eliminar está asociado a un departamento (es inquilino o propietario)");
+        }
+    }
+    private Boolean usuarioEsAdmin(Long idUsuario){
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        return usuario.getTipo() == TipoUsuario.Administrador;
+    }
+
+    //Chequea si hay deptos que tengan al usuario como propietario/inquilino
+    private Boolean usuarioSeRelacionaConDeptos(Long idUsuario){
+//        return !departamentoService.buscarPorUsuario(idUsuario).isEmpty();
+        return false;
+    }
 }
