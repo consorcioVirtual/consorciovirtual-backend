@@ -1,9 +1,6 @@
 package ar.edu.unsam.consorciovirtual.service;
 
-import ar.edu.unsam.consorciovirtual.domain.Anuncio;
-import ar.edu.unsam.consorciovirtual.domain.AnuncioDTOParaListado;
-import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.AnuncioRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +20,7 @@ public class AnuncioService {
 
     private final AnuncioRepository anuncioRepository;
     private final UsuarioRepository usuarioRepository;
+    private final RegistroModificacionService registroModificacionService;
 
     public List<AnuncioDTOParaListado> mapearADTO(List<Anuncio> anuncios){
         return anuncios.stream().map(anuncio -> AnuncioDTOParaListado.fromAnuncio(anuncio)).collect(Collectors.toList());
@@ -70,6 +68,7 @@ public class AnuncioService {
             anuncioViejo.setDescripcion(anuncioActualizado.getDescripcion());
             anuncioViejo.setTitulo(anuncioActualizado.getTitulo());
             anuncioViejo.setFechaVencimiento(anuncioActualizado.getFechaVencimiento());
+            registroModificacionService.guardarPorTipoYId(TipoRegistro.ANUNCIO, anuncioViejo.getId());
         } else throw new IllegalArgumentException("No puede modificar un anuncio que usted no creó o que tiene una fecha de vencimiento anterior a hoy");
 
         anuncioRepository.save(anuncioViejo);
