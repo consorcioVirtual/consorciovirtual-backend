@@ -34,6 +34,10 @@ public class DepartamentoService {
         return departamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
     }
 
+    public List<Departamento> buscarPorUsuario(Long id) {
+        return departamentoRepository.buscarPorUsuario(id);
+    }
+
     public Departamento modificarDepartamento(Departamento departamento) {
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getId());

@@ -26,4 +26,12 @@ public class DepartamentoDTOParaListado {
         return unDepartamentoDto;
     }
 
+    public static DepartamentoDTOParaListado fromDepartamentoByUser(Departamento departamento){
+        DepartamentoDTOParaListado unDepartamentoDto = new DepartamentoDTOParaListado();
+        unDepartamentoDto.id = departamento.getId();
+        unDepartamentoDto.piso = departamento.getPiso();
+        unDepartamentoDto.nroDepartamento = departamento.getNroDepartamento();
+        return unDepartamentoDto;
+    }
+
 }

@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,11 +15,14 @@ import java.util.List;
 @Entity
 public class Departamento {
 
+    @JsonView(Views.DepartamentoPisoNro.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String torre;
+    @JsonView(Views.DepartamentoPisoNro.class)
     private String piso;
+    @JsonView(Views.DepartamentoPisoNro.class)
     private String nroDepartamento;
     private Double porcentajeExpensa;
     private Integer metrosCuadrados;

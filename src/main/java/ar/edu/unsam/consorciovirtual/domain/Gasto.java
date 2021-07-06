@@ -20,12 +20,12 @@ public class Gasto {
 
     private String titulo;
     private Rubro rubro;
-    private String tipo;//(Extraordinaria/Común, si se mantiene el string usar esta nomenclatura
-                        // porque así busca el generador de expensas) agregar al DER
+    private String tipo; // agregar al DER
     private YearMonth periodo; // Definir formato de periodo y hacer validación
     private Double importe;
     private LocalDate fechaDeCreacion; // (diferencia entre DER y Vista)
     //falta relacionarlo con la/s factura/s
+    private String url;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idGasto")
