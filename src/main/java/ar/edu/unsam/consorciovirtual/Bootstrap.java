@@ -25,6 +25,7 @@ public class Bootstrap implements InitializingBean {
     private final MensajeService mensajeService;
     private final DocumentoService documentoService;
     private final GeneradorDeExpensas generadorDeExpensas;
+    private final ReclamoService reclamoService;
 
 
     //Usuarios
@@ -49,6 +50,11 @@ public class Bootstrap implements InitializingBean {
     //Solicitudes
     private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), null, santir, estadoPendiente);
     private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), null, nahue, estadoAprobado);
+
+    //Reclamos
+    private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoPendiente);
+    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), nahue, estadoPendiente);
+    private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), santilr, estadoPendiente);
 
     //Gastos
     private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
@@ -110,6 +116,7 @@ public class Bootstrap implements InitializingBean {
         createAllAnuncios();
         createAllMensajes();
         createAllFacturas();
+        createAllReclamos();
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
@@ -166,6 +173,22 @@ public class Bootstrap implements InitializingBean {
         newRequest.getEstado().setNombreEstado(estado.getNombreEstado());
 
         return newRequest;
+    }
+
+    private Reclamo createReclamo(String asunto, String mensaje, LocalDate fecha, Usuario autor, Estado estado) {
+        Reclamo reclamo = new Reclamo();
+        reclamo.setAutor(autor);
+        reclamo.setAsunto(asunto);
+        reclamo.setMensaje(mensaje);
+        reclamo.setFecha(fecha);
+        reclamo.setEstado(estado);
+
+        return reclamo;
+    }
+
+    private void createAllReclamos() {
+        List<Reclamo> reclamos = List.of(reclamo1, reclamo2, reclamo3);
+        reclamoService.registrarTodos(reclamos);
     }
 
     private void createAllRequests(){
