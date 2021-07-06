@@ -54,7 +54,7 @@ public class ReclamoService {
 
     private Reclamo asignarAutorYEstado(Reclamo reclamo){
         Usuario _autor = usuarioService.buscarPorId(reclamo.getAutor().getId());
-        reclamo.setNombreAutor(_autor.getNombreYApellido());
+        reclamo.setAutor(_autor);
 
         return asignarEstado(reclamo);
     }

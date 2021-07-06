@@ -15,7 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findByNombreContainingAndBajaLogicaFalseOrApellidoContainingAndBajaLogicaFalseOrDniContainingAndBajaLogicaFalseOrCorreoContainingAndBajaLogicaFalse(String nombre, String apellido, String dni, String correo);
 
-    Usuario findByCorreoAndPassword(String correo, String password);
+    Usuario findByCorreoAndPasswordAndBajaLogicaFalse(String correo, String password);
 
     //Trae un usuario por id que es adm de app o adm de consorcio
     //Se maneja por el número del enum estar atentos a no cambair el orden del mismo
