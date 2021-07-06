@@ -12,7 +12,7 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(SecurityException.class)
     public ResponseEntity<String> handleSecurityException(SecurityException excepcion) {
-        return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<String>(excepcion.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

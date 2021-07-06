@@ -22,9 +22,10 @@ public class DepartamentoRestController {
     private final DepartamentoService departamentoService;
 
     @GetMapping("/departamentos")
-    public List<DepartamentoDTOParaListado> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
-        return this.departamentoService.buscarTodos(palabraBuscada);
+    public List<DepartamentoDTOParaListado> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada, @RequestParam Long idLogueado) {
+        return this.departamentoService.buscarTodos(palabraBuscada, idLogueado);
     }
+
 
     @GetMapping("/departamento/{id}")
     public Departamento buscarPorUsername(@PathVariable Long id) {
@@ -48,9 +49,9 @@ public class DepartamentoRestController {
         return departamentoService.registrarDepartamento(newDepartment);
     }
 
-    @PutMapping("/departamento/eliminar/{id}")
-    public void bajaLogicaDepartamento(@PathVariable Long id) {
-        departamentoService.bajaLogica(id);
+    @PutMapping("/departamento/eliminar/{idABorrar}")
+    public void bajaLogicaDepartamento(@RequestParam Long idLogueado, @PathVariable Long idABorrar) {
+        departamentoService.bajaLogica(idLogueado, idABorrar);
     }
 
 

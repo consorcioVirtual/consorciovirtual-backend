@@ -1,9 +1,6 @@
 package ar.edu.unsam.consorciovirtual.service;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
-import ar.edu.unsam.consorciovirtual.domain.DepartamentoDTOParaListado;
-import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +18,13 @@ public class DepartamentoService {
     private final UsuarioService usuarioService;
     private final RegistroModificacionService registroModificacionService;
 
-    public List<DepartamentoDTOParaListado> buscarTodos(String palabraBuscada) {
-        List<Departamento> departamentos = departamentoRepository.findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+    public List<DepartamentoDTOParaListado> buscarTodos(String palabraBuscada, Long idLogueado) {
+        List<Departamento> departamentos;
+        if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            departamentos = departamentoRepository.findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        } else {
+            departamentos = departamentoRepository.buscarPorUsuarioYFiltro(idLogueado, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        }
         return departamentos.stream().map(x -> DepartamentoDTOParaListado.fromDepartamento(x)).collect(Collectors.toList());
     }
 
@@ -62,11 +64,18 @@ public class DepartamentoService {
         return departamento;
     }
 
-    public void bajaLogica(Long id){
-        Departamento departamento = departamentoRepository.findById(id).get();
+    public void bajaLogica(Long idLogueado, Long idABorrar){
+        validarBaja(idLogueado);
+        Departamento departamento = departamentoRepository.findById(idABorrar).get();
         departamento.setBajaLogica(true);
 
         departamentoRepository.save(departamento);
+    }
+
+    private void validarBaja(Long idLogueado) {
+        if(!usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            throw new SecurityException("No tiene permisos para eliminar un departamento.");
+        }
     }
 
     public long count(){

@@ -31,7 +31,7 @@ public class Bootstrap implements InitializingBean {
     //Usuarios
     private final Usuario santir = createUser("Santiago", "Ranieri", "test@test.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
     private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
-    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
     private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
     private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
     private final Usuario juan = createUser("Juan", "Perez", "juanperez@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);

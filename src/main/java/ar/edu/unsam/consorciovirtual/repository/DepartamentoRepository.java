@@ -3,17 +3,28 @@ package ar.edu.unsam.consorciovirtual.repository;
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface DepartamentoRepository extends JpaRepository<Departamento, Long> {
 
-//    List<Departamento> findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrEstadoDeCuentaContainingAndBajaLogicaFalse(String departamento, String propietario, String inquilino, String estadoDeCuenta);
     List<Departamento> findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(String nroDepartamento, String nombrePropietario, String nombreInquilino, String pisoDepto);
 
     List<Departamento> findByBajaLogicaFalse();
 
-    @Query(value = "SELECT * FROM departamento where id_propietario = :id OR id_inquilino = :id" , nativeQuery=true)
-    List <Departamento> buscarPorUsuario(Long id);
+    @Query(value = "SELECT * FROM departamento " +
+            "WHERE baja_logica = false " +
+            "AND (id_propietario = :idUsuario OR id_inquilino = :idUsuario)" , nativeQuery=true)
+    List <Departamento> buscarPorUsuario(Long idUsuario);
+
+    @Query(value = "SELECT * FROM departamento " +
+            "WHERE baja_logica = false " +
+            "AND (id_propietario = :idUsuario OR id_inquilino = :idUsuario) " +
+            "AND (nro_departamento LIKE %:nroDepartamento% " +
+                "OR nombre_propietario LIKE %:nombrePropietario% " +
+                "OR nombre_inquilino LIKE %:nombreInquilino% " +
+                "OR piso LIKE %:pisoDepto%)" , nativeQuery=true)
+    List <Departamento> buscarPorUsuarioYFiltro(@Param("idUsuario") Long idUsuario, @Param("nroDepartamento") String nroDepartamento, @Param("nombrePropietario") String nombrePropietario, @Param("nombreInquilino") String nombreInquilino, @Param("pisoDepto") String pisoDepto);
 
 }

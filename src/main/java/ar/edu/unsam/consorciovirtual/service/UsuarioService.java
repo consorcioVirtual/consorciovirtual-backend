@@ -66,16 +66,25 @@ public class UsuarioService {
     }
 
     private void validarBaja(Long idLogueado, Long idABorrar) throws DataConsistencyException {
-        if(!usuarioEsAdmin(idLogueado)){
-            throw new SecurityException("No tiene permisos para eliminar un usuario");
+        if(idLogueado.equals(idABorrar)){
+            throw new DataConsistencyException("No es posible eliminarte a ti mismo.");
+        }
+        if(!usuarioEsAdminDeLaApp(idLogueado)){
+            throw new SecurityException("No tiene permisos para eliminar un usuario.");
         }
         if(usuarioSeRelacionaConDeptos(idABorrar)){
-            throw new DataConsistencyException("El usuario a eliminar está asociado a un departamento (es inquilino o propietario)");
+            throw new DataConsistencyException("El usuario a eliminar está asociado a un departamento (es inquilino o propietario).");
         }
     }
-    private Boolean usuarioEsAdmin(Long idUsuario){
+
+    public Boolean usuarioEsAdminDeLaApp(Long idUsuario){
         Usuario usuario = usuarioRepository.findById(idUsuario).get();
         return usuario.getTipo() == TipoUsuario.Administrador;
+    }
+
+    public Boolean usuarioEsAdminDelConsorcio(Long idUsuario){
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        return usuario.getTipo() == TipoUsuario.Administrador_consorcio;
     }
 
     //Chequea si hay deptos que tengan al usuario como propietario/inquilino
