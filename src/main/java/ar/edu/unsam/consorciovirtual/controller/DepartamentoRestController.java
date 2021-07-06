@@ -2,8 +2,9 @@ package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.DepartamentoDTOParaListado;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.Views;
 import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,12 @@ public class DepartamentoRestController {
     @GetMapping("/departamento/{id}")
     public Departamento buscarPorUsername(@PathVariable Long id) {
         return this.departamentoService.buscarPorId(id);
+    }
+
+    @JsonView(Views.DepartamentoPisoNro.class)
+    @GetMapping("/departamentos/user/{id}")
+    public List<Departamento> buscarDepartamentosPorUsuario(@PathVariable Long id) {
+        return this.departamentoService.buscarPorUsuario(id);
     }
 
     @PutMapping("/departamento/modificar")

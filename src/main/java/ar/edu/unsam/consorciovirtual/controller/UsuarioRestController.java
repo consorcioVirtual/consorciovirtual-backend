@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.service.UsuarioService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -54,7 +55,7 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/usuario/eliminar/{id}")
-    public void bajaLogicaUsuario(@RequestParam(defaultValue="") Long idLogueado, @PathVariable Long idABorrar) {
+    public void bajaLogicaUsuario(@RequestParam(defaultValue="") Long idLogueado, @PathVariable Long idABorrar) throws DataConsistencyException {
        usuarioService.bajaLogica(idLogueado, idABorrar);
     }
 
