@@ -17,17 +17,16 @@ public class Reclamo {
     private String asunto;
     private String mensaje;
     private LocalDate fecha = LocalDate.now(ZONE_ID_ARGENTINA);
-    private String nombreAutor;
 
     @JsonIgnore
     private Boolean bajaLogica = false;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="idAutor")
     private Usuario autor;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="idEstado")
     private Estado estado;
@@ -37,8 +36,13 @@ public class Reclamo {
         return estado.getNombreEstado();
     }
 
-    @JsonProperty("autor")
+    @JsonProperty("nombreAutor")
     private String getNombreYApellidoAutor() {
         return autor.getNombreYApellido();
+    }
+
+    @JsonProperty("idAutor")
+    private Long getIdAutor() {
+        return autor.getId();
     }
 }

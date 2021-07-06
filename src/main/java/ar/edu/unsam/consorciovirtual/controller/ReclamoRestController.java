@@ -24,7 +24,7 @@ public class ReclamoRestController {
         return reclamoService.buscarPorId(id);
     }
 
-    @PostMapping("/solicitud/crear")
+    @PostMapping("/reclamo/crear")
     public Reclamo crearReclamo(@RequestBody Reclamo reclamo){
         return reclamoService.registrarReclamo(reclamo);
     }
@@ -34,7 +34,7 @@ public class ReclamoRestController {
         return reclamoService.modificarReclamo(reclamo);
     }
 
-    @DeleteMapping("/solicitud/eliminar/{id}")
+    @DeleteMapping("/reclamo/eliminar/{id}")
     public void bajaLogicaReclamo(@PathVariable Long id) {
         reclamoService.bajaLogicaReclamo(id);
     }
