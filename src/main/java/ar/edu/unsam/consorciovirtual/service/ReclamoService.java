@@ -18,9 +18,16 @@ public class ReclamoService {
     private final EstadoService estadoService;
     private final RegistroModificacionService registroModificacionService;
 
-    public List<Reclamo> buscarTodos(String palabraBuscada) {
+    public List<Reclamo> buscarTodos(Long idLogueado, String palabraBuscada) {
         Long idReclamo = busquedaToLong(palabraBuscada);
-        List<Reclamo> reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        List<Reclamo> reclamos;
+        if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        }else{
+//            reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+            reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada);
+
+        }
         return reclamos;
     }
 
