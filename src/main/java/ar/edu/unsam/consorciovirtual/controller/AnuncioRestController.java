@@ -30,12 +30,12 @@ public class AnuncioRestController {
     public Anuncio getAnuncioById(@PathVariable Long idAnuncio){ return anuncioService.getAnuncioById(idAnuncio);}
 
     @PutMapping("/anuncios/eliminar/{id}")
-    public void bajaLogicaAnuncio(@PathVariable Long id) {
-        anuncioService.bajaLogica(id);
+    public void bajaLogicaAnuncio(@RequestParam Long idLogueado, @PathVariable Long id) {
+        anuncioService.bajaLogica(idLogueado, id);
     }
 
     //No se le pasa el autor desde el front, se le carga en el back por idAutor
-    @PostMapping("/anuncios/crear/{idAutor}")
+    @PutMapping("/anuncios/crear/{idAutor}")
     public void createAnuncio(@PathVariable Long idAutor, @RequestBody Anuncio nuevoAnuncio) {
         anuncioService.crearAnuncio(idAutor, nuevoAnuncio);
     }
@@ -44,8 +44,8 @@ public class AnuncioRestController {
     que intenta la modificación para corroborar que es el mismo que lo creo, si no es el miemo tira
     una excepción */
     @PutMapping("/anuncios/modificar/{idUsuario}")
-    public void modificarAnuncio(@PathVariable Long idUsuario, @RequestBody Anuncio anuncioActualizado) {
-        anuncioService.modificarAnuncio(idUsuario, anuncioActualizado);
+    public void modificarAnuncio(@PathVariable Long idLogueado, @RequestBody Anuncio anuncioActualizado) {
+        anuncioService.modificarAnuncio(idLogueado, anuncioActualizado);
     }
 
 }

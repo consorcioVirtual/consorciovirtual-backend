@@ -26,9 +26,8 @@ public class SolicitudTecnicaRestController {
     }
 
     @PutMapping("/solicitud/modificar")
-    public SolicitudTecnica modificarSolicitud(@RequestBody SolicitudTecnica solicitudTecnica) {
-        //Espera el id del autor y el id del estado
-        return this.solicitudTecnicaService.modificarSolicitud(solicitudTecnica);
+    public SolicitudTecnica modificarSolicitud(@RequestParam Long idLoguedo, @RequestBody SolicitudTecnica solicitudTecnica) {
+        return this.solicitudTecnicaService.modificarSolicitud(idLoguedo, solicitudTecnica);
     }
 
     @PutMapping("/solicitud/crear")

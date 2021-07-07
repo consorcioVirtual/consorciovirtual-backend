@@ -19,6 +19,7 @@ public class GastoService {
 
     private final GastoRepository gastoRepository;
     private final RegistroModificacionService registroModificacionService;
+    private final UsuarioService usuarioService;
 
     private Boolean importeDeGastoValido(Gasto nuevoGasto){
         return (!nuevoGasto.tieneItems() || (nuevoGasto.tieneItems() && nuevoGasto.importeCoincideConSumaDeIntems()))
@@ -52,8 +53,8 @@ public class GastoService {
         return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
     }
 
-    public Gasto modificar(Gasto gastoActualizado) {
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.GASTO, gastoActualizado.getId());
+    public Gasto modificar(Long idLogueado, Gasto gastoActualizado) {
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.GASTO, gastoActualizado.getId(), usuarioService.getNombreYApellidoById(idLogueado));
         return gastoRepository.save(gastoActualizado);
     }
 

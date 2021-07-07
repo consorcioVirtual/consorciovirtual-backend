@@ -42,11 +42,11 @@ public class SolicitudTecnicaService {
         return solicitudTecnicaRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
     }
 
-    public SolicitudTecnica modificarSolicitud(SolicitudTecnica solicitud) {
+    public SolicitudTecnica modificarSolicitud(Long idLogueado, SolicitudTecnica solicitud) {
         Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
         solicitud.setAutor(_autor);
         SolicitudTecnica updatedRequest = asignarEstado(solicitud);
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId());
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId(), usuarioService.getNombreYApellidoById(idLogueado));
         return solicitudTecnicaRepository.save(updatedRequest);
     }
 

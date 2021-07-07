@@ -35,8 +35,8 @@ public class GastoRestController {
     }
 
     @PutMapping("/gasto/modificar")
-    public Gasto modificarGasto(@RequestBody Gasto gasto) {
-        return this.gastoService.modificar(gasto);
+    public Gasto modificarGasto(@RequestParam Long idLogueado, @RequestBody Gasto gasto) {
+        return this.gastoService.modificar(idLogueado, gasto);
     }
 
     @PutMapping("/gasto/eliminar/{id}")

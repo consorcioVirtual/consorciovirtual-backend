@@ -28,11 +28,11 @@ public class ReclamoService {
         return reclamoRepository.findById(id).orElseThrow(() -> new RuntimeException("Reclamo no encontrado"));
     }
 
-    public Reclamo modificarReclamo(Reclamo reclamo) {
+    public Reclamo modificarReclamo(Long idLogueado, Reclamo reclamo) {
         Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
         reclamo.setAutor(_autor);
         Reclamo updatedRequest = asignarEstado(reclamo);
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId());
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
         return reclamoRepository.save(updatedRequest);
     }
 

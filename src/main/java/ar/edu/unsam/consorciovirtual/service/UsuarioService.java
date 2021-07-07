@@ -8,6 +8,7 @@ import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
+import com.mercadopago.resources.AdvancedPayment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class UsuarioService {
 
     private final DepartamentoRepository departamentoRepository;
 
-    public static Usuario usuarioLogueado;
+//    public static Usuario usuarioLogueado;
 
     public List<Usuario> buscarTodos(String palabraBuscada) {
         return usuarioRepository.findByNombreContainingAndBajaLogicaFalseOrApellidoContainingAndBajaLogicaFalseOrDniContainingAndBajaLogicaFalseOrCorreoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
@@ -40,17 +41,17 @@ public class UsuarioService {
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
-    public void modificar(Usuario usuarioActualizado) {
+    public void modificar(Long idLogueado, Usuario usuarioActualizado) {
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
         //usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId());
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId(), getNombreYApellidoById(idLogueado));
         usuarioRepository.save(usuarioActualizado);
     }
 
     public Usuario loguearUsuario(Usuario usuario){
         Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(usuario.getCorreo(), usuario.getPassword());
-        usuarioLogueado = user;
+//        usuarioLogueado = user;
 
         if(user != null) {
             return user;
@@ -90,5 +91,9 @@ public class UsuarioService {
     //Chequea si hay deptos que tengan al usuario como propietario/inquilino
     private Boolean usuarioSeRelacionaConDeptos(Long idUsuario){
         return !departamentoRepository.buscarPorUsuario(idUsuario).isEmpty();
+    }
+
+    public String getNombreYApellidoById(Long idUsuario){
+        return usuarioRepository.findById(idUsuario).get().getNombreYApellido();
     }
 }

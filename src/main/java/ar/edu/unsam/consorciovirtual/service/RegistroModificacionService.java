@@ -24,11 +24,11 @@ public class RegistroModificacionService {
         return registroModificacionRepository.findByTipoRegistroAndIdModificadoOrderByFechaHoraModificacionAsc(tipoRegistro, idModificado);
     }
 
-    public RegistroModificacion guardarPorTipoYId(TipoRegistro tipoRegistro, Long idModificado) {
+    public RegistroModificacion guardarPorTipoYId(TipoRegistro tipoRegistro, Long idModificado, String nombreUsuarioModificador) {
         RegistroModificacion registroModificacion = new RegistroModificacion();
         registroModificacion.setIdModificado(idModificado);
         registroModificacion.setTipoRegistro(tipoRegistro);
-        registroModificacion.setUsuarioModificador(UsuarioService.usuarioLogueado.getNombre() + " " + UsuarioService.usuarioLogueado.getApellido());
+        registroModificacion.setUsuarioModificador(nombreUsuarioModificador);
         registroModificacion.setFechaHoraModificacion(LocalDateTime.now());
         return registroModificacionRepository.save(registroModificacion);
     }

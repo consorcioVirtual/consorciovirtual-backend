@@ -38,8 +38,8 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/usuario/modificar")
-    public void modificarUsuario(@RequestBody Usuario usuario) {
-        usuarioService.modificar(usuario);
+    public void modificarUsuario(@RequestParam Long idLogueado, @RequestBody Usuario usuario) {
+        usuarioService.modificar(idLogueado, usuario);
     }
 
     @PostMapping("/login")

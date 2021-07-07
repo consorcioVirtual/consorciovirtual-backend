@@ -21,6 +21,7 @@ public class AnuncioService {
     private final AnuncioRepository anuncioRepository;
     private final UsuarioRepository usuarioRepository;
     private final RegistroModificacionService registroModificacionService;
+    private final UsuarioService usuarioService;
 
     public List<AnuncioDTOParaListado> mapearADTO(List<Anuncio> anuncios){
         return anuncios.stream().map(anuncio -> AnuncioDTOParaListado.fromAnuncio(anuncio)).collect(Collectors.toList());
@@ -45,33 +46,59 @@ public class AnuncioService {
         anuncioRepository.saveAll(anuncios);
     }
 
-    public void bajaLogica(Long id){
+    public void bajaLogica(Long idLogueado, Long id){
+        validarBaja(idLogueado);
         Anuncio anuncio = anuncioRepository.findById(id).orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
         anuncio.setBajaLogica(true);
 
         anuncioRepository.save(anuncio);
     }
 
-    public void crearAnuncio(Long idAutor, Anuncio nuevoAnuncio) {
-        if(nuevoAnuncio.getFechaVencimiento().isAfter(LocalDate.now())){
-            Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permiso para crear anuncios"));
-            nuevoAnuncio.setAutor(autor);
-            anuncioRepository.save(nuevoAnuncio);
-        } else throw new IllegalArgumentException("La fecha de vencimiento debe ser posterior a hoy");
+    private void validarBaja(Long idLogueado) {
+        if(!usuarioService.usuarioEsAdminDelConsorcio(idLogueado) && !usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            throw new SecurityException("No tiene permisos para eliminar anuncios.");
+        }
     }
 
-    public void modificarAnuncio(Long idUsuario, Anuncio anuncioActualizado) {
-        Anuncio anuncioViejo = anuncioRepository.findById(anuncioActualizado.getId()).orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
-        TipoUsuario rolUsuarioModificador = usuarioRepository.findById(idUsuario).get().getTipo();
+    public void crearAnuncio(Long idAutor, Anuncio nuevoAnuncio) {
+        validarCreacion(idAutor, nuevoAnuncio);
+        Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permisos para crear anuncios"));
+        nuevoAnuncio.setAutor(autor);
+        anuncioRepository.save(nuevoAnuncio);
+    }
 
-        if( (anuncioViejo.getAutor().getId() == idUsuario || rolUsuarioModificador == TipoUsuario.Administrador) && anuncioViejo.getFechaVencimiento().isAfter(LocalDate.now())){
-            anuncioViejo.setDescripcion(anuncioActualizado.getDescripcion());
-            anuncioViejo.setTitulo(anuncioActualizado.getTitulo());
-            anuncioViejo.setFechaVencimiento(anuncioActualizado.getFechaVencimiento());
-            registroModificacionService.guardarPorTipoYId(TipoRegistro.ANUNCIO, anuncioViejo.getId());
-        } else throw new IllegalArgumentException("No puede modificar un anuncio que usted no creó o que tiene una fecha de vencimiento anterior a hoy");
+    private void validarCreacion(Long idAutor, Anuncio nuevoAnuncio) {
+        if(!usuarioService.usuarioEsAdminDelConsorcio(idAutor) && !usuarioService.usuarioEsAdminDeLaApp(idAutor)){
+            throw new SecurityException("No tiene permisos para crear anuncios.");
+        }
+        if(nuevoAnuncio.getFechaVencimiento().isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("La fecha de vencimiento debe ser posterior a hoy");
+        }
+    }
+
+    public void modificarAnuncio(Long idLogueado, Anuncio anuncioActualizado) {
+        Anuncio anuncioViejo = anuncioRepository.findById(anuncioActualizado.getId()).orElseThrow(() -> new RuntimeException("Anuncio no encontrado."));
+
+        validarModificacion(idLogueado, anuncioViejo);
+        anuncioViejo.setDescripcion(anuncioActualizado.getDescripcion());
+        anuncioViejo.setTitulo(anuncioActualizado.getTitulo());
+        anuncioViejo.setFechaVencimiento(anuncioActualizado.getFechaVencimiento());
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.ANUNCIO, anuncioViejo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
 
         anuncioRepository.save(anuncioViejo);
+    }
+
+    private void validarModificacion(Long idLogueado, Anuncio anuncio){
+
+        //Se asume que un anuncio puede ser modificado por CUALQUIER USUARIO ADMINISTRADOR sin importar si es o no el autor
+        if( !usuarioService.usuarioEsAdminDelConsorcio(idLogueado) && !usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            throw new IllegalArgumentException("No tiene permisos para modificar el anuncio.");
+        }
+
+        if(anuncio.getFechaVencimiento().isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("No puede modificar un anuncio que no está vigente.");
+        }
+
     }
 
 }

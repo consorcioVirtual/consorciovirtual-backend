@@ -17,7 +17,7 @@ public class Anuncio {
     private String descripcion;
     private LocalDate fechaCreacion = LocalDate.now();
     private LocalDate fechaVencimiento;
-    @JsonIgnore()
+    @JsonIgnore
     private Boolean bajaLogica = false;
 
     @JsonIgnore
@@ -28,7 +28,7 @@ public class Anuncio {
     /*METODOS*/
     @JsonProperty("nombreAutor")
     public String getNombreAutor(){
-        return autor.getNombre() + " " + autor.getApellido();
+        return autor.getNombreYApellido();
     }
 
 }

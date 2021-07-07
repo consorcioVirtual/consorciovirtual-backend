@@ -43,7 +43,7 @@ public class DepartamentoService {
     public Departamento modificarDepartamento(Long idLogueado, Departamento departamento) {
         validarModificacion(idLogueado);
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getId());
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getId(), usuarioService.getNombreYApellidoById(idLogueado));
         return departamentoRepository.save(updatedDepartment);
     }
 
@@ -75,13 +75,13 @@ public class DepartamentoService {
 
     private void validarBaja(Long idLogueado) {
         if(!usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
-            throw new SecurityException("No tiene permisos para eliminar un departamento.");
+            throw new SecurityException("No tiene permisos para eliminar departamentos.");
         }
     }
 
     private void validarModificacion(Long idLogueado){
         if(!usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
-            throw new SecurityException("No tiene permisos para modificar un departamento.");
+            throw new SecurityException("No tiene permisos para modificar departamentos.");
         }
     }
     public long count(){

@@ -30,8 +30,8 @@ public class ReclamoRestController {
     }
 
     @PutMapping("/reclamo/modificar")
-    public Reclamo modificarReclamo(@RequestBody Reclamo reclamo) {
-        return reclamoService.modificarReclamo(reclamo);
+    public Reclamo modificarReclamo(@RequestParam Long idLoguedo, @RequestBody Reclamo reclamo) {
+        return reclamoService.modificarReclamo(idLoguedo, reclamo);
     }
 
     @DeleteMapping("/reclamo/eliminar/{id}")
