@@ -26,7 +26,6 @@ public class DepartamentoRestController {
         return this.departamentoService.buscarTodos(palabraBuscada, idLogueado);
     }
 
-
     @GetMapping("/departamento/{id}")
     public Departamento buscarPorUsername(@PathVariable Long id) {
         return this.departamentoService.buscarPorId(id);
@@ -39,8 +38,8 @@ public class DepartamentoRestController {
     }
 
     @PutMapping("/departamento/modificar")
-    public Departamento modificarDepartamento(@RequestBody Departamento departamento) {
-        return this.departamentoService.modificarDepartamento(departamento);
+    public Departamento modificarDepartamento(@RequestParam Long idLogueado, @RequestBody Departamento departamento) {
+        return this.departamentoService.modificarDepartamento(idLogueado, departamento);
     }
 
     @PutMapping("/departamento/crear")

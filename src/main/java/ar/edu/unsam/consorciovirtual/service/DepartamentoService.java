@@ -40,7 +40,8 @@ public class DepartamentoService {
         return departamentoRepository.buscarPorUsuario(id);
     }
 
-    public Departamento modificarDepartamento(Departamento departamento) {
+    public Departamento modificarDepartamento(Long idLogueado, Departamento departamento) {
+        validarModificacion(idLogueado);
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getId());
         return departamentoRepository.save(updatedDepartment);
@@ -78,6 +79,11 @@ public class DepartamentoService {
         }
     }
 
+    private void validarModificacion(Long idLogueado){
+        if(!usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            throw new SecurityException("No tiene permisos para modificar un departamento.");
+        }
+    }
     public long count(){
         return departamentoRepository.count();
     }
