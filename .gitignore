@@ -37,3 +37,6 @@ mongo-volume/
 
 ## Expensas ##
 expensas/
+
+## PDF ##
+*.pdf
