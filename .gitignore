@@ -36,7 +36,7 @@ build/
 mongo-volume/
 
 ## Expensas ##
-expensas/
+archivos/expensas/
 
 ## PDF ##
 *.pdf
