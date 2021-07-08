@@ -43,7 +43,7 @@ public class AnuncioRestController {
     /* No se le pasa el autor desde el front dado que no es necesario, solo utiliza el id del usuario
     que intenta la modificación para corroborar que es el mismo que lo creo, si no es el miemo tira
     una excepción */
-    @PutMapping("/anuncios/modificar/{idUsuario}")
+    @PutMapping("/anuncios/modificar/{idLogueado}")
     public void modificarAnuncio(@PathVariable Long idLogueado, @RequestBody Anuncio anuncioActualizado) {
         anuncioService.modificarAnuncio(idLogueado, anuncioActualizado);
     }
