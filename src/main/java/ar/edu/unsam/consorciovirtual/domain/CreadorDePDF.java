@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_ARCHIVOS;
 import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_EXPENSAS;
 
 public class CreadorDePDF {
@@ -40,7 +41,7 @@ public class CreadorDePDF {
 
                         Image image;
                         try {
-                                image = Image.getInstance(CARPETA_DE_EXPENSAS+"logo.png");
+                                image = Image.getInstance(CARPETA_DE_ARCHIVOS+"logo.png");
                                 image.setAbsolutePosition(400, 690);
                                 document.add(image);
                         } catch (BadElementException ex) {

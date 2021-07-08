@@ -16,8 +16,8 @@ public class SolicitudTecnicaRestController {
     private final SolicitudTecnicaService solicitudTecnicaService;
 
     @GetMapping("/solicitudes")
-    public List<SolicitudTecnicaDTOParaListado> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
-        return this.solicitudTecnicaService.buscarTodos(palabraBuscada);
+    public List<SolicitudTecnicaDTOParaListado> buscarTodos(@RequestParam Long idLogueado, @RequestParam(defaultValue="") String palabraBuscada) {
+        return this.solicitudTecnicaService.buscarTodos(idLogueado, palabraBuscada);
     }
 
     @GetMapping("/solicitud/{id}")

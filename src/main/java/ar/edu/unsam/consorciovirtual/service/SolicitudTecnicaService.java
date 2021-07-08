@@ -20,9 +20,15 @@ public class SolicitudTecnicaService {
     private final EstadoService estadoService;
     private final RegistroModificacionService registroModificacionService;
 
-    public List<SolicitudTecnicaDTOParaListado> buscarTodos(String palabraBuscada) {
+    public List<SolicitudTecnicaDTOParaListado> buscarTodos(Long idLogueado, String palabraBuscada) {
         Long idSolicitud = busquedaToLong(palabraBuscada);
-        List<SolicitudTecnica> solicitudes = solicitudTecnicaRepository.findByIdAndBajaLogicaFalseOrNombreAutorContainingAndBajaLogicaFalseOrTituloContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
+        List<SolicitudTecnica> solicitudes;
+        if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+            solicitudes = solicitudTecnicaRepository.findByIdAndBajaLogicaFalseOrNombreAutorContainingAndBajaLogicaFalseOrTituloContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
+        }else{
+//            solicitudes = solicitudTecnicaRepository.buscarPorUsuarioYFiltro(idLogueado, idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
+            solicitudes = solicitudTecnicaRepository.buscarPorUsuarioYFiltro(idLogueado, idSolicitud, palabraBuscada, palabraBuscada);
+        }
         return solicitudes.stream().map(x -> SolicitudTecnicaDTOParaListado.fromSolicitudTecnica(x)).collect(Collectors.toList());
     }
 

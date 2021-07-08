@@ -36,9 +36,20 @@ public class DepartamentoService {
         return departamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
     }
 
-    public List<Departamento> buscarPorUsuario(Long id) {
-        return departamentoRepository.buscarPorUsuario(id);
+    public List<Departamento> buscarPorPropietarioOInquilino(Long id) {
+        return departamentoRepository.buscarPorPropietarioOInquilino(id);
     }
+
+    //Lista de ID's de deptos
+    public List<Long> buscarIdPorPropietario(Long id) {
+        return departamentoRepository.buscarIdPorPropietario(id);
+    }
+
+    //Lista de ID's de deptos
+    public List<Long> buscarIdPorInquilino(Long id) {
+        return departamentoRepository.buscarIdPorInquilino(id);
+    }
+
 
     public Departamento modificarDepartamento(Long idLogueado, Departamento departamento) {
         validarModificacion(idLogueado);

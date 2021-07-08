@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.service;
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.ExpensaGeneral;
+import ar.edu.unsam.consorciovirtual.domain.Reclamo;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaDeDepartamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,16 +19,30 @@ import java.util.stream.Collectors;
 public class ExpensaDeDepartamentoService {
 
     private final ExpensaDeDepartamentoRepository expensaDeDepartamentoRepository;
+    private final UsuarioService usuarioService;
+    private final DepartamentoService departamentoService;
 
     private List<ExpensaDeDepartamentoDTOParaListado> mapearADTOParaListado(List<ExpensaDeDepartamento> expensas){
         return expensas.stream().map(exp -> ExpensaDeDepartamentoDTOParaListado.fromExpensaDeDepartamento(exp)).collect(Collectors.toList());
     }
 
-    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos(String palabraBuscada) {
-        List<ExpensaDeDepartamento> lista = expensaDeDepartamentoRepository.findByUnidadContainingAndAnuladaFalseOrEstadoContainingAndAnuladaFalse(palabraBuscada, palabraBuscada);
-        return mapearADTOParaListado(lista);
-    }
+    public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos(Long idLogueado, String palabraBuscada) {
+        List<ExpensaDeDepartamento> expensas;
+        List<Long> idDeptos;
 
+        if (usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)) {
+            expensas = expensaDeDepartamentoRepository.findByUnidadContainingAndAnuladaFalseOrEstadoContainingAndAnuladaFalse(palabraBuscada, palabraBuscada);
+            return mapearADTOParaListado(expensas);
+        } else if (usuarioService.usuarioEsPropietario(idLogueado)) {
+            idDeptos = departamentoService.buscarIdPorPropietario(idLogueado);
+            expensas = expensaDeDepartamentoRepository.buscarPorIdDeptosYFiltro(idDeptos, palabraBuscada, palabraBuscada);
+            return mapearADTOParaListado(expensas);
+        } else {
+            idDeptos = departamentoService.buscarIdPorInquilino(idLogueado);
+            expensas = expensaDeDepartamentoRepository.buscarPorIdDeptosYFiltro(idDeptos, palabraBuscada, palabraBuscada);
+            return mapearADTOParaListado(expensas);
+        }
+    }
     public List<ExpensaDeDepartamentoDTOParaListado> buscarTodosSinAnuladas() {
         List<ExpensaDeDepartamento> lista = expensaDeDepartamentoRepository.findByAnuladaFalse();
         return mapearADTOParaListado(lista);

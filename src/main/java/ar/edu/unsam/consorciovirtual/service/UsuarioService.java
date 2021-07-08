@@ -88,9 +88,20 @@ public class UsuarioService {
         return usuario.getTipo() == TipoUsuario.Administrador_consorcio;
     }
 
+    public Boolean usuarioEsPropietario(Long idUsuario){
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        return usuario.getTipo() == TipoUsuario.Propietario;
+    }
+
+    public Boolean usuarioEsInquilino(Long idUsuario){
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        return usuario.getTipo() == TipoUsuario.Inquilino;
+    }
+
+
     //Chequea si hay deptos que tengan al usuario como propietario/inquilino
     private Boolean usuarioSeRelacionaConDeptos(Long idUsuario){
-        return !departamentoRepository.buscarPorUsuario(idUsuario).isEmpty();
+        return !departamentoRepository.buscarPorPropietarioOInquilino(idUsuario).isEmpty();
     }
 
     public String getNombreYApellidoById(Long idUsuario){

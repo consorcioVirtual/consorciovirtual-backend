@@ -33,8 +33,8 @@ public class DepartamentoRestController {
 
     @JsonView(Views.DepartamentoPisoNro.class)
     @GetMapping("/departamentos/user/{id}")
-    public List<Departamento> buscarDepartamentosPorUsuario(@PathVariable Long id) {
-        return this.departamentoService.buscarPorUsuario(id);
+    public List<Departamento> buscarDepartamentoPorPropietarioOInquilino(@PathVariable Long id) {
+        return this.departamentoService.buscarPorPropietarioOInquilino(id);
     }
 
     @PutMapping("/departamento/modificar")

@@ -30,16 +30,16 @@ public class Bootstrap implements InitializingBean {
 
     //Usuarios
     private final Usuario santir = createUser("Santiago", "Ranieri", "test@test.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
-    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
     private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
     private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
     private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
-    private final Usuario juan = createUser("Juan", "Perez", "juanperez@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
+    private final Usuario juan = createUser("Juan", "Perez", "inquilino", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
     private final Usuario maria = createUser("Maria", "Perez", "test", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio);
 
     //Departamentos
     private final Departamento depto1 = createDepartamento(null, "1", "D", 6.5, 35, santil, null);
-    private final Departamento depto2 = createDepartamento("1", "5", "E", 3.5, 15, santilr, pablo);
+    private final Departamento depto2 = createDepartamento("1", "5", "E", 3.5, 15, santilr, juan);
     private final Departamento depto3 = createDepartamento("1", "6", "A", 4.5, 20, santilr, nahue);
     private final Departamento depto4 = createDepartamento("1", "2", "C", 8.0, 45, santir, null);
 
