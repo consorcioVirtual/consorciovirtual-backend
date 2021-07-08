@@ -15,8 +15,8 @@ public class ReclamoRestController {
     private final ReclamoService reclamoService;
 
     @GetMapping("/reclamos")
-    public List<Reclamo> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
-        return reclamoService.buscarTodos(palabraBuscada);
+    public List<Reclamo> buscarTodos(@RequestParam Long idLogueado, @RequestParam(defaultValue="") String palabraBuscada) {
+        return reclamoService.buscarTodos(idLogueado, palabraBuscada);
     }
 
     @GetMapping("/reclamo/{id}")
