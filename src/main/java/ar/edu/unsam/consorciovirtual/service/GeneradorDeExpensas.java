@@ -22,6 +22,7 @@ public class GeneradorDeExpensas {
     private final DepartamentoRepository departamentoRepository;
     private final DocumentoRepository documentoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final GestorDeCorreo gestorDeCorreo;
 
 
     public void generarExpensasPorImportePredefinido(Double importeComun, Double importeExtraordinaria, YearMonth periodo){
@@ -80,7 +81,8 @@ public class GeneradorDeExpensas {
             unaExpensa.setResumenDeExpensa(resumenExpensas);
             //Guarda la expensa.
             expensaDeDepartamentoRepository.save(unaExpensa);
-
+            //Se envía el correo con el archivo adjunto (comentado hasta el día del final para no llenar de mail las casillas)
+            //gestorDeCorreo.enviarResumenDeExpensa(departamentos.get(x), nombreArchivo, periodo);
         }
     }
 }
