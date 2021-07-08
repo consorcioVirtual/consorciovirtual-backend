@@ -24,8 +24,7 @@ public class ReclamoService {
         if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
             reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         }else{
-//            reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
-            reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada);
+            reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
 
         }
         return reclamos;
