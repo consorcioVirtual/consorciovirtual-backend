@@ -26,6 +26,7 @@ public class Bootstrap implements InitializingBean {
     private final DocumentoService documentoService;
     private final GeneradorDeExpensas generadorDeExpensas;
     private final ReclamoService reclamoService;
+    private final ContactoUtilService contactoUtilService;
 
 
     //Usuarios
@@ -105,6 +106,10 @@ public class Bootstrap implements InitializingBean {
             "00000002", "0001", "11-11111111-1", "22-22222222-2",
             "11111111111111", 354.00);
 
+    //Contactos utiles
+    private final ContactoUtil contactoUtil1 = createContactoUtil("Emergencia", "911", "Emergencia", "Emergencias");
+    private final ContactoUtil contactoUtil2 = createContactoUtil("pepe", "155555555", "Gasista", "Para emergencias 24hs");
+
     //Métodos
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -117,6 +122,7 @@ public class Bootstrap implements InitializingBean {
         createAllMensajes();
         createAllFacturas();
         createAllReclamos();
+        createAllContactosUtiles();
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
@@ -277,6 +283,20 @@ public class Bootstrap implements InitializingBean {
     private void createAllFacturas() {
         List<Factura> facturas = List.of(factura1, factura2);
         documentoService.registrarTodos(facturas);
+    }
+
+    private ContactoUtil createContactoUtil(String _nombre, String _telefono, String _servicio, String _anotacion){
+        ContactoUtil nuevoContacto = new ContactoUtil();
+        nuevoContacto.setNombre(_nombre);
+        nuevoContacto.setTelefono(_telefono);
+        nuevoContacto.setServicio(_servicio);
+        nuevoContacto.setAnotacion(_anotacion);
+        return nuevoContacto;
+    }
+
+    private void createAllContactosUtiles() {
+        List<ContactoUtil> contactos = List.of(contactoUtil1, contactoUtil2);
+        contactoUtilService.registrarTodos(contactos);
     }
 
 

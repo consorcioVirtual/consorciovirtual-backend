@@ -26,5 +26,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query(value = "SELECT * FROM usuario as unUsuario " +
             "WHERE unUsuario.tipo = 1 AND unUsuario.baja_logica = 0", nativeQuery = true)
     Optional<Usuario> buscarAdministradorDeConsorcioActivo();
+
+    @Query(value = "SELECT COUNT(*) from usuario as unUsuario WHERE unUsuario.id = :idUsuario AND " +
+            "(unUsuario.tipo = 0 OR unUsuario.tipo = 1)", nativeQuery = true)
+    Integer esAdministrador(@Param("idUsuario") Long idUsuario);
+
 }
 
