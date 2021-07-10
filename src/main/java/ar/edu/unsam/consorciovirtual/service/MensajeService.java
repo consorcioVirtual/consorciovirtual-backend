@@ -23,15 +23,15 @@ public class MensajeService {
         return mensajeRepository.findAll();
     }
 
-    public void createMensaje(Long idAutor, Mensaje mensajeNuevo, Long idMensajeCitado) {
-        Usuario autor = usuarioRepository.findById(idAutor).orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
-        if (idMensajeCitado != null){
-            Mensaje mensajeCitado = mensajeRepository.findById(idMensajeCitado).orElseThrow(() -> new IllegalArgumentException ("Error al buscar el mensaje citado"));
-            mensajeNuevo.setMensajeCitado(mensajeCitado);
-        }
-        mensajeNuevo.setAutor(autor);
-        mensajeRepository.save(mensajeNuevo);
-    }
+//    public void createMensaje(Long idAutor, Mensaje mensajeNuevo, Long idMensajeCitado) {
+//        Usuario autor = usuarioRepository.findById(idAutor).orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
+//        if (idMensajeCitado != null){
+//            Mensaje mensajeCitado = mensajeRepository.findById(idMensajeCitado).orElseThrow(() -> new IllegalArgumentException ("Error al buscar el mensaje citado"));
+//            mensajeNuevo.setMensajeCitado(mensajeCitado);
+//        }
+//        mensajeNuevo.setAutor(autor);
+//        mensajeRepository.save(mensajeNuevo);
+//    }
 
     public void registrarTodos(List<Mensaje> mensajes) {
         mensajeRepository.saveAll(mensajes);

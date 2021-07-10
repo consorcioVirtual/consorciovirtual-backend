@@ -4,6 +4,9 @@ import ar.edu.unsam.consorciovirtual.domain.Mensaje;
 import ar.edu.unsam.consorciovirtual.service.MensajeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +25,21 @@ public class MensajeRestController {
         return mensajeService.getMensajes();
     }
 
+//    @MessageMapping("/enviar")
+//    @SendTo("/topic/mensajes")
+//    public String mensajesHandler(@Payload String mensajeEnviado){
+//        System.out.println(mensajeEnviado);
+//        return "RECIBIDO";
+//    }
+
     //No se le pasa el autor completo desde el front, se le carga en el back por idAutor
     /*No se le pasa el mensajeCitado completo desde el front,
     se le carga en el back por idMensajeCitado, que es pasado como requestParam (no es obligatorio pasar algo)*/
-    @PostMapping("/mensajes/create/{idAutor}")
-    public void createMensaje(@PathVariable Long idAutor, @RequestBody Mensaje mensajeNuevo, @RequestParam(required=false) Long idMensajeCitado){
-        mensajeService.createMensaje(idAutor, mensajeNuevo, idMensajeCitado);
-    }
+//    @PostMapping("/mensajes/create/{idAutor}")
+//    public void createMensaje(@PathVariable Long idAutor, @RequestBody Mensaje mensajeNuevo, @RequestParam(required=false) Long idMensajeCitado){
+//        mensajeService.createMensaje(idAutor, mensajeNuevo, idMensajeCitado);
+//    }
 
     //DEFINIR: Si se puede eliminar mensaje (de poder hacerlo, creo que tiene que haber un límite de tiempo)
+
 }
