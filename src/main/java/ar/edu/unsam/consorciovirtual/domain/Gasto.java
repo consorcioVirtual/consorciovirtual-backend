@@ -33,8 +33,8 @@ public class Gasto {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="idFactura")
-    private Factura factura;
+    @JoinColumn(name="idComprobante")
+    private Documento comprobante;
 
     /*METODOS*/
 

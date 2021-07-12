@@ -22,6 +22,7 @@ public class UsuarioService {
     private final RegistroModificacionService registroModificacionService;
 
     private final DepartamentoRepository departamentoRepository;
+    private final GestorDeCorreo gestorDeCorreo;
 
 //    public static Usuario usuarioLogueado;
 
@@ -37,7 +38,12 @@ public class UsuarioService {
 //        return usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 //    }
 
-    public Usuario registrarUsuario(Usuario usuario) { return usuarioRepository.save(usuario); }
+    @Transactional
+    public Usuario registrarUsuario(Usuario usuario) {
+        usuario.setPassword(usuario.getDni());
+        gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
+        return usuarioRepository.save(usuario);
+    }
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 

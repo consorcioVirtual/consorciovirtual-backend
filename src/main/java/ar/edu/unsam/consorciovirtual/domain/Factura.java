@@ -22,10 +22,6 @@ public class Factura extends Documento{
     private String cae;
     private Double importe;
 
-    @JsonIgnore
-    @OneToOne(mappedBy="factura")
-    private Gasto gasto;
-
     /*METODOS*/
     @Override
     public Boolean esValido(){
