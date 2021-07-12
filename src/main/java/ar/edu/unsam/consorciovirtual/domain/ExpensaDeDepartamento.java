@@ -78,8 +78,9 @@ public class ExpensaDeDepartamento {
         return fechaDePago != null;
     }
 
-    public void pagarExpensa() {
-        fechaDePago = LocalDate.now(ZONE_ID_ARGENTINA);
+    public void pagarExpensa(Usuario usuario) {
+        fechaDePago = LocalDate.now();
+        pagador = usuario;
         estado = "Pagada";
     }
 

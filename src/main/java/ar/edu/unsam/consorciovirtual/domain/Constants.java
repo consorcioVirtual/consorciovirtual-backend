@@ -11,4 +11,6 @@ public final class Constants {
     public static final String CARPETA_DE_ARCHIVOS = "archivos/";
 
     public static final String CARPETA_DE_EXPENSAS = CARPETA_DE_ARCHIVOS+"expensas/";
+
+    public static final String CARPETA_DE_RECIBOS = CARPETA_DE_ARCHIVOS+"recibosExpensas/";
 }

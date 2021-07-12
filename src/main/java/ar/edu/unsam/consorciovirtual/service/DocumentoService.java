@@ -108,4 +108,14 @@ public class DocumentoService {
 
         documentoRepository.save(documento);
     }
+
+    public Documento crearDocumentoEnBaseAPDFDelSistema(String nombreSimple, String nombreArchivo){
+        Usuario administradorConsorcio = usuarioRepository.buscarAdministradorDeConsorcioActivo().orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Documento unDocumento = new Documento();
+        unDocumento.setTitulo(nombreSimple);
+        unDocumento.setDescripcion("Archivo PDF correpsondiente a: " + nombreSimple);
+        unDocumento.setEnlaceDeDescarga(nombreArchivo);
+        unDocumento.setAutor(administradorConsorcio);
+        return unDocumento;
+    }
 }

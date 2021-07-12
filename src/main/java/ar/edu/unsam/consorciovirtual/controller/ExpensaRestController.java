@@ -77,4 +77,12 @@ public class ExpensaRestController {
         return YearMonth.parse(periodoFormat, formatter);
     }
 
+    /*El idUsuario es el id del pagador, puede no corresponder con el dueño o inquilino del departamento
+    dado que si lo paga el administrador de manera manual quedará registrado su id. De esta manera se
+    puede identificar cuales se pagaron por MP y cuáles manualmente(efectivo).*/
+    @PutMapping("/expensas/pagar/{idExpensa}/{idUsuario}")
+    public void pagarExpensa(@PathVariable Long idExpensa, @PathVariable Long idUsuario){
+        expensaDeDepartamentoService.pagarExpensa(idExpensa, idUsuario);
+    }
+
 }

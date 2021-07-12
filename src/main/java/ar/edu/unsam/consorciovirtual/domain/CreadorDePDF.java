@@ -153,7 +153,53 @@ public class CreadorDePDF {
 
                         document.add(table);
                         document.close();
-                        System.out.println("¡Se ha generado tu hoja PDF!");
+                        System.out.println("¡Se ha generado el resumen de expensas PDF!");
+                } catch (DocumentException documentException) {
+                        System.out.println("Se ha producido un error al generar un documento): " + documentException);
+                }
+        }
+
+        public static void createReciboDeExpensa(ExpensaDeDepartamento expensa, String nombreArchivo) {
+                try {
+                        Document document = new Document(PageSize.A6.rotate());
+                        try {
+                                PdfWriter.getInstance(document, new FileOutputStream(nombreArchivo));
+                        } catch (FileNotFoundException fileNotFoundException) {
+                                System.out.println("(No se encontró el fichero para generar el pdf)" + fileNotFoundException);
+                        }
+                        document.addTitle("Recibo de expensas");
+                        document.addAuthor("Consorcio Virtual");
+                        document.addCreator("Consorcio Virtual");
+                        document.open();
+
+                        document.add(generarTitulo("Recibo De Expensas"));
+                        document.add( Chunk.NEWLINE );
+
+                        Image image;
+                        try {
+                                image = Image.getInstance(CARPETA_DE_ARCHIVOS+"logo.png");
+                                image.setAbsolutePosition(250, 15);
+                                document.add(image);
+                        } catch (BadElementException ex) {
+                                System.out.println("Image BadElementException" +  ex);
+                        } catch (IOException ex) {
+                                System.out.println("Image IOException " +  ex);
+                        }
+
+                        Paragraph encabezado = new Paragraph("\nEl presente recibo da constancia que se registró,\n" +
+                                "En el día: "+ LocalDate.now() +"\n"+
+                                "El pago del Departamento: "+ expensa.getUnidad()+"\n" +
+                                "Por un importe de: "+ expensa.getMontoAPagar().toString()+"\n"+
+                                "Correspondiente a las expensas del período: "+ expensa.getPeriodo().toString()+"\n", textoFont);
+                        document.add(encabezado);
+                        document.add( Chunk.NEWLINE );
+                        document.add(generarTitulo(""));
+
+                        Paragraph cierre = new Paragraph("Recibo generado por medio de la aplicación: ", textoFont);
+                        document.add(cierre);
+
+                        document.close();
+                        System.out.println("¡Se ha generado el recibo de expensas PDF!");
                 } catch (DocumentException documentException) {
                         System.out.println("Se ha producido un error al generar un documento): " + documentException);
                 }

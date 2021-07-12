@@ -18,4 +18,6 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     Optional<Documento> findByIdAndBajaLogicaFalse(Long id);
 
     Optional<Documento> findByTitulo(String nombreSimple);
+
+    Optional<Documento> findByEnlaceDeDescarga(String nombreEnlace);
 }
