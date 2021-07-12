@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
 
@@ -18,7 +19,10 @@ public class SolicitudTecnica {
     private String detalle;
     private LocalDate fecha = LocalDate.now(ZONE_ID_ARGENTINA);
     private String nombreAutor;
-//    private List<String> comentarios;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "solicitud_id")
+    private List<Nota> notas;
 
     @JsonIgnore
     private Boolean bajaLogica = false;

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,14 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoPendiente = createState("Pendiente", "Solicitud tecnica", null);
     private final Estado estadoAprobado = createState("Aprobado", "Solicitud tecnica", estadoPendiente);
 
+    //Notas de solicitudes
+    private final Nota nota1 = createNota("Juan Perez", "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota nota2 = createNota("Juan Perez", "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
+    private final List<Nota> notas = List.of(nota1, nota2);
+
     //Solicitudes
-    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), null, santir, estadoPendiente);
-    private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), null, nahue, estadoAprobado);
+    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notas, santir, estadoPendiente);
+    private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), notas, nahue, estadoAprobado);
 
     //Reclamos
     private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoPendiente);
@@ -166,13 +172,22 @@ public class Bootstrap implements InitializingBean {
         departamentoService.registrarTodos(departamentos);
     }
 
-    private SolicitudTecnica createSolicitudTecnica(String tipo, String titulo, String detalle, LocalDate fecha, List<String> comentarios, Usuario autor, Estado estado){
+    private Nota createNota(String autor, String texto, LocalDateTime fechaHora) {
+        Nota nota = new Nota();
+        nota.setAutor(autor);
+        nota.setTexto(texto);
+        nota.setFechaHora(fechaHora);
+
+        return nota;
+    }
+
+    private SolicitudTecnica createSolicitudTecnica(String tipo, String titulo, String detalle, LocalDate fecha, List<Nota> notas, Usuario autor, Estado estado){
         var newRequest = new SolicitudTecnica();
         newRequest.setTipo(tipo);
         newRequest.setTitulo(titulo);
         newRequest.setDetalle(detalle);
         newRequest.setFecha(fecha);
-//        newRequest.setComentarios(comentarios);
+        newRequest.setNotas(notas);
         newRequest.setAutor(autor);
         newRequest.setEstado(estado);
         newRequest.setNombreAutor(autor.getNombreYApellido());
