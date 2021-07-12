@@ -54,7 +54,7 @@ public class UsuarioRestController {
         return usuarioService.registrarUsuario(newUser);
     }
 
-    @PutMapping("/usuario/eliminar/{idABorrar}")
+    @DeleteMapping("/usuario/eliminar/{idABorrar}")
     public void bajaLogicaUsuario(@RequestParam Long idLogueado, @PathVariable Long idABorrar) throws DataConsistencyException {
        usuarioService.bajaLogica(idLogueado, idABorrar);
     }

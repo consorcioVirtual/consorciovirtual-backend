@@ -8,6 +8,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
+import com.mercadopago.resources.datastructures.preference.PaymentMethods;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.mercadopago.MercadoPago;
@@ -36,10 +37,15 @@ public class CheckoutRestController {
         preference.appendItem(item);
 
         BackUrls backUrls = new BackUrls(
-                "localhost:3000/expensas",
-                "localhost:3000/expensas",
-                "localhost:3000/expensas");
+                "localhost:3000/expensas/"+expensaId,
+                "localhost:3000/",
+                "localhost:3000/");
 
+        PaymentMethods paymentMethods = new PaymentMethods();
+        paymentMethods.setExcludedPaymentTypes("ticket");
+        paymentMethods.setInstallments(1);
+
+        preference.setPaymentMethods(paymentMethods);
         preference.setBackUrls(backUrls);
         preference.save();
         return preference.getId();
