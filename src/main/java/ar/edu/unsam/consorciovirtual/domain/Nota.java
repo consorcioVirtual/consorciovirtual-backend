@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
 
 @Data
 @Entity
@@ -17,6 +20,6 @@ public class Nota {
     private Long id;
     private String autor;
     private String texto;
-    private LocalDateTime fechaHora;
+    private LocalDateTime fechaHora = LocalDateTime.now(ZONE_ID_ARGENTINA);;
 
 }

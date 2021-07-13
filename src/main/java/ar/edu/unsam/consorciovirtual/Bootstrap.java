@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
+import ar.edu.unsam.consorciovirtual.repository.RegistroModificacionRepository;
 import ar.edu.unsam.consorciovirtual.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,6 +29,7 @@ public class Bootstrap implements InitializingBean {
     private final GeneradorDeExpensas generadorDeExpensas;
     private final ReclamoService reclamoService;
     private final ContactoUtilService contactoUtilService;
+    private final RegistroModificacionRepository registroModificacionRepository;
 
 
     //Usuarios
@@ -49,7 +51,7 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoPendiente = createState("Pendiente", "Solicitud tecnica", null);
     private final Estado estadoAprobado = createState("Aprobado", "Solicitud tecnica", estadoPendiente);
 
-    //Notas de solicitudes
+    //Notas de solicitudes/reclamos
     private final Nota nota1 = createNota("Juan Perez", "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
     private final Nota nota2 = createNota("Juan Perez", "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
     private final List<Nota> notas = List.of(nota1, nota2);
@@ -59,9 +61,9 @@ public class Bootstrap implements InitializingBean {
     private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), notas, nahue, estadoAprobado);
 
     //Reclamos
-    private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoPendiente);
-    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), nahue, estadoPendiente);
-    private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), santilr, estadoPendiente);
+    private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoPendiente, notas);
+    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), nahue, estadoPendiente, notas);
+    private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), santilr, estadoPendiente, notas);
 
     //Gastos
     private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
@@ -119,6 +121,8 @@ public class Bootstrap implements InitializingBean {
     //Métodos
     @Override
     public void afterPropertiesSet() throws Exception {
+        registroModificacionRepository.deleteAll();
+        
         createAllusers();
         createAllDepartamentos();
         createAllStates();
@@ -132,6 +136,8 @@ public class Bootstrap implements InitializingBean {
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
+
+
 
     private Usuario createUser(String nombre, String apellido, String correo, String dni, LocalDate fechaNacimiento, String password, TipoUsuario tipo) {
         Usuario newUser = new Usuario();
@@ -196,13 +202,14 @@ public class Bootstrap implements InitializingBean {
         return newRequest;
     }
 
-    private Reclamo createReclamo(String asunto, String mensaje, LocalDate fecha, Usuario autor, Estado estado) {
+    private Reclamo createReclamo(String asunto, String mensaje, LocalDate fecha, Usuario autor, Estado estado, List<Nota> notas) {
         Reclamo reclamo = new Reclamo();
         reclamo.setAutor(autor);
         reclamo.setAsunto(asunto);
         reclamo.setMensaje(mensaje);
         reclamo.setFecha(fecha);
         reclamo.setEstado(estado);
+        reclamo.setNotas(notas);
 
         return reclamo;
     }

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class RegistroModificacion {
     @Id
     @JsonIgnore
-    private ObjectId id;
+    private String id;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private TipoRegistro tipoRegistro;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

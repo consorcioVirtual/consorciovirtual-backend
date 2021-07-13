@@ -77,6 +77,7 @@ public class SolicitudTecnicaService {
     public void bajaLogicaSolicitud(Long id){
         SolicitudTecnica solicitud = solicitudTecnicaRepository.findById(id).get();
         solicitud.setBajaLogica(true);
+        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, id);
 
         solicitudTecnicaRepository.save(solicitud);
     }

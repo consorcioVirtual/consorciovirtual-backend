@@ -4,11 +4,13 @@ import ar.edu.unsam.consorciovirtual.domain.RegistroModificacion;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
 import ar.edu.unsam.consorciovirtual.repository.RegistroModificacionRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -31,5 +33,10 @@ public class RegistroModificacionService {
         registroModificacion.setUsuarioModificador(nombreUsuarioModificador);
         registroModificacion.setFechaHoraModificacion(LocalDateTime.now());
         return registroModificacionRepository.save(registroModificacion);
+    }
+
+    public void eliminarTodosPorTipoYId(TipoRegistro tipoRegistro, Long idModificado) {
+        List<String> idsRegistrosModificacionAEliminar = buscarPorTipoYId(tipoRegistro, idModificado).stream().map(registro -> registro.getId()).collect(Collectors.toList());
+        registroModificacionRepository.deleteAllById(idsRegistrosModificacionAEliminar);
     }
 }

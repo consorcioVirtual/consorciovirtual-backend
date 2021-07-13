@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
 
@@ -20,6 +21,10 @@ public class Reclamo {
 
     @JsonIgnore
     private Boolean bajaLogica = false;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "reclamo_id")
+    private List<Nota> notas;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
