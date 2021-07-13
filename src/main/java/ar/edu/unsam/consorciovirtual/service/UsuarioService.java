@@ -27,11 +27,15 @@ public class UsuarioService {
 //    public static Usuario usuarioLogueado;
 
     public List<Usuario> buscarTodos(String palabraBuscada) {
-        return usuarioRepository.findByNombreContainingAndBajaLogicaFalseOrApellidoContainingAndBajaLogicaFalseOrDniContainingAndBajaLogicaFalseOrCorreoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        return usuarioRepository.findBySearch(palabraBuscada);
     }
 
     public Usuario buscarPorId(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    public List<Usuario> buscarPorTipo(TipoUsuario tipo){
+        return usuarioRepository.findByTipo(tipo);
     }
 
 //    public Usuario buscarPorNombre(String nombre){

@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
+import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.service.UsuarioService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -35,6 +36,11 @@ public class UsuarioRestController {
     @GetMapping("/usuario/{id}")
     public Usuario buscarPorId(@PathVariable Long id) {
         return this.usuarioService.buscarPorId(id);
+    }
+
+    @GetMapping("/buscar/usuario")
+    public List<Usuario> buscarPorId(@RequestParam(required = true) TipoUsuario tipo) {
+        return this.usuarioService.buscarPorTipo(tipo);
     }
 
     @PutMapping("/usuario/modificar")

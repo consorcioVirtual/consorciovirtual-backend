@@ -51,28 +51,33 @@ public class DepartamentoService {
     }
 
 
-    public Departamento modificarDepartamento(Long idLogueado, Departamento departamento) {
+    public Departamento modificarDepartamento(Long idLogueado, DepartamentoConUsuarios departamento) {
         validarModificacion(idLogueado);
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getId(), usuarioService.getNombreYApellidoById(idLogueado));
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getDepartamento().getId(), usuarioService.getNombreYApellidoById(idLogueado));
         return departamentoRepository.save(updatedDepartment);
     }
 
-    public Departamento registrarDepartamento(Departamento departamento) {
-        Departamento newDepartment = asignarPropietarioEInquilino(departamento);
+    public Departamento registrarDepartamento(DepartamentoConUsuarios departamentoConUsuarios) {
+        Departamento newDepartment = asignarPropietarioEInquilino(departamentoConUsuarios);
         return departamentoRepository.save(newDepartment);
     }
 
-    private Departamento asignarPropietarioEInquilino(Departamento departamento){
-        System.out.println(departamento);
-        Usuario _propietario = usuarioService.buscarPorId(departamento.getPropietario().getId());
+    private Departamento asignarPropietarioEInquilino(DepartamentoConUsuarios departamentoConUsuarios){
+        Departamento departamento = departamentoConUsuarios.getDepartamento();
 
-        try{
-            Usuario _inquilino = usuarioService.buscarPorId(departamento.getInquilino().getId());
-            departamento.setNombreInquilino(_inquilino.getNombreYApellido());
-        } catch (RuntimeException ignored){}
-
+        Usuario _propietario = usuarioService.buscarPorId(departamentoConUsuarios.getPropietarioId());
+        departamento.setPropietario(_propietario);
         departamento.setNombrePropietario(_propietario.getNombreYApellido());
+
+        if(departamentoConUsuarios.getInquilinoId() != null) {
+            Usuario _inquilino = usuarioService.buscarPorId(departamentoConUsuarios.getInquilinoId());
+            departamento.setInquilino(_inquilino);
+            departamento.setNombreInquilino(_inquilino.getNombreYApellido());
+        }else{
+            departamento.setInquilino(null);
+            departamento.setNombreInquilino(null);
+        }
         return departamento;
     }
 

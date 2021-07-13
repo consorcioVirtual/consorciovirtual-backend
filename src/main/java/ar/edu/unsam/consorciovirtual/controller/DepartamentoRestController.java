@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
+import ar.edu.unsam.consorciovirtual.domain.DepartamentoConUsuarios;
 import ar.edu.unsam.consorciovirtual.domain.DepartamentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.Views;
 import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
@@ -38,17 +39,17 @@ public class DepartamentoRestController {
     }
 
     @PutMapping("/departamento/modificar")
-    public Departamento modificarDepartamento(@RequestParam Long idLogueado, @RequestBody Departamento departamento) {
-        return this.departamentoService.modificarDepartamento(idLogueado, departamento);
+    public Departamento modificarDepartamento(@RequestParam Long idLogueado, @RequestBody DepartamentoConUsuarios departamentoConUsuarios) {
+        return this.departamentoService.modificarDepartamento(idLogueado, departamentoConUsuarios);
     }
 
     @PutMapping("/departamento/crear")
     public Departamento crearDepartamento(@RequestBody String body) throws JsonProcessingException {
-        Departamento newDepartment = new ObjectMapper().readValue(body, Departamento.class);
+        DepartamentoConUsuarios newDepartment = new ObjectMapper().readValue(body, DepartamentoConUsuarios.class);
         return departamentoService.registrarDepartamento(newDepartment);
     }
 
-    @PutMapping("/departamento/eliminar/{idABorrar}")
+    @DeleteMapping("/departamento/eliminar/{idABorrar}")
     public void bajaLogicaDepartamento(@RequestParam Long idLogueado, @PathVariable Long idABorrar) {
         departamentoService.bajaLogica(idLogueado, idABorrar);
     }

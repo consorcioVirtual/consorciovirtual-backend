@@ -31,6 +31,7 @@ public class Usuario {
     private String apellido;
     private String correo;
     private String dni;
+    @Enumerated(EnumType.STRING)
     private TipoUsuario tipo;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
