@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
+import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,29 @@ public class GestorDeCorreo {
         }
     }
 
+    public void enviarReciboDeExpensas(ExpensaDeDepartamento expensa, String archivo){
+        String asunto = "Recibo de expensas";
+        String texto = "Sr/Sra. Propietario/a o Inquilino/a:" +
+                "\n\nLe adjuntamos el recibo de pago por las expensas del período " + expensa.getPeriodo().toString() +
+                " correspondiente a la unidad " + expensa.getDepartamento().getUnidad() +"."+
+                "\n\nRecuerde que, si usted abonó por mercado pago, el presente recibo solo es válido junto con" +
+                " el ticket de pago. Por otra parte, si el pago fue en efectivo, debe solicitarle al administrador de" +
+                " su edificio que imprima este recibo y se lo entregue firmado." +
+                "\n\nQue tenga buen día.\nConsorcio Virtual";
+
+        enviarArchivoRelacionadoAExpensa(expensa.getDepartamento(), archivo, asunto, texto);
+    }
+
     public void enviarResumenDeExpensa(Departamento departamento, String archivo, YearMonth periodo) {
+        String asunto = "Resumen de expensas";
+        String texto ="Sr/Sra. Propietario/a o Inquilino/a:" +
+                "\n\nLe adjuntamos el resumen de expensas correspondiente a la unidad " +
+                departamento.getUnidad() + " del período " +periodo.toString() + "." +
+                "\n\nQue tenga buen día.\nConsorcio Virtual";
+        enviarArchivoRelacionadoAExpensa(departamento, archivo, asunto, texto);
+    }
+
+    private void enviarArchivoRelacionadoAExpensa(Departamento departamento, String archivo, String asunto, String texto) {
 
         Properties properties = configuracion();
         // Obtener la sesion
@@ -58,19 +81,17 @@ public class GestorDeCorreo {
             mimeMessage.setFrom(new InternetAddress(user, "Consorcio Virtual"));
 
             // Agregar los destinatarios al mensaje
-            mimeMessage.setRecipients(Message.RecipientType.TO, departamento.getPropietario().getCorreo());
+            mimeMessage.addRecipients(Message.RecipientType.TO, departamento.getPropietario().getCorreo());
             if(departamento.getInquilino() != null){
-                mimeMessage.setRecipients(Message.RecipientType.TO, departamento.getInquilino().getCorreo());
+                mimeMessage.addRecipients(Message.RecipientType.TO, departamento.getInquilino().getCorreo());
             }
 
             // Agregar el asunto al correo
-            mimeMessage.setSubject("Resumen de expensas");
+            mimeMessage.setSubject(asunto);
 
             // Creo la parte del mensaje
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setText("Sr/Sra. Propietario/a o Inquilino/a:" +
-                    "\nLe adjuntamos el resumen de expensas correspondiente a la unidad " +
-                            departamento.getUnidad() + " del período " +periodo.toString() + "\nQue tenga buen día.");
+            mimeBodyPart.setText(texto);
 
             // Configurar el archivo adjunto
             MimeBodyPart mimeBodyPartAdjunto = new MimeBodyPart();

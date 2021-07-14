@@ -22,7 +22,7 @@ public class GeneradorDeExpensas {
     private final DepartamentoRepository departamentoRepository;
     private final DocumentoRepository documentoRepository;
     private final DocumentoService documentoService;
-    private final UsuarioRepository usuarioRepository;
+    private final GestorDeCorreo gestorDeCorreo;
 
 
     public void generarExpensasPorImportePredefinido(Double importeComun, Double importeExtraordinaria, YearMonth periodo){
