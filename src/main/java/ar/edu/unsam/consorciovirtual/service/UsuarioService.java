@@ -72,6 +72,7 @@ public class UsuarioService {
         validarBaja(idLogueado, idABorrar);
         Usuario usuario = usuarioRepository.findById(idABorrar).get();
         usuario.setBajaLogica(true);
+        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.USUARIO, idABorrar);
 
         usuarioRepository.save(usuario);
     }

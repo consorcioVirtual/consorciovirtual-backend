@@ -20,6 +20,6 @@ public class Nota {
     private Long id;
     private String autor;
     private String texto;
-    private LocalDateTime fechaHora = LocalDateTime.now(ZONE_ID_ARGENTINA);;
+    private LocalDateTime fechaHora = LocalDateTime.now(ZONE_ID_ARGENTINA);
 
 }
