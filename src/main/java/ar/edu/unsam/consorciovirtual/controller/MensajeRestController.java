@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Mensaje;
+import ar.edu.unsam.consorciovirtual.domain.MensajeRequest;
 import ar.edu.unsam.consorciovirtual.service.MensajeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,10 @@ public class MensajeRestController {
         return mensajeService.getMensajes();
     }
 
-//    @MessageMapping("/enviar")
-//    @SendTo("/topic/mensajes")
-//    public String mensajesHandler(@Payload String mensajeEnviado){
-//        System.out.println(mensajeEnviado);
-//        return "RECIBIDO";
-//    }
+    @PostMapping("/mensajes/send")
+    public void createMensaje( @RequestBody MensajeRequest mensaje){
+        mensajeService.createMensaje(mensaje);
+    }
 
     //No se le pasa el autor completo desde el front, se le carga en el back por idAutor
     /*No se le pasa el mensajeCitado completo desde el front,

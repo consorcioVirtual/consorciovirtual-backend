@@ -1,11 +1,13 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Mensaje;
+import ar.edu.unsam.consorciovirtual.domain.MensajeRequest;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.MensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,7 +22,16 @@ public class MensajeService {
     private final UsuarioRepository usuarioRepository;
 
     public List<Mensaje> getMensajes() {
-        return mensajeRepository.findAll();
+        return mensajeRepository.findAll(Sort.by( (Sort.Direction.DESC),"id") );
+    }
+
+        public void createMensaje(MensajeRequest mensaje) {
+        Usuario usuarioEmisor = usuarioRepository.findById(mensaje.getIdEmisor())
+                .orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
+        Mensaje mensajeNuevo = new Mensaje();
+        mensajeNuevo.setMensaje(mensaje.getMensaje());
+        mensajeNuevo.setUsuarioEmisor(usuarioEmisor);
+        mensajeRepository.save(mensajeNuevo);
     }
 
 //    public void createMensaje(Long idAutor, Mensaje mensajeNuevo, Long idMensajeCitado) {

@@ -100,9 +100,9 @@ public class Bootstrap implements InitializingBean {
             LocalDate.of(2021,01,01), LocalDate.of(2021,12,31), santir);
 
     //Mensajes
-    private final Mensaje mensaje1 = createMensaje("Es el primer mensaje", 1L, santil.getNombreYApellido());
-    private final Mensaje mensaje2 = createMensaje("Es el segundo mensaje", 2L, santilr.getNombreYApellido());
-    private final Mensaje mensajeCitando1 = createMensaje("Es el primer mensaje que cita a otro",4L, pablo.getNombreYApellido());
+    private final Mensaje mensaje1 = createMensaje("Es el primer mensaje", santil);
+    private final Mensaje mensaje2 = createMensaje("Es el segundo mensaje", santilr);
+    private final Mensaje mensajeCitando1 = createMensaje("Es el primer mensaje que cita a otro", pablo);
 
     //Facturas
     private final Factura factura1 = createFactura("factura 1", "una descripción 1",
@@ -271,11 +271,10 @@ public class Bootstrap implements InitializingBean {
         anuncioService.registrarTodos(anuncios);
     }
 
-    private Mensaje createMensaje(String _mensaje, Long _idEmisor, String _nombreEmisor){
+    private Mensaje createMensaje(String _mensaje, Usuario _usuarioEmisor){
         Mensaje nuevoMensaje = new Mensaje();
         nuevoMensaje.setMensaje(_mensaje);
-        nuevoMensaje.setIdEmisor(_idEmisor);
-        nuevoMensaje.setNombreEmisor(_nombreEmisor);
+        nuevoMensaje.setUsuarioEmisor(_usuarioEmisor);
         return nuevoMensaje;
     }
 

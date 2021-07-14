@@ -20,16 +20,4 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     public WebSocketHandler getChatWebSockethandler() {
         return new ChatWebSocketHandler();
     }
-//    @Override
-//    public void registerStompEndpoints(StompEndpointRegistry registry){
-//        registry.addEndpoint("/ws-chat");
-//    };
-//
-//    @Override
-//    public void configureMessageBroker(MessageBrokerRegistry registry){
-//        //Endpoint para la salida de mensajes
-//        registry.enableSimpleBroker("/topic");
-//        //Endpoint para la entrada de mensajes
-//        registry.setApplicationDestinationPrefixes("/chat");
-
 }

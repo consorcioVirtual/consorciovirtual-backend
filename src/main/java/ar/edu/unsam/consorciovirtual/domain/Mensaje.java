@@ -10,15 +10,27 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @Entity
-public class Mensaje {
+public class Mensaje  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String mensaje; //Ver si se le pone límite al largo del mensaje
     private LocalDateTime fechaYHora = LocalDateTime.now();
-    private Long idEmisor;
-    private String nombreEmisor;
 
+    @JsonIgnore
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name="usuarioEmisor")
+    private Usuario usuarioEmisor;
+
+    @JsonProperty("nombreEmisor")
+    public String getNombreEmisor(){
+        return usuarioEmisor.getNombre() + " " + usuarioEmisor.getApellido();
+    }
+
+    @JsonProperty("idEmisor")
+    public Long getIdEmisor(){
+        return usuarioEmisor.getId();
+    }
 //    @JsonIgnore
 //    @OneToOne()
 //    @JoinColumn(name="idMensajeCitado")
@@ -26,7 +38,13 @@ public class Mensaje {
 
     @Override
     public String toString(){
-        return ("ID: " + id.toString() + "mensaje: " + mensaje + "idEmisor: " + idEmisor.toString() + "nombreEmisor" + nombreEmisor);
+        return " { id: " + id.toString() +
+                ", mensaje: " + mensaje +
+                ", idEmisor: " + getIdEmisor().toString() +
+                ", nombreEmisor: " + getNombreEmisor() +
+                ", fechaYHora: " + fechaYHora.toString() +
+                "}"
+        ;
     }
     /*METODOS*/
 //    @JsonProperty("mensajeCitado")
