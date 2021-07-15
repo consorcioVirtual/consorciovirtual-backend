@@ -28,7 +28,7 @@ public class AnuncioService {
     }
 
     public List<AnuncioDTOParaListado> buscarTodos(String palabraBuscada){
-        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalse(palabraBuscada);
+        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalseAndAutorNombreContainingOrBajaLogicaFalseAndAutorApellidoContainingOrBajaLogicaFalseAndTituloContaining(palabraBuscada, palabraBuscada, palabraBuscada);
         return mapearADTO(anuncios);
     }
 
