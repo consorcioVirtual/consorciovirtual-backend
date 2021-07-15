@@ -59,8 +59,8 @@ public class UsuarioService {
         usuarioRepository.save(usuarioActualizado);
     }
 
-    public Usuario loguearUsuario(Usuario usuario){
-        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(usuario.getCorreo(), usuario.getPassword());
+    public Usuario loguearUsuario(String correo, String password){
+        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
 //        usuarioLogueado = user;
 
         if(user != null) {

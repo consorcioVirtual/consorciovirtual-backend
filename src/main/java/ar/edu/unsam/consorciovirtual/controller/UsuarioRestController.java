@@ -49,8 +49,8 @@ public class UsuarioRestController {
     }
 
     @PostMapping("/login")
-    public Usuario login(@RequestBody Usuario usuario) {
-       return usuarioService.loguearUsuario(usuario);
+    public Usuario login(@RequestParam String correo, @RequestParam String password) {
+       return usuarioService.loguearUsuario(correo, password);
    }
 
 
