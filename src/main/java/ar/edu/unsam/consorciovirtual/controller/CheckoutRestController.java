@@ -37,7 +37,7 @@ public class CheckoutRestController {
         preference.appendItem(item);
 
         BackUrls backUrls = new BackUrls(
-                "localhost:3000/expensas/"+expensaId,
+                "localhost:3000/payment/success/"+expensaId,
                 "localhost:3000/",
                 "localhost:3000/");
 
