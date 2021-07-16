@@ -23,6 +23,7 @@ public class ExpensaDeDepartamentoService {
     private final DepartamentoService departamentoService;
     private final DocumentoService documentoService;
     private final DocumentoRepository documentoRepository;
+    private final GestorDeCorreo gestorDeCorreo;
 
     private List<ExpensaDeDepartamentoDTOParaListado> mapearADTOParaListado(List<ExpensaDeDepartamento> expensas){
         return expensas.stream().map(exp -> ExpensaDeDepartamentoDTOParaListado.fromExpensaDeDepartamento(exp)).collect(Collectors.toList());
@@ -70,6 +71,8 @@ public class ExpensaDeDepartamentoService {
             //Guarda el recibo de pago
             Documento nuevoDocumento = documentoService.crearDocumentoEnBaseAPDFDelSistema(nombreSimple, nombreArchivo);
             documentoRepository.save(nuevoDocumento);
+            //Se envía el correo con el recibo
+            gestorDeCorreo.enviarReciboDeExpensas(expensa, nombreArchivo);
         }else throw new IllegalArgumentException("La expensa que desea pagar, ya se encuentra paga");
     }
 }

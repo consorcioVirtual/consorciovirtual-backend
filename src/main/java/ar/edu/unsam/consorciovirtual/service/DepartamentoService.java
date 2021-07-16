@@ -85,6 +85,7 @@ public class DepartamentoService {
         validarBaja(idLogueado);
         Departamento departamento = departamentoRepository.findById(idABorrar).get();
         departamento.setBajaLogica(true);
+        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.DEPARTAMENTO, idABorrar);
 
         departamentoRepository.save(departamento);
     }

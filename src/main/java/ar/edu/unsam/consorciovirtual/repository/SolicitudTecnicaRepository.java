@@ -23,5 +23,7 @@ public interface SolicitudTecnicaRepository extends JpaRepository<SolicitudTecni
 //    List<SolicitudTecnica> buscarPorUsuarioYFiltro(@Param("idUsuario") Long idUsuario, @Param("idSolicitud") Long idSolicitud, @Param("nombreAutor") String nombreAutor, @Param("titulo") String titulo, @Param("nombreEstado") String nombreEstado);
     List<SolicitudTecnica> buscarPorUsuarioYFiltro(@Param("idUsuario") Long idUsuario, @Param("idSolicitud") Long idSolicitud, @Param("nombreAutor") String nombreAutor, @Param("titulo") String titulo);
 
+    List<SolicitudTecnica> findByTipo(String tipo);
+
 }
 

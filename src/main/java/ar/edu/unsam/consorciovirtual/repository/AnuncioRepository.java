@@ -19,4 +19,6 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
             "WHERE unAnuncio.baja_logica = false AND " +
             "(unAnuncio.titulo LIKE %:palabraBuscada% OR unAnuncio.descripcion LIKE %:palabraBuscada%)", nativeQuery = true)
     List<Anuncio> findByBajaLogicaFalse(@Param("palabraBuscada") String palabraBuscada);
+
+    List<Anuncio> findByBajaLogicaFalseAndAutorNombreContainingOrBajaLogicaFalseAndAutorApellidoContainingOrBajaLogicaFalseAndTituloContaining(String nombre, String apellido, String titulo);
 }

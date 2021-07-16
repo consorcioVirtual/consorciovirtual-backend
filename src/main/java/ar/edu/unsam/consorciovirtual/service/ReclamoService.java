@@ -54,6 +54,7 @@ public class ReclamoService {
     public void bajaLogicaReclamo(Long id){
         Reclamo reclamo = reclamoRepository.findById(id).get();
         reclamo.setBajaLogica(true);
+        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.RECLAMO, id);
 
         reclamoRepository.save(reclamo);
     }

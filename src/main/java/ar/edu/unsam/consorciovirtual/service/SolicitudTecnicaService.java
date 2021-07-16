@@ -32,6 +32,10 @@ public class SolicitudTecnicaService {
         return solicitudes.stream().map(x -> SolicitudTecnicaDTOParaListado.fromSolicitudTecnica(x)).collect(Collectors.toList());
     }
 
+    public List<SolicitudTecnica> buscarPorTipo(String tipo) {
+        return solicitudTecnicaRepository.findByTipo(tipo);
+    }
+
     private Long busquedaToLong(String palabraBuscada) {
         try {
             return Long.valueOf(palabraBuscada);

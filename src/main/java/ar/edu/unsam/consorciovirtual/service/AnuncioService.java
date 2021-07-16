@@ -28,7 +28,7 @@ public class AnuncioService {
     }
 
     public List<AnuncioDTOParaListado> buscarTodos(String palabraBuscada){
-        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalse(palabraBuscada);
+        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalseAndAutorNombreContainingOrBajaLogicaFalseAndAutorApellidoContainingOrBajaLogicaFalseAndTituloContaining(palabraBuscada, palabraBuscada, palabraBuscada);
         return mapearADTO(anuncios);
     }
 
@@ -50,6 +50,7 @@ public class AnuncioService {
         validarBaja(idLogueado);
         Anuncio anuncio = anuncioRepository.findById(id).orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
         anuncio.setBajaLogica(true);
+        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.ANUNCIO, id);
 
         anuncioRepository.save(anuncio);
     }

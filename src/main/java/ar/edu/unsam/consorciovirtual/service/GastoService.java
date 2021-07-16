@@ -61,6 +61,7 @@ public class GastoService {
     public void bajaLogica(Long id){
         Gasto gasto = gastoRepository.findById(id).get();
         //gasto.setBajaLogica(true);
+        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.GASTO, id);
 
         gastoRepository.save(gasto);
     }
