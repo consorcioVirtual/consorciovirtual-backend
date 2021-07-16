@@ -18,6 +18,11 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
             "AND (id_propietario = :idUsuario OR id_inquilino = :idUsuario)" , nativeQuery=true)
     List <Departamento> buscarPorPropietarioOInquilino(Long idUsuario);
 
+    @Query(value = "SELECT COUNT(*) FROM departamento " +
+            "WHERE baja_logica = false " +
+            "AND id_propietario = :idUsuario" , nativeQuery=true)
+    Long cantidadDeptosDelUsuario(Long idUsuario);
+
     @Query(value = "SELECT id FROM departamento " +
             "WHERE baja_logica = false " +
             "AND id_propietario = :idUsuario" , nativeQuery=true)

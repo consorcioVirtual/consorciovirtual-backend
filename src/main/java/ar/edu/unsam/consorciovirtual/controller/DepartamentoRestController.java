@@ -59,4 +59,5 @@ public class DepartamentoRestController {
     public long count() {
         return this.departamentoService.count();
     }
+
 }

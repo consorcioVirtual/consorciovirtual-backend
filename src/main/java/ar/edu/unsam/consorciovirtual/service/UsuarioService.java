@@ -84,7 +84,7 @@ public class UsuarioService {
             throw new SecurityException("No tiene permisos para eliminar un usuario.");
         }
         if(usuarioSeRelacionaConDeptos(idABorrar)){
-            throw new DataConsistencyException("El usuario a eliminar está asociado a un departamento (es inquilino o propietario).");
+            throw new DataConsistencyException("No es posible eliminar un usuario que es propietario de un departamento.");
         }
     }
 
@@ -109,9 +109,9 @@ public class UsuarioService {
     }
 
 
-    //Chequea si hay deptos que tengan al usuario como propietario/inquilino
+    //Chequea si hay deptos que tengan al usuario como propietario
     private Boolean usuarioSeRelacionaConDeptos(Long idUsuario){
-        return !departamentoRepository.buscarPorPropietarioOInquilino(idUsuario).isEmpty();
+        return departamentoRepository.cantidadDeptosDelUsuario(idUsuario) != 0;
     }
 
     public String getNombreYApellidoById(Long idUsuario){
