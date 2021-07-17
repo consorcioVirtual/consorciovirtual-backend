@@ -21,8 +21,9 @@ public class MensajeService {
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public List<Mensaje> getMensajes() {
-        return mensajeRepository.findAll(Sort.by( (Sort.Direction.DESC),"id") );
+    public List<Mensaje> getMensajes(String palabraBuscada) {
+//        return mensajeRepository.findAll(Sort.by( (Sort.Direction.DESC),"id") );
+        return mensajeRepository.findMensajesFiltrados(palabraBuscada);
     }
 
         public void createMensaje(MensajeRequest mensaje) {

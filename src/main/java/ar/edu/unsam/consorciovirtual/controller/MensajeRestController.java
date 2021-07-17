@@ -22,8 +22,8 @@ public class MensajeRestController {
     //Sin parámetro de busqueda, si lo hacemos tipo Wathsapp la busqueda podría ser en el front directamente.
     //DEFINIR: como limitamos la cantidad de mensajes que se cargan
     @GetMapping("/mensajes")
-    public List<Mensaje> getMensajes(){
-        return mensajeService.getMensajes();
+    public List<Mensaje> getMensajes(@RequestParam(defaultValue="") String palabraBuscada){
+        return mensajeService.getMensajes(palabraBuscada);
     }
 
     @PostMapping("/mensajes/send")
