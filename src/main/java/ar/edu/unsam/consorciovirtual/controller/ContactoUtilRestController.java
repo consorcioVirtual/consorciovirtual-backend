@@ -21,6 +21,11 @@ public class ContactoUtilRestController {
         return contactoUtilService.buscarTodos(palabraBuscada);
     }
 
+    @GetMapping("/contactosUtiles/{idContacto}")
+    public ContactoUtil buscarTodos(@PathVariable Long idContacto) {
+        return contactoUtilService.buscarPorId(idContacto);
+    }
+
     @PutMapping("/contactosUtiles/crear/{idLogueado}")
     public void createContacto(@PathVariable Long idLogueado, @RequestBody ContactoUtil nuevoContacto) {
         contactoUtilService.crearContacto(idLogueado, nuevoContacto);
@@ -31,7 +36,7 @@ public class ContactoUtilRestController {
         contactoUtilService.modificarContacto(idLogueado, contactoActualizado);
     }
 
-    @PutMapping("/contactosUtiles/eliminar/{idContacto}/{idLogueado}")
+    @DeleteMapping("/contactosUtiles/eliminar/{idContacto}/{idLogueado}")
     public void bajaLogicaContacto(@PathVariable Long idContacto, @PathVariable Long idLogueado) {
         contactoUtilService.bajaLogica(idContacto, idLogueado);
     }

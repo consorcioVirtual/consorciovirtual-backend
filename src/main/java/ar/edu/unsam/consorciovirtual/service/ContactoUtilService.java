@@ -53,4 +53,8 @@ public class ContactoUtilService {
     public void registrarTodos(List<ContactoUtil> contactos) {
         contactoUtilRepository.saveAll(contactos);
     }
+
+    public ContactoUtil buscarPorId(Long idContacto) {
+        return contactoUtilRepository.getById(idContacto);
+    }
 }
