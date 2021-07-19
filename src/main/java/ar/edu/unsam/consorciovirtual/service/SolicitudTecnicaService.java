@@ -4,6 +4,7 @@ import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
 import ar.edu.unsam.consorciovirtual.repository.SolicitudTecnicaRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,7 +30,10 @@ public class SolicitudTecnicaService {
 //            solicitudes = solicitudTecnicaRepository.buscarPorUsuarioYFiltro(idLogueado, idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
             solicitudes = solicitudTecnicaRepository.buscarPorUsuarioYFiltro(idLogueado, idSolicitud, palabraBuscada, palabraBuscada);
         }
-        return solicitudes.stream().map(x -> SolicitudTecnicaDTOParaListado.fromSolicitudTecnica(x)).collect(Collectors.toList());
+
+        List<SolicitudTecnicaDTOParaListado> solicitudDtos =  solicitudes.stream().map(SolicitudTecnicaDTOParaListado::fromSolicitudTecnica).collect(Collectors.toList());
+        solicitudDtos.forEach(this::agregarUltimaModificacion);
+        return solicitudDtos;
     }
 
     public List<SolicitudTecnica> buscarPorTipo(String tipo) {
@@ -84,6 +88,11 @@ public class SolicitudTecnicaService {
         registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, id);
 
         solicitudTecnicaRepository.save(solicitud);
+    }
+
+    private void agregarUltimaModificacion(@NotNull SolicitudTecnicaDTOParaListado dto){
+        String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.SOLICITUD_TECNICA, dto.getId());
+        dto.setUltimaModificacion(fechaUltimaModificacion);
     }
 
 }

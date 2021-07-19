@@ -12,6 +12,7 @@ public class AnuncioDTOParaListado {
     private LocalDate fechaCreacion;
     private LocalDate fechaVencimiento;
     private String modificado;
+    private String ultimaModificacion;
 
     public static AnuncioDTOParaListado fromAnuncio(Anuncio anuncio){
       AnuncioDTOParaListado anuncioDTO = new AnuncioDTOParaListado();

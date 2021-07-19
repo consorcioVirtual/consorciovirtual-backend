@@ -13,6 +13,7 @@ public class SolicitudTecnicaDTOParaListado {
     private LocalDate fecha;
     private String nombreAutor;
     private String nombreEstado;
+    private String ultimaModificacion;
 
     public static SolicitudTecnicaDTOParaListado fromSolicitudTecnica(SolicitudTecnica solicitud){
         SolicitudTecnicaDTOParaListado solicitudDTO = new SolicitudTecnicaDTOParaListado();

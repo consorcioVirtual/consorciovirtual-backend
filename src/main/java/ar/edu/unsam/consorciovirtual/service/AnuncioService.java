@@ -5,6 +5,7 @@ import ar.edu.unsam.consorciovirtual.repository.AnuncioRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.jni.Local;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +25,9 @@ public class AnuncioService {
     private final UsuarioService usuarioService;
 
     public List<AnuncioDTOParaListado> mapearADTO(List<Anuncio> anuncios){
-        return anuncios.stream().map(anuncio -> AnuncioDTOParaListado.fromAnuncio(anuncio)).collect(Collectors.toList());
+        List<AnuncioDTOParaListado> dtos = anuncios.stream().map(AnuncioDTOParaListado::fromAnuncio).collect(Collectors.toList());
+        dtos.forEach(this::agregarUltimaModificacion);
+        return dtos;
     }
 
     public List<AnuncioDTOParaListado> buscarTodos(String palabraBuscada){
@@ -100,6 +103,11 @@ public class AnuncioService {
             throw new IllegalArgumentException("No puede modificar un anuncio que no está vigente.");
         }
 
+    }
+
+    private void agregarUltimaModificacion(@NotNull AnuncioDTOParaListado dto){
+        String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.ANUNCIO, dto.getId());
+        dto.setUltimaModificacion(fechaUltimaModificacion);
     }
 
 }

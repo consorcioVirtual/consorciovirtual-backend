@@ -22,6 +22,10 @@ public class Reclamo {
     @JsonIgnore
     private Boolean bajaLogica = false;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    public String ultimaModificacion;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "reclamo_id")
     private List<Nota> notas;

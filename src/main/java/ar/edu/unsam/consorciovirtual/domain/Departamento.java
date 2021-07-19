@@ -32,7 +32,6 @@ public class Departamento {
     @JsonIgnore
     private Boolean bajaLogica = false;
 
-
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="idPropietario")

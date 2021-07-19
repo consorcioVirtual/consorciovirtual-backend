@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.service;
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.ReclamoRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,12 +22,14 @@ public class ReclamoService {
     public List<Reclamo> buscarTodos(Long idLogueado, String palabraBuscada) {
         Long idReclamo = busquedaToLong(palabraBuscada);
         List<Reclamo> reclamos;
+
         if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
             reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         }else{
             reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
-
         }
+
+        reclamos.forEach(this::agregarUltimaModificacion);
         return reclamos;
     }
 
@@ -78,6 +81,11 @@ public class ReclamoService {
         } catch (NumberFormatException ex){
             return null;
         }
+    }
+
+    private void agregarUltimaModificacion(@NotNull Reclamo dto){
+        String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.RECLAMO, dto.getId());
+        dto.setUltimaModificacion(fechaUltimaModificacion);
     }
 
 }

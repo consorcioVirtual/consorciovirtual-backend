@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.service;
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,7 +26,11 @@ public class DepartamentoService {
         } else {
             departamentos = departamentoRepository.buscarPorUsuarioYFiltro(idLogueado, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         }
-        return departamentos.stream().map(x -> DepartamentoDTOParaListado.fromDepartamento(x)).collect(Collectors.toList());
+
+       List<DepartamentoDTOParaListado> dtos = departamentos.stream().map(DepartamentoDTOParaListado::fromDepartamento).collect(Collectors.toList());
+        dtos.forEach(this::agregarUltimaModificacion);
+
+        return dtos;
     }
 
     public List<Departamento> registrarTodos(List <Departamento> listaDepartamentos) {
@@ -105,4 +110,9 @@ public class DepartamentoService {
         return departamentoRepository.count();
     }
 
+
+    private void agregarUltimaModificacion(@NotNull DepartamentoDTOParaListado dto){
+        String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.DEPARTAMENTO, dto.getId());
+        dto.setUltimaModificacion(fechaUltimaModificacion);
+    }
 }

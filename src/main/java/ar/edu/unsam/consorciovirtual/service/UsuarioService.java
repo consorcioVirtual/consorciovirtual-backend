@@ -10,6 +10,7 @@ import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import com.mercadopago.resources.AdvancedPayment;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,9 @@ public class UsuarioService {
 //    public static Usuario usuarioLogueado;
 
     public List<Usuario> buscarTodos(String palabraBuscada) {
-        return usuarioRepository.findBySearch(palabraBuscada);
+        List<Usuario> users = usuarioRepository.findBySearch(palabraBuscada);
+        users.forEach(this::agregarUltimaModificacion);
+        return users;
     }
 
     public Usuario buscarPorId(Long id) {
@@ -38,10 +41,10 @@ public class UsuarioService {
         return usuarioRepository.findByTipo(tipo);
     }
 
+
 //    public Usuario buscarPorNombre(String nombre){
 //        return usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 //    }
-
     @Transactional
     public Usuario registrarUsuario(Usuario usuario) {
         usuario.setPassword(usuario.getDni());
@@ -109,6 +112,10 @@ public class UsuarioService {
         return usuario.getTipo() == TipoUsuario.Inquilino;
     }
 
+    private void agregarUltimaModificacion(@NotNull Usuario user){
+        String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.USUARIO, user.getId());
+        user.setUltimaModificacion(fechaUltimaModificacion);
+    }
 
     //Chequea si hay deptos que tengan al usuario como propietario
     private Boolean usuarioSeRelacionaConDeptos(Long idUsuario){
@@ -118,4 +125,5 @@ public class UsuarioService {
     public String getNombreYApellidoById(Long idUsuario){
         return usuarioRepository.findById(idUsuario).get().getNombreYApellido();
     }
+
 }

@@ -27,6 +27,10 @@ public class Usuario {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    public String ultimaModificacion;
+
     private String nombre;
     private String apellido;
     private String correo;
@@ -42,5 +46,6 @@ public class Usuario {
     public String getNombreYApellido(){
         return nombre + " " + apellido;
     }
+
 }
 

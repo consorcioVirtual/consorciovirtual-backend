@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -35,6 +36,10 @@ public class Gasto {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="idComprobante")
     private Documento comprobante;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Transient
+    public String ultimaModificacion;
 
     /*METODOS*/
 

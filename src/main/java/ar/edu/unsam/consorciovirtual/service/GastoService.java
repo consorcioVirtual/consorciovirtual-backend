@@ -1,11 +1,13 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
+import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnicaDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,7 +36,9 @@ public class GastoService {
 
     public List<Gasto> buscarTodos(String palabraBuscada) {
         Double importe = busquedaToDouble(palabraBuscada);
-        return gastoRepository.findByTituloContainingOrImporte(palabraBuscada, importe);
+        List<Gasto> gastos = gastoRepository.findByTituloContainingOrImporte(palabraBuscada, importe);
+        gastos.forEach(this::agregarUltimaModificacion);
+        return gastos;
     }
 
     private Double busquedaToDouble(String palabraBuscada) {
@@ -70,8 +74,8 @@ public class GastoService {
         return gastoRepository.findGastosByPeriodo(periodo);
     }
 
-//    public List<Gasto> algo(String palabraBuscada) {
-//        System.out.println(palabraBuscada);
-//        return gastoRepository.findByFechaDeCreacionContaining(palabraBuscada);
-//    }
+    private void agregarUltimaModificacion(@NotNull Gasto gasto){
+        String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.GASTO, gasto.getId());
+        gasto.setUltimaModificacion(fechaUltimaModificacion);
+    }
 }
