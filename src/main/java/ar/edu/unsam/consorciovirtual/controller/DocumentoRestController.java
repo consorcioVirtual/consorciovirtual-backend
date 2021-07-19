@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.domain.DocumentoDTOParaABM;
 import ar.edu.unsam.consorciovirtual.domain.DocumentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.Documento;
 import ar.edu.unsam.consorciovirtual.service.DocumentoService;
@@ -27,6 +28,11 @@ public class DocumentoRestController {
         return documentoService.buscarPorId(id);
     }
 
+    @GetMapping("/documentos/paraABM/{id}")
+    public DocumentoDTOParaABM buscarDocumentoParaABMPorId(@PathVariable Long id) {
+        return documentoService.buscarDocumentoParaABMPorId(id);
+    }
+
     //Sirve para los documentos que están dentro del ambiente del back (como los resumenes de expensas)
     @GetMapping("/documentos/descargar/{id}")
     public void dercargarDocumento(@PathVariable() Long id, HttpServletResponse response) {
@@ -47,7 +53,7 @@ public class DocumentoRestController {
     }
 
     //El idUsuario se pasa para verificar que sea el mismo que lo creó.
-    @PutMapping("/documentos/eliminar/{idDocumento}/{idUsuario}")
+    @DeleteMapping("/documentos/eliminar/{idDocumento}/{idUsuario}")
     public void eliminarDocumento(@PathVariable Long idDocumento, @PathVariable Long idUsuario) {
         documentoService.setBajaLogicaDocumento(idDocumento, idUsuario);
     }

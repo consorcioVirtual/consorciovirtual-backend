@@ -8,5 +8,6 @@ public enum TipoRegistro {
     RECLAMO,
     EXPENSA,
     DOCUMENTO,
-    ANUNCIO
+    ANUNCIO,
+    TELEFONOUTIL
 }

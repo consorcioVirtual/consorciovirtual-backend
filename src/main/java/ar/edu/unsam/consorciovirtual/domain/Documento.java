@@ -21,7 +21,6 @@ public class Documento {
 
     private String titulo;
     private String descripcion;
-    @JsonIgnore
     private String enlaceDeDescarga;
     private LocalDate fechaCreacion = LocalDate.now();
     private LocalDate fechaModificacion = LocalDate.now();

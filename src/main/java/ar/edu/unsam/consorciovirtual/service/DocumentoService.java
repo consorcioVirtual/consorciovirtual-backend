@@ -24,6 +24,7 @@ import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_ARCHIVOS
 public class DocumentoService {
     private final DocumentoRepository documentoRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
     public List<DocumentoDTOParaListado> mapearADTO(List<? extends Documento> documentos){
         return documentos.stream().map(documento-> DocumentoDTOParaListado.fromDocumento(documento)).collect(Collectors.toList());
@@ -38,34 +39,24 @@ public class DocumentoService {
         return documentoRepository.findByIdAndBajaLogicaFalse(id).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
     }
 
+    public DocumentoDTOParaABM buscarDocumentoParaABMPorId(Long id) {
+        Documento documento = documentoRepository.findByIdAndBajaLogicaFalse(id).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
+        return DocumentoDTOParaABM.fromDocumento(documento);
+    }
+
     public void dercargarDocumento(Long id, HttpServletResponse response) {
         Documento documento = this.buscarPorId(id);
         FileInputStream archivo;
         try{
-            if (documento.getEnlaceDeDescarga().contains("http")){
-                File file = new File(CARPETA_DE_ARCHIVOS+documento.getTitulo()+".pdf");
-                URLConnection conn = new URL(documento.getEnlaceDeDescarga()).openConnection();
-                conn.connect();
-                InputStream in = conn.getInputStream();
-                OutputStream out = new FileOutputStream(file);
-                int b = 0;
-                while (b != -1) {
-                    b = in.read();
-                    if (b != -1)
-                        out.write(b);
-                }
-                out.close();
-                in.close();
-                archivo= new FileInputStream(file);
-            }else{
-                archivo = new FileInputStream(documento.getEnlaceDeDescarga());
-            }
+            archivo = new FileInputStream(documento.getEnlaceDeDescarga());
+            System.out.println(documento.getEnlaceDeDescarga());
             int longitud = archivo.available();
             byte[] datos = new byte[longitud];
             archivo.read(datos);
             archivo.close();
             response.setHeader("Content-Disposition","attachment;filename="+documento.getTitulo());
-            response.setContentType("pdf");
+            String[] divisionPorPunto = documento.getEnlaceDeDescarga().split("\\.");
+            response.setContentType(divisionPorPunto[divisionPorPunto.length-1]);
             ServletOutputStream ouputStream = response.getOutputStream();
             ouputStream.write(datos);
             ouputStream.flush();
@@ -81,7 +72,7 @@ public class DocumentoService {
 
     public void createDocumento(Long idAutor, Documento nuevoDocumento) {
         Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permiso para crear documentos"));
-        if(nuevoDocumento.esValido()){
+        if(nuevoDocumento.esValido() && (usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor))){
             nuevoDocumento.setAutor(autor);
             documentoRepository.save(nuevoDocumento);
         }else throw new IllegalArgumentException("Los datos ingresados no son válidos");
@@ -89,7 +80,7 @@ public class DocumentoService {
 
     public void modificarDocumento(Long idUsuario, Documento documentoActualizado) {
         Documento documentoViejo = documentoRepository.findById(documentoActualizado.getId()).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
-        if(documentoViejo.getAutor().getId() == idUsuario){
+        if(usuarioService.usuarioEsAdminDeLaApp(idUsuario) || documentoViejo.getAutor().getId() == idUsuario){
             documentoViejo.setDescripcion(documentoActualizado.getDescripcion());
             documentoViejo.setTitulo(documentoActualizado.getTitulo());
             documentoViejo.setEnlaceDeDescarga(documentoActualizado.getEnlaceDeDescarga());
@@ -101,7 +92,7 @@ public class DocumentoService {
 
     public void setBajaLogicaDocumento(Long idDocumento, Long idUsuario) {
         Documento documento = documentoRepository.findById(idDocumento).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
-        if(documento.getAutor().getId() == idUsuario){
+        if(usuarioService.usuarioEsAdminDeLaApp(idUsuario) || documento.getAutor().getId() == idUsuario){
             documento.setBajaLogica(true);
             documento.setFechaModificacion(LocalDate.now());
         } else throw new IllegalArgumentException("No puede eliminar un documento que usted no creo");
@@ -118,4 +109,6 @@ public class DocumentoService {
         unDocumento.setAutor(administradorConsorcio);
         return unDocumento;
     }
+
+
 }
