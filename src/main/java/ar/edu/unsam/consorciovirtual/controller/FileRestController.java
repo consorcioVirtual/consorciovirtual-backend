@@ -62,7 +62,7 @@ public class FileRestController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            logger.info("Could not determine file type.");
+            logger.info("No se pudo determinar la extension del archivo.");
         }
 
         // Fallback to the default content type if type could not be determined
