@@ -22,7 +22,7 @@ public class ReclamoService {
     public List<Reclamo> buscarTodos(Long idLogueado, String palabraBuscada) {
         Long idReclamo = busquedaToLong(palabraBuscada);
         List<Reclamo> reclamos;
-        
+
         if (usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)) {
             reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         } else if (usuarioService.usuarioEsPropietario(idLogueado)) {
@@ -40,11 +40,15 @@ public class ReclamoService {
     }
 
     public Reclamo modificarReclamo(Long idLogueado, Reclamo reclamo) {
-        Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
-        reclamo.setAutor(_autor);
-        Reclamo updatedRequest = asignarEstado(reclamo);
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
-        return reclamoRepository.save(updatedRequest);
+        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado)) {
+            Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
+            reclamo.setAutor(_autor);
+            Reclamo updatedRequest = asignarEstado(reclamo);
+            registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
+            return reclamoRepository.save(updatedRequest);
+        } else {
+            throw new SecurityException("No tiene permisos");
+        }
     }
 
     public Reclamo registrarReclamo(Reclamo reclamo) {

@@ -58,11 +58,15 @@ public class SolicitudTecnicaService {
     }
 
     public SolicitudTecnica modificarSolicitud(Long idLogueado, SolicitudTecnica solicitud) {
-        Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
-        solicitud.setAutor(_autor);
-        SolicitudTecnica updatedRequest = asignarEstado(solicitud);
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId(), usuarioService.getNombreYApellidoById(idLogueado));
-        return solicitudTecnicaRepository.save(updatedRequest);
+        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsPropietario(idLogueado)) {
+            Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
+            solicitud.setAutor(_autor);
+            SolicitudTecnica updatedRequest = asignarEstado(solicitud);
+            registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId(), usuarioService.getNombreYApellidoById(idLogueado));
+            return solicitudTecnicaRepository.save(updatedRequest);
+        } else {
+            throw new SecurityException("No tiene permisos");
+        }
     }
 
     public SolicitudTecnica registrarSolicitud(SolicitudTecnica solicitud) {
