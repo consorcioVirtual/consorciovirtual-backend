@@ -59,6 +59,7 @@ public class Bootstrap implements InitializingBean {
     //Solicitudes
     private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notas, santir, estadoPendiente);
     private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), notas, nahue, estadoAprobado);
+    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), notas, juan, estadoPendiente);
 
     //Reclamos
     private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoPendiente, notas);
@@ -220,7 +221,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllRequests(){
-        List<SolicitudTecnica> requests = List.of(solicitud1, solicitud2);
+        List<SolicitudTecnica> requests = List.of(solicitud1, solicitud2, solicitud3);
         solicitudTecnicaService.registrarTodos(requests);
     }
 

@@ -24,11 +24,12 @@ public class SolicitudTecnicaService {
     public List<SolicitudTecnicaDTOParaListado> buscarTodos(Long idLogueado, String palabraBuscada) {
         Long idSolicitud = busquedaToLong(palabraBuscada);
         List<SolicitudTecnica> solicitudes;
-        if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
-            solicitudes = solicitudTecnicaRepository.findByIdAndBajaLogicaFalseOrNombreAutorContainingAndBajaLogicaFalseOrTituloContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
-        }else{
-//            solicitudes = solicitudTecnicaRepository.buscarPorUsuarioYFiltro(idLogueado, idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
-            solicitudes = solicitudTecnicaRepository.buscarPorUsuarioYFiltro(idLogueado, idSolicitud, palabraBuscada, palabraBuscada);
+        if (usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)) {
+            solicitudes = solicitudTecnicaRepository.buscarCreadasPorUsuariosNoInquilinosOAprobadasPorPropietarios(idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
+        } else if (usuarioService.usuarioEsPropietario(idLogueado)) {
+            solicitudes = solicitudTecnicaRepository.buscarPropiasODeMisInquilinos(idLogueado, idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
+        } else {
+            solicitudes = solicitudTecnicaRepository.buscarPropias(idLogueado, idSolicitud, palabraBuscada, palabraBuscada, palabraBuscada);
         }
 
         List<SolicitudTecnicaDTOParaListado> solicitudDtos =  solicitudes.stream().map(SolicitudTecnicaDTOParaListado::fromSolicitudTecnica).collect(Collectors.toList());

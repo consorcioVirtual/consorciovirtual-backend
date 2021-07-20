@@ -22,11 +22,13 @@ public class ReclamoService {
     public List<Reclamo> buscarTodos(Long idLogueado, String palabraBuscada) {
         Long idReclamo = busquedaToLong(palabraBuscada);
         List<Reclamo> reclamos;
-
-        if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
+        
+        if (usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)) {
             reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
-        }else{
-            reclamos = reclamoRepository.buscarPorUsuarioYFiltro(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
+        } else if (usuarioService.usuarioEsPropietario(idLogueado)) {
+            reclamos = reclamoRepository.buscarPropiosODeMisInquilinos(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada);
+        } else {
+            reclamos = reclamoRepository.buscarPropios(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada);
         }
 
         reclamos.forEach(this::agregarUltimaModificacion);
