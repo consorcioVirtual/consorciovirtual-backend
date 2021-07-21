@@ -23,7 +23,7 @@ public class UsuarioService {
     private final RegistroModificacionService registroModificacionService;
 
     private final DepartamentoRepository departamentoRepository;
-    private final GestorDeCorreo gestorDeCorreo;
+    //private final GestorDeCorreo gestorDeCorreo;
 
 //    public static Usuario usuarioLogueado;
 
@@ -48,7 +48,7 @@ public class UsuarioService {
     @Transactional
     public Usuario registrarUsuario(Usuario usuario) {
         usuario.setPassword(usuario.getDni());
-        gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
+        //gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
         return usuarioRepository.save(usuario);
     }
 
