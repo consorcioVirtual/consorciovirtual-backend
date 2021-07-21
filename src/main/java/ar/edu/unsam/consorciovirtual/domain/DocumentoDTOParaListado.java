@@ -1,11 +1,14 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
+import ar.edu.unsam.consorciovirtual.service.RegistroModificacionService;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
 public class DocumentoDTOParaListado {
+
     private Long id;
 
     private String titulo;
@@ -20,7 +23,7 @@ public class DocumentoDTOParaListado {
         documentoDTO.titulo = documento.getTitulo();
         documentoDTO.autor = documento.getNombreAutor();
         documentoDTO.fechaCreacion = documento.getFechaCreacion();
-        documentoDTO.modificado = "Falta";
+        documentoDTO.modificado = "";
         String[] divisionPorBarra = documento.getEnlaceDeDescarga().split("/");
         documentoDTO.archivo = divisionPorBarra[divisionPorBarra.length-1];
         return documentoDTO;

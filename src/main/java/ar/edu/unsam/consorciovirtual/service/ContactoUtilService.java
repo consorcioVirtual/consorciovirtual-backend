@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.ContactoUtil;
+import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
 import ar.edu.unsam.consorciovirtual.repository.ContactoUtilRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,9 @@ public class ContactoUtilService {
 
     private final ContactoUtilRepository contactoUtilRepository;
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
+    private final RegistroModificacionService registroModificacionService;
+
 
     private Boolean esAdministrador(Long idLogueado){
         return usuarioRepository.esAdministrador(idLogueado).intValue() == 1;
@@ -39,6 +43,7 @@ public class ContactoUtilService {
             contactoViejo.setServicio(contactoActualizado.getServicio());
             contactoViejo.setAnotacion(contactoActualizado.getAnotacion());
             contactoUtilRepository.save(contactoViejo);
+            registroModificacionService.guardarPorTipoYId(TipoRegistro.TELEFONOUTIL, contactoViejo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
         } else throw new SecurityException("No tiene permisos para modidificar contactos.");
     }
 

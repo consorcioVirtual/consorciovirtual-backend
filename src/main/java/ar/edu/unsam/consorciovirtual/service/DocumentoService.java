@@ -25,6 +25,8 @@ public class DocumentoService {
     private final DocumentoRepository documentoRepository;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
+    private final RegistroModificacionService registroModificacionService;
+
 
     public List<DocumentoDTOParaListado> mapearADTO(List<? extends Documento> documentos){
         return documentos.stream().map(documento-> DocumentoDTOParaListado.fromDocumento(documento)).collect(Collectors.toList());
@@ -32,7 +34,9 @@ public class DocumentoService {
 
     public List<DocumentoDTOParaListado> buscarTodos(String palabraBuscada){
         List<? extends Documento> documentos = documentoRepository.findByBajaLogicaFalse(palabraBuscada);
-        return mapearADTO(documentos);
+        List<DocumentoDTOParaListado> documentosDTO = mapearADTO(documentos);
+        documentosDTO.forEach(x -> x.setModificado(registroModificacionService.getUltimaModificacion(TipoRegistro.DOCUMENTO, x.getId())));
+        return documentosDTO;
     }
 
     public Documento buscarPorId(Long id){
@@ -88,6 +92,7 @@ public class DocumentoService {
         } else throw new IllegalArgumentException("No puede modificar un documento que usted no creo");
 
         documentoRepository.save(documentoViejo);
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.DOCUMENTO, documentoViejo.getId(), usuarioService.getNombreYApellidoById(idUsuario));
     }
 
     public void setBajaLogicaDocumento(Long idDocumento, Long idUsuario) {
