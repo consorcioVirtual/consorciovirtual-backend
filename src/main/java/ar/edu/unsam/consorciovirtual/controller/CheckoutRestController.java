@@ -38,11 +38,10 @@ public class CheckoutRestController {
 
         BackUrls backUrls = new BackUrls(
                 "localhost:3000/payment/success/"+expensaId,
-                "localhost:3000/",
+                "localhost:3000/expensa/"+expensaId,
                 "localhost:3000/");
 
         PaymentMethods paymentMethods = new PaymentMethods();
-        paymentMethods.setExcludedPaymentTypes("ticket");
         paymentMethods.setInstallments(1);
 
         preference.setPaymentMethods(paymentMethods);

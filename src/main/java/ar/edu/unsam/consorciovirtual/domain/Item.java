@@ -12,7 +12,6 @@ public class Item {
     private Long id;
     private Double importeUnitario;
     private Double cantidad;
-    //private tipo; De momento descartada
     private String descripcion;
 
     public Double importeTotalItem(){
