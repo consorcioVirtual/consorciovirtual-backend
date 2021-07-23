@@ -52,7 +52,10 @@ public class ExpensaDeDepartamentoService {
     }
 
     public ExpensaDeDepartamento buscarPorId(Long id){
-        return expensaDeDepartamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Expensa no Encontrada"));
+        ExpensaDeDepartamento expensa = expensaDeDepartamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Expensa no Encontrada"));
+        if(!expensa.getAnulada()) {
+            return expensa;
+        }else throw new IllegalArgumentException("La expensa que desea ver se encuentra anulada");
     }
 
     public List<ExpensaDeDepartamento> buscarPorPeriodo(YearMonth periodo){

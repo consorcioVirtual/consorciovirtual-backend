@@ -71,7 +71,14 @@ public class ExpensaDeDepartamento {
     }
 
     public void anularExpensa(){
-        anulada = true;
+        if(!estaPaga()){
+            String titulo = resumenDeExpensa.getTitulo() + " (Reemplazado)";
+            String detalle = resumenDeExpensa.getDescripcion() + " (Este comprobante fue reemplazado, " +
+                    "dado que la expensa a la que hace referencia debió ser anulada)";
+            resumenDeExpensa.setTitulo(titulo);
+            resumenDeExpensa.setDescripcion(detalle);
+            anulada = true;
+        }
     }
 
     public Boolean estaPaga(){

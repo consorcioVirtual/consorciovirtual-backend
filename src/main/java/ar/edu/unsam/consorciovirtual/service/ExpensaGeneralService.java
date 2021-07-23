@@ -17,11 +17,19 @@ public class ExpensaGeneralService {
 
     private final ExpensaGeneralRepository expensaGeneralRepository;
 
+    private Boolean contieneExpensasPagas(ExpensaGeneral expensaGeneral){
+        return expensaGeneral.getListaDeExpensas().stream().anyMatch(exp -> exp.estaPaga());
+    }
+
     @Transactional
     public void anularExpensasPorPeriodo(YearMonth periodo) {
-        ExpensaGeneral expensaAAnular = expensaGeneralRepository.findOneByPeriodoAndAnuladaFalse(periodo);
-        if(expensaAAnular != null){
-            expensaAAnular.anularExpensa();
+        List <ExpensaGeneral> posiblesExpensas = expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo);
+        if(!posiblesExpensas.isEmpty()){
+            ExpensaGeneral expensaAAnular = posiblesExpensas.get(0);
+            if(!contieneExpensasPagas(expensaAAnular)){
+                expensaAAnular.anularExpensa();
+            }else throw new IllegalArgumentException("No se puede anular esta expensa, dado que hay al menos " +
+                    "una expensa correspondiente a este período, ya fue abonada");
         } else throw new IllegalArgumentException("No existe expensa activa de ese periodo");
     }
 
