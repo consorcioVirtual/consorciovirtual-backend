@@ -82,8 +82,8 @@ public class SolicitudTecnicaService {
     }
 
     private SolicitudTecnica asignarEstado(SolicitudTecnica solicitud){
-        Estado _estado = estadoService.buscarPorId(solicitud.getEstado().getId());
-        solicitud.getEstado().setNombreEstado(_estado.getNombreEstado());
+        Estado _estado = estadoService.buscarPorNombre(solicitud.getEstado().getNombreEstado());
+        solicitud.setEstado(_estado);
         return solicitud;
     }
 

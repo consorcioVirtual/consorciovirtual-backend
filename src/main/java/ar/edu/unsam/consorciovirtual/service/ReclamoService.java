@@ -76,8 +76,8 @@ public class ReclamoService {
     }
 
     private Reclamo asignarEstado(Reclamo reclamo){
-        Estado _estado = estadoService.buscarPorId(reclamo.getEstado().getId());
-        reclamo.getEstado().setNombreEstado(_estado.getNombreEstado());
+        Estado _estado = estadoService.buscarPorNombre(reclamo.getEstado().getNombreEstado());
+        reclamo.setEstado(_estado);
         return reclamo;
     }
 

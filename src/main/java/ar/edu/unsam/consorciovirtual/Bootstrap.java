@@ -49,8 +49,8 @@ public class Bootstrap implements InitializingBean {
 
     //Estados
     private final Estado estadoPendienteAprobacion = createState("Pendiente de aprobación", "Solicitud tecnica", null);
-    private final Estado estadoPendiente = createState("Pendiente", "Solicitud tecnica", estadoPendienteAprobacion);
-    private final Estado estadoEnProceso = createState("En proceso", "Solicitud tecnica", estadoPendiente);
+    private final Estado estadoPendienteResolucion = createState("Pendiente de resolución", "Solicitud tecnica", estadoPendienteAprobacion);
+    private final Estado estadoEnProceso = createState("En proceso", "Solicitud tecnica", estadoPendienteResolucion);
     private final Estado estadoResuelto = createState("Resuelto", "Solicitud tecnica", estadoEnProceso);
     private final Estado estadoRechazado = createState("Rechazado", "Solicitud tecnica", estadoEnProceso);
 
@@ -60,13 +60,14 @@ public class Bootstrap implements InitializingBean {
     private final List<Nota> notas = List.of(nota1, nota2);
 
     //Solicitudes
-    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notas, santir, estadoPendiente);
-    private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), notas, nahue, estadoEnProceso);
-    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 10), notas, juan, estadoRechazado);
+    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notas, santir, estadoPendienteResolucion);
+    private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 07, 12), notas, nahue, estadoEnProceso);
+    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 29), notas, juan, estadoRechazado);
+    private final SolicitudTecnica solicitud4 = createSolicitudTecnica("Interna", "Caño roto", "Se rompió un caño de agua en mi baño, se me inunda todo", LocalDate.of(2021, 07, 17), notas, juan, estadoPendienteAprobacion);
 
     //Reclamos
     private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoEnProceso, notas);
-    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), nahue, estadoPendiente, notas);
+    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), nahue, estadoPendienteResolucion, notas);
     private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), santilr, estadoResuelto, notas);
 
     //Gastos
@@ -224,7 +225,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllRequests(){
-        List<SolicitudTecnica> requests = List.of(solicitud1, solicitud2, solicitud3);
+        List<SolicitudTecnica> requests = List.of(solicitud1, solicitud2, solicitud3, solicitud4);
         solicitudTecnicaService.registrarTodos(requests);
     }
 
@@ -238,7 +239,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllStates(){
-        List<Estado> states = List.of(estadoPendiente, estadoPendienteAprobacion, estadoEnProceso, estadoResuelto, estadoRechazado);
+        List<Estado> states = List.of(estadoPendienteResolucion, estadoPendienteAprobacion, estadoEnProceso, estadoResuelto, estadoRechazado);
         estadoRepository.saveAll(states); // Directo al repo porque no un controller no se usaría para nada más
     }
 

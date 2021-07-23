@@ -13,8 +13,9 @@ public interface SolicitudTecnicaRepository extends JpaRepository<SolicitudTecni
             "INNER JOIN estado e ON solicitud.id_estado = e.id " +
             "INNER JOIN usuario a ON solicitud.id_autor = a.id " +
             "WHERE solicitud.baja_logica = false " +
-            "AND (e.nombre_estado = 'Pendiente' " +
-            "OR a.tipo <> 'Inquilino')" +
+            "AND (e.nombre_estado = 'Pendiente de resolución' " +
+            "OR e.nombre_estado = 'En proceso'" +
+            "OR e.nombre_estado = 'Resuelto')" +
             "AND (solicitud.id = :idSolicitud " +
             "OR solicitud.nombre_autor LIKE %:nombreAutor% " +
             "OR e.nombre_estado LIKE %:nombreEstado% " +

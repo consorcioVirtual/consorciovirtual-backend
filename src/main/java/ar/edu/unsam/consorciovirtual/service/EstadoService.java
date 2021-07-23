@@ -17,4 +17,8 @@ public class EstadoService {
     public Estado buscarPorId(Long id) {
         return estadoRepository.findById(id).orElseThrow(() -> new RuntimeException("Estado no encontrado"));
     }
+
+    public Estado buscarPorNombre(String nombre) {
+        return estadoRepository.findByNombreEstado(nombre).orElseThrow(() -> new RuntimeException("Estado no encontrado"));
+    }
 }
