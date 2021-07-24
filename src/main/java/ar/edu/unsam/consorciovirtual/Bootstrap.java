@@ -39,6 +39,7 @@ public class Bootstrap implements InitializingBean {
     private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
     private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
     private final Usuario juan = createUser("Juan", "Perez", "inquilino", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
+    private final Usuario rober = createUser("Roberto", "Perez", "inquilino2", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
     private final Usuario maria = createUser("Maria", "Perez", "test", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio);
 
     //Departamentos
@@ -157,7 +158,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllusers() {
-        List<Usuario> usuarios = List.of(santir, santilr, santil, pablo, nahue, juan, maria);
+        List<Usuario> usuarios = List.of(santir, santilr, santil, pablo, nahue, juan, maria, rober);
         usuarioService.registrarTodos(usuarios);
     }
 

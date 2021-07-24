@@ -126,4 +126,17 @@ public class UsuarioService {
         return usuarioRepository.findById(idUsuario).get().getNombreYApellido();
     }
 
+    //INQUILINOS
+    public List<Usuario> buscarInquilinos(String palabraBuscada) {
+        List<Usuario> users = usuarioRepository.findBySearchInquilino(palabraBuscada);
+        users.forEach(this::agregarUltimaModificacion);
+        return users;
+    }
+
+    public List<Usuario> buscarInquilinosDeUsuario(String palabraBuscada, Long idPropietario){
+        List<Usuario> users = usuarioRepository.findBySearchInquilinosDeUsuario(palabraBuscada, idPropietario);
+        users.forEach(this::agregarUltimaModificacion);
+        return users;
+    }
+
 }

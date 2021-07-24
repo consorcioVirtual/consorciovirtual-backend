@@ -65,4 +65,14 @@ public class UsuarioRestController {
        usuarioService.bajaLogica(idLogueado, idABorrar);
     }
 
+    //ENDPOINT INQUILINO
+    @GetMapping("/inquilinos")
+    public List<Usuario> buscarInquilinos(@RequestParam(defaultValue="") String palabraBuscada) {
+        return this.usuarioService.buscarInquilinos(palabraBuscada);
+    }
+
+    @GetMapping("/inquilinos/{idPropietario}")
+    public List<Usuario> buscarInquilinos(@RequestParam(defaultValue="") String palabraBuscada, @PathVariable Long idPropietario) {
+        return this.usuarioService.buscarInquilinosDeUsuario(palabraBuscada,idPropietario);
+    }
 }

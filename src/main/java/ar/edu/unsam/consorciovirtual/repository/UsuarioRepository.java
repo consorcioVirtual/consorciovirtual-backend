@@ -23,10 +23,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     //Trae un usuario por id que es adm de app o adm de consorcio
     //Se maneja por el número del enum estar atentos a no cambair el orden del mismo
+
     @Query(value = "SELECT * FROM usuario as unUsuario " +
             "WHERE unUsuario.id = :idAutor AND (unUsuario.tipo = 'Administrador' OR unUsuario.tipo = 'Administrador_Consorcio')", nativeQuery = true)
     Optional<Usuario> buscarAdministradorPorId(@Param("idAutor") Long idAutor);
-
     @Query(value = "SELECT * FROM usuario as unUsuario " +
             "WHERE unUsuario.tipo = 'Administrador_Consorcio' AND unUsuario.baja_logica = 0", nativeQuery = true)
     Optional<Usuario> buscarAdministradorDeConsorcioActivo();
@@ -35,5 +35,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "(unUsuario.tipo = 'Administrador' OR unUsuario.tipo = 'Administrador_Consorcio')", nativeQuery = true)
     Integer esAdministrador(@Param("idUsuario") Long idUsuario);
 
+    //QUERYS INQUILINO
+    @Query(value = "SELECT * FROM usuario as u " +
+            "WHERE (u.nombre LIKE %:word% OR u.apellido LIKE %:word% OR u.dni LIKE %:word% OR u.correo LIKE %:word% ) AND u.tipo = 'Inquilino' AND (u.baja_logica = 0)", nativeQuery = true)
+    List<Usuario> findBySearchInquilino(String word);
+
+    @Query(value = "select u.id, u.nombre, u.apellido, u.fecha_nacimiento, u.dni, u.baja_logica, u.correo, u.password, u.tipo from usuario u " +
+            "inner join departamento d ON u.id = d.id_inquilino AND d.id_propietario = :idPropietario AND " +
+            "(u.nombre LIKE %:word% OR u.apellido LIKE %:word% OR u.dni LIKE %:word% OR u.correo LIKE %:word%) AND u.baja_logica = 0", nativeQuery = true)
+    List<Usuario> findBySearchInquilinosDeUsuario(String word, @Param("idPropietario") Long idPropietario);
 }
 

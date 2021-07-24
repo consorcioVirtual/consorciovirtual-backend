@@ -18,9 +18,7 @@ import java.util.List;
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
-    @Autowired
-    MensajeService mensajeService;
-    UsuarioService usuarioService;
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         webSocketSessions.add(session);

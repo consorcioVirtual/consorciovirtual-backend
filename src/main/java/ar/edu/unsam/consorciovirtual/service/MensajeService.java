@@ -4,6 +4,7 @@ import ar.edu.unsam.consorciovirtual.domain.Mensaje;
 import ar.edu.unsam.consorciovirtual.domain.MensajeRequest;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.MensajeRepository;
+import ar.edu.unsam.consorciovirtual.repository.RegistroMensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,16 @@ import java.util.List;
 @Service
 @Transactional
 public class MensajeService {
-    @Autowired
     private final MensajeRepository mensajeRepository;
     private final UsuarioRepository usuarioRepository;
+    private final RegistroMensajeRepository registroMensajeRepository;
 
     public List<Mensaje> getMensajes(String palabraBuscada) {
 //        return mensajeRepository.findAll(Sort.by( (Sort.Direction.DESC),"id") );
         return mensajeRepository.findMensajesFiltrados(palabraBuscada);
     }
 
-        public void createMensaje(MensajeRequest mensaje) {
+    public void createMensaje(MensajeRequest mensaje) {
         Usuario usuarioEmisor = usuarioRepository.findById(mensaje.getIdEmisor())
                 .orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
         Mensaje mensajeNuevo = new Mensaje();
@@ -34,6 +35,10 @@ public class MensajeService {
         mensajeNuevo.setUsuarioEmisor(usuarioEmisor);
         mensajeRepository.save(mensajeNuevo);
     }
+
+//    public Integer getCantidadMensajes(Long usuarioId) {
+//
+//    }
 
 //    public void createMensaje(Long idAutor, Mensaje mensajeNuevo, Long idMensajeCitado) {
 //        Usuario autor = usuarioRepository.findById(idAutor).orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
