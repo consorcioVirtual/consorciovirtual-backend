@@ -1,9 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
-import ar.edu.unsam.consorciovirtual.domain.DepartamentoConUsuarios;
-import ar.edu.unsam.consorciovirtual.domain.DepartamentoDTOParaListado;
-import ar.edu.unsam.consorciovirtual.domain.Views;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -60,4 +57,8 @@ public class DepartamentoRestController {
         return this.departamentoService.count();
     }
 
+    @GetMapping("/departamento/user/sin-inquilino/{idPropietario}")
+    public List<DepartamentoDTOReducido> getDepartamentosDeUsuarioSinInquiino(@PathVariable Long idPropietario){
+        return departamentoService.getDepartamentosDeUsuarioSinInquilino(idPropietario);
+    }
 }

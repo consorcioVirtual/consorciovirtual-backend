@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.controller;
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.UsuarioService;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +28,8 @@ public class UsuarioRestController {
 
     @Autowired
     private final UsuarioService usuarioService;
+    @Autowired
+    private final DepartamentoService departamentoService;
 
     @GetMapping("/usuarios")
     public List<Usuario> buscarTodos(@RequestParam(defaultValue="") String palabraBuscada) {
@@ -73,6 +76,14 @@ public class UsuarioRestController {
 
     @GetMapping("/inquilinos/{idPropietario}")
     public List<Usuario> buscarInquilinos(@RequestParam(defaultValue="") String palabraBuscada, @PathVariable Long idPropietario) {
-        return this.usuarioService.buscarInquilinosDeUsuario(palabraBuscada,idPropietario);
+        return this.usuarioService.buscarInquilinosDeUsuario(   palabraBuscada,idPropietario);
+    }
+
+    @PutMapping("/inquilino/crear/{idDepartamento}")
+    public Usuario crearInquilino(@RequestBody String body, @PathVariable Long idDepartamento ) throws JsonProcessingException {
+        Usuario newUser = new ObjectMapper().readValue(body, Usuario.class);
+        Usuario nuevoInquilino = usuarioService.registrarUsuario(newUser);
+        departamentoService.setInquilino(idDepartamento,nuevoInquilino);
+        return nuevoInquilino;
     }
 }

@@ -115,4 +115,17 @@ public class DepartamentoService {
         String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.DEPARTAMENTO, dto.getId());
         dto.setUltimaModificacion(fechaUltimaModificacion);
     }
+
+    public List<DepartamentoDTOReducido> getDepartamentosDeUsuarioSinInquilino(Long idPropietario){
+        Usuario propietario = usuarioService.buscarPorId(idPropietario);
+        List<Departamento> departamentos = departamentoRepository.findByPropietarioAndInquilinoIsNullAndBajaLogicaFalse(propietario);
+        return departamentos.stream().map(DepartamentoDTOReducido::fromDepartamento).collect(Collectors.toList());
+    }
+
+    public void setInquilino(Long idDepartamento,Usuario inquilino){
+        Departamento departamento = departamentoRepository.getById(idDepartamento);
+        departamento.setInquilino(inquilino);
+        departamento.setNombreInquilino(inquilino.getNombreYApellido());
+        departamentoRepository.save(departamento);
+    }
 }

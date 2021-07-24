@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.repository;
 
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
+import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,4 +43,5 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
                 "OR piso LIKE %:pisoDepto%)" , nativeQuery=true)
     List <Departamento> buscarPorUsuarioYFiltro(@Param("idUsuario") Long idUsuario, @Param("nroDepartamento") String nroDepartamento, @Param("nombrePropietario") String nombrePropietario, @Param("nombreInquilino") String nombreInquilino, @Param("pisoDepto") String pisoDepto);
 
+    List<Departamento> findByPropietarioAndInquilinoIsNullAndBajaLogicaFalse(Usuario propietario);
 }

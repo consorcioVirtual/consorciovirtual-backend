@@ -21,7 +21,7 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final RegistroModificacionService registroModificacionService;
-
+//    private final DepartamentoService departamentoService;
     private final DepartamentoRepository departamentoRepository;
     //private final GestorDeCorreo gestorDeCorreo;
 
@@ -139,4 +139,8 @@ public class UsuarioService {
         return users;
     }
 
+    @Transactional
+    public void registrarInquilino(Usuario inquilino, Long idDepartamento) {
+//        return registrarUsuario(inquilino).get();
+    }
 }
