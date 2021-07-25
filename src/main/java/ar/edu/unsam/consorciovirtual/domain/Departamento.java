@@ -67,4 +67,17 @@ public class Departamento {
         return piso + nroDepartamento;
     }
 
+    public void quitarInquilino(){
+        setInquilino(null);
+        setNombreInquilino(null);
+    }
+
+    public void quitarPropietario(){
+        setPropietario(null);
+        setNombrePropietario(null);
+    }
+
+    public Boolean esPropietario(Usuario usuario){
+        return getPropietario().getId().equals(usuario.getId());
+    }
 }

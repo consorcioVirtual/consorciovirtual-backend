@@ -65,7 +65,8 @@ public class UsuarioRestController {
 
     @DeleteMapping("/usuario/eliminar/{idABorrar}")
     public void bajaLogicaUsuario(@RequestParam Long idLogueado, @PathVariable Long idABorrar) throws DataConsistencyException {
-       usuarioService.bajaLogica(idLogueado, idABorrar);
+       Usuario usuarioEliminado = usuarioService.bajaLogica(idLogueado, idABorrar);
+       departamentoService.quitarUsuarioEnDepartamentos(usuarioEliminado);
     }
 
     //ENDPOINT INQUILINO

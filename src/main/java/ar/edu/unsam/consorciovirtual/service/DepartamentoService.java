@@ -128,4 +128,12 @@ public class DepartamentoService {
         departamento.setNombreInquilino(inquilino.getNombreYApellido());
         departamentoRepository.save(departamento);
     }
+
+    public void quitarUsuarioEnDepartamentos(Usuario usuario){
+        List<Departamento> departamentos = departamentoRepository.findByInquilinoAndBajaLogicaFalse(usuario);
+        if( !departamentos.isEmpty() ) {
+            departamentos.forEach( Departamento::quitarInquilino );
+            departamentoRepository.saveAll(departamentos);
+        }
+    }
 }

@@ -44,4 +44,6 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
     List <Departamento> buscarPorUsuarioYFiltro(@Param("idUsuario") Long idUsuario, @Param("nroDepartamento") String nroDepartamento, @Param("nombrePropietario") String nombrePropietario, @Param("nombreInquilino") String nombreInquilino, @Param("pisoDepto") String pisoDepto);
 
     List<Departamento> findByPropietarioAndInquilinoIsNullAndBajaLogicaFalse(Usuario propietario);
+
+    List<Departamento> findByInquilinoAndBajaLogicaFalse( Usuario inquilino);
 }

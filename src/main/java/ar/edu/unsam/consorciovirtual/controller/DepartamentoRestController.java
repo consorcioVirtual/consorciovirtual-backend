@@ -57,7 +57,7 @@ public class DepartamentoRestController {
         return this.departamentoService.count();
     }
 
-    @GetMapping("/departamento/user/sin-inquilino/{idPropietario}")
+    @GetMapping("/departamentos/user/sin-inquilino/{idPropietario}")
     public List<DepartamentoDTOReducido> getDepartamentosDeUsuarioSinInquiino(@PathVariable Long idPropietario){
         return departamentoService.getDepartamentosDeUsuarioSinInquilino(idPropietario);
     }

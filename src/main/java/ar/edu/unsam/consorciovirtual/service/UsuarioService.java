@@ -71,13 +71,13 @@ public class UsuarioService {
         } else throw new SecurityException("Usuario o contraseña incorrectos");
     }
 
-    public void bajaLogica(Long idLogueado, Long idABorrar) throws DataConsistencyException {
+    public Usuario bajaLogica(Long idLogueado, Long idABorrar) throws DataConsistencyException {
         validarBaja(idLogueado, idABorrar);
         Usuario usuario = usuarioRepository.findById(idABorrar).get();
         usuario.setBajaLogica(true);
         registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.USUARIO, idABorrar);
 
-        usuarioRepository.save(usuario);
+        return usuarioRepository.save(usuario);
     }
 
     private void validarBaja(Long idLogueado, Long idABorrar) throws DataConsistencyException {
