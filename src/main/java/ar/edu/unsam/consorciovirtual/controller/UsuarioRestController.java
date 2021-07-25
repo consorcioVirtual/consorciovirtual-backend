@@ -58,7 +58,7 @@ public class UsuarioRestController {
 
 
     @PutMapping("/usuario/crear")
-    public Usuario crearUsuario(@RequestBody String body) throws JsonProcessingException {
+    public Usuario crearUsuario(@RequestBody String body) throws JsonProcessingException, DataConsistencyException {
         Usuario newUser = new ObjectMapper().readValue(body, Usuario.class);
         return usuarioService.registrarUsuario(newUser);
     }
@@ -81,7 +81,7 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/inquilino/crear/{idDepartamento}")
-    public Usuario crearInquilino(@RequestBody String body, @PathVariable Long idDepartamento ) throws JsonProcessingException {
+    public Usuario crearInquilino(@RequestBody String body, @PathVariable Long idDepartamento ) throws JsonProcessingException, DataConsistencyException {
         Usuario newUser = new ObjectMapper().readValue(body, Usuario.class);
         Usuario nuevoInquilino = usuarioService.registrarUsuario(newUser);
         departamentoService.setInquilino(idDepartamento,nuevoInquilino);

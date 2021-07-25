@@ -23,7 +23,7 @@ public class UsuarioService {
     private final RegistroModificacionService registroModificacionService;
 //    private final DepartamentoService departamentoService;
     private final DepartamentoRepository departamentoRepository;
-    //private final GestorDeCorreo gestorDeCorreo;
+//    private final GestorDeCorreo gestorDeCorreo;
 
 //    public static Usuario usuarioLogueado;
 
@@ -46,9 +46,10 @@ public class UsuarioService {
 //        return usuarioRepository.findByNombre(nombre).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 //    }
     @Transactional
-    public Usuario registrarUsuario(Usuario usuario) {
+    public Usuario registrarUsuario(Usuario usuario) throws DataConsistencyException {
+        validarAlta(usuario);
         usuario.setPassword(usuario.getDni());
-        //gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
+//        gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
         return usuarioRepository.save(usuario);
     }
 
@@ -89,6 +90,12 @@ public class UsuarioService {
         }
         if(usuarioSeRelacionaConDeptos(idABorrar)){
             throw new DataConsistencyException("No es posible eliminar un usuario que es propietario de un departamento.");
+        }
+    }
+
+    private void validarAlta(Usuario newUser) throws DataConsistencyException {
+        if(usuarioRepository.existsByCorreoAndDniAndBajaLogicaFalse(newUser.getCorreo(), newUser.getDni())){
+            throw new DataConsistencyException("El usuario que desea crear ya existe en Consorcio Virtual.");
         }
     }
 

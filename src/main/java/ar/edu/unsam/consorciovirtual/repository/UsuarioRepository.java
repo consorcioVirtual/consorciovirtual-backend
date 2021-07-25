@@ -21,12 +21,15 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByCorreoAndPasswordAndBajaLogicaFalse(String correo, String password);
 
+    Boolean existsByCorreoAndDniAndBajaLogicaFalse(String correo, String dni);
+
     //Trae un usuario por id que es adm de app o adm de consorcio
     //Se maneja por el número del enum estar atentos a no cambair el orden del mismo
 
     @Query(value = "SELECT * FROM usuario as unUsuario " +
             "WHERE unUsuario.id = :idAutor AND (unUsuario.tipo = 'Administrador' OR unUsuario.tipo = 'Administrador_Consorcio')", nativeQuery = true)
     Optional<Usuario> buscarAdministradorPorId(@Param("idAutor") Long idAutor);
+
     @Query(value = "SELECT * FROM usuario as unUsuario " +
             "WHERE unUsuario.tipo = 'Administrador_Consorcio' AND unUsuario.baja_logica = 0", nativeQuery = true)
     Optional<Usuario> buscarAdministradorDeConsorcioActivo();
