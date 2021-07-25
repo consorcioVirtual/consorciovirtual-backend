@@ -1,12 +1,10 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
-import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnicaDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
+import ar.edu.unsam.consorciovirtual.repository.ExpensaGeneralRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +18,7 @@ import java.util.List;
 public class GastoService {
 
     private final GastoRepository gastoRepository;
+    private final ExpensaGeneralRepository expensaRepository;
     private final RegistroModificacionService registroModificacionService;
     private final UsuarioService usuarioService;
 
@@ -36,7 +35,7 @@ public class GastoService {
 
     public List<Gasto> buscarTodos(String palabraBuscada) {
         Double importe = busquedaToDouble(palabraBuscada);
-        List<Gasto> gastos = gastoRepository.findByTituloContainingOrImporte(palabraBuscada, importe);
+        List<Gasto> gastos = gastoRepository.findByAnuladoFalseAndTituloContainingOrAnuladoFalseAndImporte(palabraBuscada, importe);
         gastos.forEach(this::agregarUltimaModificacion);
         return gastos;
     }
@@ -57,17 +56,26 @@ public class GastoService {
         return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
     }
 
+    @Transactional
     public Gasto modificar(Long idLogueado, Gasto gastoActualizado) {
-        registroModificacionService.guardarPorTipoYId(TipoRegistro.GASTO, gastoActualizado.getId(), usuarioService.getNombreYApellidoById(idLogueado));
-        return gastoRepository.save(gastoActualizado);
+        if(noExisteExpensaEnElPeriodo(gastoActualizado.getPeriodo())){
+            registroModificacionService.guardarPorTipoYId(TipoRegistro.GASTO, gastoActualizado.getId(), usuarioService.getNombreYApellidoById(idLogueado));
+            return gastoRepository.save(gastoActualizado);
+        } else throw new IllegalArgumentException("No puede modificar un gasto que ya fue agregado a una expensa");
     }
 
+    @Transactional
     public void bajaLogica(Long id){
         Gasto gasto = gastoRepository.findById(id).get();
-        //gasto.setBajaLogica(true);
-        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.GASTO, id);
+        if(noExisteExpensaEnElPeriodo(gasto.getPeriodo())){
+            gasto.setAnulado(true);
+            registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.GASTO, id);
+            gastoRepository.save(gasto);
+        } else throw new IllegalArgumentException("No puede anular un gasto que ya fue agregado a una expensa");
+    }
 
-        gastoRepository.save(gasto);
+    private Boolean noExisteExpensaEnElPeriodo(YearMonth periodo){
+        return expensaRepository.findByPeriodoAndAnuladaFalse(periodo).isEmpty();
     }
 
     public List<Gasto> buscarPorPeriodo(YearMonth periodo){

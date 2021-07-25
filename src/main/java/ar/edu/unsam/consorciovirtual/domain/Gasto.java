@@ -26,6 +26,7 @@ public class Gasto {
     private Double importe;
     private LocalDate fechaDeCreacion = LocalDate.now();
     private String url;
+    private Boolean anulado = false;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idGasto")
