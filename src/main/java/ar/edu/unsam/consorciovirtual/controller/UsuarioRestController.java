@@ -56,6 +56,10 @@ public class UsuarioRestController {
        return usuarioService.loguearUsuario(correo, password);
    }
 
+   @PutMapping("/usuario/modificarContrasenia")
+   public void modificarContraseniaUsuario(@RequestParam String correo, @RequestParam String password, @RequestParam String newPassword) {
+       usuarioService.modificarContrasenia(correo, password, newPassword);
+   }
 
     @PutMapping("/usuario/crear")
     public Usuario crearUsuario(@RequestBody String body) throws JsonProcessingException, DataConsistencyException {

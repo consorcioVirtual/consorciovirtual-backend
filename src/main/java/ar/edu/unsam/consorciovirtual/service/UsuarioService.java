@@ -65,12 +65,23 @@ public class UsuarioService {
 
     public Usuario loguearUsuario(String correo, String password){
         Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
-//        usuarioLogueado = user;
 
         if(user != null) {
             return user;
         } else throw new SecurityException("Usuario o contraseña incorrectos");
     }
+
+    public void modificarContrasenia(String correo, String password, String newPassword) {
+        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
+
+        if(user == null) {
+            throw new SecurityException("Contraseña incorrecta");
+        } else {
+            user.setPassword(newPassword);
+            usuarioRepository.save(user);
+        }
+    }
+
 
     public Usuario bajaLogica(Long idLogueado, Long idABorrar) throws DataConsistencyException {
         validarBaja(idLogueado, idABorrar);
@@ -150,4 +161,5 @@ public class UsuarioService {
     public void registrarInquilino(Usuario inquilino, Long idDepartamento) {
 //        return registrarUsuario(inquilino).get();
     }
+
 }
