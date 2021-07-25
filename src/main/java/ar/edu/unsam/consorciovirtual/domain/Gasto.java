@@ -21,11 +21,10 @@ public class Gasto {
 
     private String titulo;
     private Rubro rubro;
-    private String tipo; // agregar al DER
-    private YearMonth periodo; // Definir formato de periodo y hacer validación
+    private String tipo;
+    private YearMonth periodo;
     private Double importe;
-    private LocalDate fechaDeCreacion; // (diferencia entre DER y Vista)
-    //falta relacionarlo con la/s factura/s
+    private LocalDate fechaDeCreacion = LocalDate.now();
     private String url;
 
     @OneToMany(cascade = CascadeType.ALL)

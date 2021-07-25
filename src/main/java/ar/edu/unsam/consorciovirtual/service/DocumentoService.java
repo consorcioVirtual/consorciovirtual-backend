@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.DocumentoRepository;
+import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class DocumentoService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
     private final RegistroModificacionService registroModificacionService;
+    private final GastoRepository gastoRepository;
 
 
     public List<DocumentoDTOParaListado> mapearADTO(List<? extends Documento> documentos){
@@ -79,6 +81,21 @@ public class DocumentoService {
         if(nuevoDocumento.esValido() && (usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor))){
             nuevoDocumento.setAutor(autor);
             documentoRepository.save(nuevoDocumento);
+        }else throw new IllegalArgumentException("Los datos ingresados no son válidos");
+    }
+
+    public void createDocumentoDeGasto(Long idAutor, Documento nuevoDocumento) {
+        Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permiso para crear documentos"));
+        Gasto gasto = gastoRepository.findGastoByUrl(nuevoDocumento.getEnlaceDeDescarga());
+        nuevoDocumento.setTitulo(gasto.getTitulo());
+        nuevoDocumento.setDescripcion("Comprobante relacionado al gasto que se menciona en el título, " +
+                "para más información buscar en pestaña de gastos con el mismo nombre");
+        if(nuevoDocumento.esValido() && (usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor))){
+            nuevoDocumento.setAutor(autor);
+            documentoRepository.save(nuevoDocumento);
+            Documento elDocumento = documentoRepository.findByEnlaceDeDescarga(nuevoDocumento.getEnlaceDeDescarga()).orElseThrow(() -> new IllegalArgumentException ("Error al asociar comprobante y gasto"));
+            gasto.setComprobante(elDocumento);
+            gastoRepository.save(gasto);
         }else throw new IllegalArgumentException("Los datos ingresados no son válidos");
     }
 

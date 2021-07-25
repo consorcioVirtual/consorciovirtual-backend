@@ -45,6 +45,11 @@ public class DocumentoRestController {
         documentoService.createDocumento(idAutor, nuevoDocumento);
     }
 
+    @PostMapping("/documentos/createDeGasto/{idAutor}")
+    public void createDocumentoDeGasto(@PathVariable Long idAutor, @RequestBody Documento nuevoDocumento) {
+        documentoService.createDocumentoDeGasto(idAutor, nuevoDocumento);
+    }
+
     //El idUsuario se pasa para verificar que sea el mismo que lo creó.
     //Solo se puede modificar atributos de documento, los atributos de factura si están mal se debe anular y cargar de nuevo
     @PutMapping("/documentos/modificar/{idUsuario}")

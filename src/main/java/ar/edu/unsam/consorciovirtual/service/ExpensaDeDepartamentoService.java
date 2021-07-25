@@ -7,11 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_RECIBOS;
 
 @RequiredArgsConstructor
 @Service
@@ -65,11 +64,12 @@ public class ExpensaDeDepartamentoService {
     public void pagarExpensa(Long idExpensa, Long idUsuario) {
         ExpensaDeDepartamento expensa = buscarPorId(idExpensa);
         Usuario usuario = usuarioService.buscarPorId(idUsuario);
+        String fecha = LocalDate.now().toString();
         if(!expensa.estaPaga()){
             expensa.pagarExpensa(usuario);
             //Crea el recibo de pago
-            String nombreSimple = "ReciboDeExpensa"+expensa.getPeriodo().toString()+"-"+expensa.getUnidad();
-            String nombreArchivo = CARPETA_DE_RECIBOS+nombreSimple+".pdf";
+            String nombreSimple = "ReciboDeExpensa"+expensa.getPeriodo().toString()+"-"+expensa.getUnidad()+"-"+fecha;
+            String nombreArchivo = nombreSimple+".pdf";
             CreadorDePDF.createReciboDeExpensa(expensa, nombreArchivo);
             //Guarda el recibo de pago
             Documento nuevoDocumento = documentoService.crearDocumentoEnBaseAPDFDelSistema(nombreSimple, nombreArchivo);

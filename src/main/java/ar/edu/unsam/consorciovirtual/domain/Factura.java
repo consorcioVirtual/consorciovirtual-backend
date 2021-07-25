@@ -25,7 +25,8 @@ public class Factura extends Documento{
     /*METODOS*/
     @Override
     public Boolean esValido(){
-        return super.esValido() && importe > 0 && validarFecha() && validarCae() && validarNumeroFactura() && validarPuntoDeVenta() && validarCuit(cuitProveedor) && validarCuit(cuitReceptor);
+        return super.esValido() && importe > 0 && validarFecha() && validarCae() && validarNumeroFactura() &&
+                validarPuntoDeVenta() && validarCuit(cuitProveedor) && validarCuit(cuitReceptor) && emisorNoEsReceptor();
     }
 
     private Boolean esNumero(String cadena){
@@ -43,12 +44,10 @@ public class Factura extends Documento{
     }
 
     private Boolean validarCuit(String cuit){
-        return cuit.length() == 13 && elCuitEsNumero(cuit);
+        return cuit.length() == 11 && esNumero(cuit);
     }
 
-    private Boolean elCuitEsNumero(String cuit){
-        return esNumero(cuit.substring(0, 2)) && esNumero(cuit.substring(3, 11)) && esNumero(cuit.substring(12));
-    }
+    private Boolean emisorNoEsReceptor(){return cuitReceptor != cuitProveedor;}
 
     private Boolean validarFecha(){
         return fechaFactura.isBefore(LocalDate.now());

@@ -24,4 +24,5 @@ public interface GastoRepository  extends JpaRepository<Gasto, Long> {
     @Query(value = "SELECT * FROM gasto as ungasto " + "WHERE ungasto.periodo = :periodo", nativeQuery = true)
     List<Gasto> findGastosByPeriodo(@Param("periodo") YearMonth periodo);
 
+    Gasto findGastoByUrl(String enlace);
 }

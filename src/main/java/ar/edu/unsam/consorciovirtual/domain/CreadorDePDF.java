@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_ARCHIVOS;
-import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_EXPENSAS;
 
 public class CreadorDePDF {
         private static final Font tituloFont = FontFactory.getFont(FontFactory.HELVETICA, 20, Font.BOLD);
@@ -27,7 +26,7 @@ public class CreadorDePDF {
                 try {
                         Document document = new Document();
                         try {
-                                PdfWriter.getInstance(document, new FileOutputStream(nombreArchivo));
+                                PdfWriter.getInstance(document, new FileOutputStream(CARPETA_DE_ARCHIVOS+nombreArchivo));
                         } catch (FileNotFoundException fileNotFoundException) {
                                 System.out.println("(No se encontró el fichero para generar el pdf)" + fileNotFoundException);
                         }
@@ -163,7 +162,7 @@ public class CreadorDePDF {
                 try {
                         Document document = new Document(PageSize.A6.rotate());
                         try {
-                                PdfWriter.getInstance(document, new FileOutputStream(nombreArchivo));
+                                PdfWriter.getInstance(document, new FileOutputStream(CARPETA_DE_ARCHIVOS+nombreArchivo));
                         } catch (FileNotFoundException fileNotFoundException) {
                                 System.out.println("(No se encontró el fichero para generar el pdf)" + fileNotFoundException);
                         }

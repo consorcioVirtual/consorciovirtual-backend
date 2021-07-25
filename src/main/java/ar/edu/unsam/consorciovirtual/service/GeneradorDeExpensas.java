@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
-import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_EXPENSAS;
 
 @RequiredArgsConstructor
 @Service
@@ -67,7 +66,7 @@ public class GeneradorDeExpensas {
                 unaExpensa.cargarUnidadDepto();
                 //Genera el resumen de expensa
                 String nombreSimple = "Expensa" + unaExpensa.getPeriodo().toString() + "-" + unaExpensa.getUnidad();
-                String nombreArchivo = CARPETA_DE_EXPENSAS + nombreSimple + "-" + identificador + ".pdf";
+                String nombreArchivo = nombreSimple + "-" + identificador + ".pdf";
                 CreadorDePDF.createResumenDeExpensa(unaExpensa, gastosDelPeriodo, nombreArchivo, departamentos, importeComun, importeExtraordinaria);
                 //Crea el documento en base al resumen
                 Documento nuevoDocumento = documentoService.crearDocumentoEnBaseAPDFDelSistema(nombreSimple, nombreArchivo);
