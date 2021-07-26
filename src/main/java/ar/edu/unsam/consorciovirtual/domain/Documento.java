@@ -39,6 +39,10 @@ public class Documento {
     }
 
     public Boolean esValido(){
-        return titulo != "" && descripcion != "" && enlaceDeDescarga != "";
+        return noEsNullNiVacio(titulo) && noEsNullNiVacio(descripcion) && noEsNullNiVacio(enlaceDeDescarga);
+    }
+
+    private Boolean noEsNullNiVacio(String unString){
+        return unString != null && unString != "";
     }
 }

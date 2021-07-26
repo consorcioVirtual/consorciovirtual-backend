@@ -41,6 +41,17 @@ public class Gasto {
     @Transient
     public String ultimaModificacion;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "idComprobante")
+    public Long idComprobante(){
+        Long id;
+        if(getComprobante() instanceof Factura){
+            id = getComprobante().getId();
+        }else{
+            id = (-1L);
+        }
+        return id;
+    }
+
     /*METODOS*/
 
     /*Verificar que el importe coincida con los valores de los item, no podemos sacar el importe en base a los items dado

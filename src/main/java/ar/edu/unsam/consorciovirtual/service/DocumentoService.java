@@ -81,7 +81,7 @@ public class DocumentoService {
         if(nuevoDocumento.esValido() && (usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor))){
             nuevoDocumento.setAutor(autor);
             documentoRepository.save(nuevoDocumento);
-        }else throw new IllegalArgumentException("Los datos ingresados no son válidos");
+        }else throw new IllegalArgumentException("Los datos ingresados no son válidos, o están incompletos");
     }
 
     public void createDocumentoDeGasto(Long idAutor, Documento nuevoDocumento) {
