@@ -133,7 +133,7 @@ public class CreadorDePDF {
                                 Departamento departamento = departamentos.get(row);
                                 Double expComunes = (double)Math.round(importeComun*departamento.getPorcentajeExpensa()) / 100d;
                                 Double expExtra = (double)Math.round(importeExtraordinario*departamento.getPorcentajeExpensa()) / 100d;
-                                Double total = expComunes+expExtra;
+                                Double total = (double)Math.round(expComunes+expExtra*100) / 100d;
                                 table.addCell(departamento.getUnidad());
                                 table.addCell(departamento.getNombrePropietario());
                                 table.addCell(generarCeldaCentradra(departamento.getPorcentajeExpensa().toString()));

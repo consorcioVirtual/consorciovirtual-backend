@@ -44,11 +44,9 @@ public class ExpensaRestController {
     }
 
     @Transactional
-    @PostMapping("/expensas/createPorImportePredefinido/{periodo}")
-    public void generarExpensasPorImportePredefinido(@PathVariable YearMonth periodo, @RequestBody String importes){
-        Double importeComunes = ExtractorDatoDeJSON.extraerDoubleDeJson(importes, "importeComunes");
-        Double importeExtraordinarias = ExtractorDatoDeJSON.extraerDoubleDeJson(importes, "importeExtraordinarias");
-        this.generadorDeExpensas.generarExpensasPorImportePredefinido(importeComunes, importeExtraordinarias, periodo);
+    @GetMapping("/expensas/createPorImportePredefinido")
+    public void generarExpensasPorImportePredefinido(@RequestParam String periodo, @RequestParam Double importeComunes, @RequestParam Double importeExtraordinarias){
+        this.generadorDeExpensas.generarExpensasPorImportePredefinido(importeComunes, importeExtraordinarias, stringToYearMonth(periodo));
     }
 
     @Transactional

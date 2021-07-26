@@ -86,4 +86,9 @@ public class GastoService {
         String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.GASTO, gasto.getId());
         gasto.setUltimaModificacion(fechaUltimaModificacion);
     }
+
+    public void eliminiarGasto(String urlGasto) {
+        Gasto gasto = gastoRepository.findGastoByUrl(urlGasto);
+        gastoRepository.delete(gasto);
+    }
 }

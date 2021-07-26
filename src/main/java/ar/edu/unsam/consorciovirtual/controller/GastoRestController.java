@@ -44,6 +44,11 @@ public class GastoRestController {
         gastoService.bajaLogica(id);
     }
 
+    @DeleteMapping("/gasto/eliminarPosta")
+    public void eliminarGasto(@RequestParam String urlGasto) {
+        gastoService.eliminiarGasto(urlGasto);
+    }
+
     @GetMapping("/gastos/periodo")
     public List<Gasto> buscarPorPeriodo(@RequestParam String periodo) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");

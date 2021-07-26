@@ -1,11 +1,9 @@
 package ar.edu.unsam.consorciovirtual.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import java.time.LocalDate;
 
@@ -15,8 +13,9 @@ import java.time.LocalDate;
 @JsonTypeName("factura")
 public class Factura extends Documento{
     private LocalDate fechaFactura; //Es la fecha que figura en la factura electronica, distinta a la fecha de creación del decumento
-    private String numeroFactura;
+    private String tipoFactura;
     private String puntoDeVenta;
+    private String numeroFactura;
     private String cuitProveedor;
     private String cuitReceptor;
     private String cae;
