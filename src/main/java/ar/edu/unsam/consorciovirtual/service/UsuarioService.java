@@ -3,9 +3,11 @@ package ar.edu.unsam.consorciovirtual.service;
 import javax.transaction.Transactional;
 
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
+import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
 import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domainDTO.UsuarioConDeptoDTO;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import com.mercadopago.resources.AdvancedPayment;
@@ -96,7 +98,7 @@ public class UsuarioService {
         if(idLogueado.equals(idABorrar)){
             throw new DataConsistencyException("No es posible eliminarte a ti mismo.");
         }
-        if(!usuarioEsAdminDeLaApp(idLogueado)){
+        if(usuarioEsAdminDeLaApp(idLogueado)){
             throw new SecurityException("No tiene permisos para eliminar un usuario.");
         }
         if(usuarioSeRelacionaConDeptos(idABorrar)){
@@ -157,9 +159,14 @@ public class UsuarioService {
         return users;
     }
 
-    @Transactional
-    public void registrarInquilino(Usuario inquilino, Long idDepartamento) {
-//        return registrarUsuario(inquilino).get();
+    public UsuarioConDeptoDTO getInquilino(Long idInquilino) {
+        Usuario inquilino = usuarioRepository.getById(idInquilino);
+        Departamento depto = departamentoRepository.findByInquilinoAndBajaLogicaFalse(inquilino).get(0);
+        UsuarioConDeptoDTO inquilinoDTO = UsuarioConDeptoDTO.fromUsuario(inquilino);
+        inquilinoDTO.setPiso(depto.getPiso());
+        inquilinoDTO.setNroDepartamento(depto.getNroDepartamento());
+        inquilinoDTO.setTorre(depto.getTorre());
+        return inquilinoDTO;
     }
 
 }

@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.controller;
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domainDTO.UsuarioConDeptoDTO;
 import ar.edu.unsam.consorciovirtual.service.DepartamentoService;
 import ar.edu.unsam.consorciovirtual.service.UsuarioService;
 import com.fasterxml.jackson.core.JsonParser;
@@ -90,5 +91,10 @@ public class UsuarioRestController {
         Usuario nuevoInquilino = usuarioService.registrarUsuario(newUser);
         departamentoService.setInquilino(idDepartamento,nuevoInquilino);
         return nuevoInquilino;
+    }
+
+    @GetMapping("/inquilino/{idInquilino}")
+    public UsuarioConDeptoDTO buscarInquilino(@PathVariable Long idInquilino) {
+        return this.usuarioService.getInquilino(idInquilino);
     }
 }
