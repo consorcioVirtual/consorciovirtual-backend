@@ -1,7 +1,9 @@
 package ar.edu.unsam.consorciovirtual.service;
 
+import ar.edu.unsam.consorciovirtual.domain.Documento;
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
+import ar.edu.unsam.consorciovirtual.repository.DocumentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaGeneralRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.List;
 public class GastoService {
 
     private final GastoRepository gastoRepository;
+    private final DocumentoRepository documentoRepository;
     private final ExpensaGeneralRepository expensaRepository;
     private final RegistroModificacionService registroModificacionService;
     private final UsuarioService usuarioService;
@@ -58,10 +61,19 @@ public class GastoService {
 
     @Transactional
     public Gasto modificar(Long idLogueado, Gasto gastoActualizado) {
-        if(noExisteExpensaEnElPeriodo(gastoActualizado.getPeriodo())){
+        Gasto gastoViejo = gastoRepository.findById(gastoActualizado.getId()).orElseThrow(() -> new RuntimeException("No se encontró el gasto que desea modificar"));
+        if(noExisteExpensaEnElPeriodo(gastoActualizado.getPeriodo()) && !gastoViejo.getAnulado()){
+            System.out.println(gastoViejo.getUrl() );
+            System.out.println(gastoActualizado.getUrl() );
+            gastoViejo.getComprobante().setEnlaceDeDescarga(gastoActualizado.getUrl());
+            gastoViejo.getComprobante().setTitulo(gastoActualizado.getTitulo());
+            registroModificacionService.guardarPorTipoYId(TipoRegistro.DOCUMENTO, gastoViejo.getComprobante().getId(), usuarioService.getNombreYApellidoById(idLogueado));
+            documentoRepository.save(gastoViejo.getComprobante());
+            Documento comprobante = documentoRepository.findById(gastoViejo.getComprobante().getId()).orElseThrow(() -> new RuntimeException("No se encontró el documento relacionado al gasto que desea modificar"));
+            gastoActualizado.setComprobante(comprobante);
             registroModificacionService.guardarPorTipoYId(TipoRegistro.GASTO, gastoActualizado.getId(), usuarioService.getNombreYApellidoById(idLogueado));
             return gastoRepository.save(gastoActualizado);
-        } else throw new IllegalArgumentException("No puede modificar un gasto que ya fue agregado a una expensa");
+        } else throw new IllegalArgumentException("No puede modificar un gasto que ya fue agregado a una expensa o se encuentra anulado");
     }
 
     @Transactional

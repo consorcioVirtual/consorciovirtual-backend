@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.controller;
 import ar.edu.unsam.consorciovirtual.domain.DocumentoDTOParaABM;
 import ar.edu.unsam.consorciovirtual.domain.DocumentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.Documento;
+import ar.edu.unsam.consorciovirtual.domain.FacturaDTOParaGasto;
 import ar.edu.unsam.consorciovirtual.service.DocumentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class DocumentoRestController {
     @GetMapping("/documentos/{id}")
     public Documento buscarDocumentoPorId(@PathVariable Long id) {
         return documentoService.buscarPorId(id);
+    }
+
+    @GetMapping("/documentos/factura/{id}")
+    public FacturaDTOParaGasto buscarFacturaPorId(@PathVariable Long id) {
+        return documentoService.buscarFacturaPorId(id);
     }
 
     @GetMapping("/documentos/paraABM/{id}")

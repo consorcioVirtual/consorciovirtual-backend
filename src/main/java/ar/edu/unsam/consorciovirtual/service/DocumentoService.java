@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.DocumentoRepository;
+import ar.edu.unsam.consorciovirtual.repository.FacturaRepository;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,19 +12,16 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_ARCHIVOS;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class DocumentoService {
     private final DocumentoRepository documentoRepository;
+    private final FacturaRepository facturaRepository;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
     private final RegistroModificacionService registroModificacionService;
@@ -133,4 +131,8 @@ public class DocumentoService {
     }
 
 
+    public FacturaDTOParaGasto buscarFacturaPorId(Long id) {
+        Factura factura = facturaRepository.findByIdAndBajaLogicaFalse(id).orElseThrow(() -> new RuntimeException("Factura no encontrada"));
+        return FacturaDTOParaGasto.fromFactura(factura);
+    }
 }

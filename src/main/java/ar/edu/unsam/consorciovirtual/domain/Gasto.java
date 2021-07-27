@@ -41,18 +41,33 @@ public class Gasto {
     @Transient
     public String ultimaModificacion;
 
+    /*METODOS*/
     @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "idComprobante")
+    @Transient
     public Long idComprobante(){
-        Long id;
-        if(getComprobante() instanceof Factura){
-            id = getComprobante().getId();
+        if(comprobante != null) {
+            return getComprobante().getId();
         }else{
-            id = (-1L);
+            return null;
         }
-        return id;
     }
 
-    /*METODOS*/
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "tipoComprobante")
+    @Transient
+    public String tipoComprobante(){
+        if(comprobante != null) {
+            String tipo;
+            if(getComprobante() instanceof Factura){
+                tipo = "factura";
+            }else{
+                tipo = "documento";
+            }
+            return tipo;
+        }else{
+            return null;
+        }
+
+    }
 
     /*Verificar que el importe coincida con los valores de los item, no podemos sacar el importe en base a los items dado
     que la relación la marcamos como parcial*/
