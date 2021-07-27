@@ -1,7 +1,8 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
-import ar.edu.unsam.consorciovirtual.domain.DocumentoDTOParaABM;
-import ar.edu.unsam.consorciovirtual.domain.DocumentoDTOParaListado;
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
+import ar.edu.unsam.consorciovirtual.domainDTO.DocumentoDTOParaABM;
+import ar.edu.unsam.consorciovirtual.domainDTO.DocumentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.Documento;
 import ar.edu.unsam.consorciovirtual.domain.FacturaDTOParaGasto;
 import ar.edu.unsam.consorciovirtual.service.DocumentoService;
@@ -47,19 +48,19 @@ public class DocumentoRestController {
 
     //No se le pasa el autor desde el front, se le carga en el back por idAutor
     @PostMapping("/documentos/create/{idAutor}")
-    public void createDocumento(@PathVariable Long idAutor, @RequestBody Documento nuevoDocumento) {
+    public void createDocumento(@PathVariable Long idAutor, @RequestBody Documento nuevoDocumento) throws DataConsistencyException {
         documentoService.createDocumento(idAutor, nuevoDocumento);
     }
 
     @PostMapping("/documentos/createDeGasto/{idAutor}")
-    public void createDocumentoDeGasto(@PathVariable Long idAutor, @RequestBody Documento nuevoDocumento) {
+    public void createDocumentoDeGasto(@PathVariable Long idAutor, @RequestBody Documento nuevoDocumento) throws DataConsistencyException {
         documentoService.createDocumentoDeGasto(idAutor, nuevoDocumento);
     }
 
     //El idUsuario se pasa para verificar que sea el mismo que lo creó.
     //Solo se puede modificar atributos de documento, los atributos de factura si están mal se debe anular y cargar de nuevo
     @PutMapping("/documentos/modificar/{idUsuario}")
-    public void modificarDocumento(@PathVariable Long idUsuario, @RequestBody Documento nuevoDocumento) {
+    public void modificarDocumento(@PathVariable Long idUsuario, @RequestBody Documento nuevoDocumento) throws DataConsistencyException {
         documentoService.modificarDocumento(idUsuario, nuevoDocumento);
     }
 

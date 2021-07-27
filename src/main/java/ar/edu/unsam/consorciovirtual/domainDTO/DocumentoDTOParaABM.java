@@ -1,5 +1,7 @@
-package ar.edu.unsam.consorciovirtual.domain;
+package ar.edu.unsam.consorciovirtual.domainDTO;
 
+import ar.edu.unsam.consorciovirtual.domain.Documento;
+import ar.edu.unsam.consorciovirtual.domain.Factura;
 import lombok.Data;
 
 import java.time.LocalDate;

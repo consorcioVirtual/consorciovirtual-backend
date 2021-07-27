@@ -2,20 +2,17 @@ package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.RegistroModificacion;
 import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
-import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.repository.RegistroModificacionRepository;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
+import static ar.edu.unsam.consorciovirtual.utils.Constants.ZONE_ID_ARGENTINA;
 
 @RequiredArgsConstructor
 @Service

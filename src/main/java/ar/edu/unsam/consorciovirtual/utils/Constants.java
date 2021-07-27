@@ -1,4 +1,4 @@
-package ar.edu.unsam.consorciovirtual.domain;
+package ar.edu.unsam.consorciovirtual.utils;
 
 import java.time.ZoneId;
 

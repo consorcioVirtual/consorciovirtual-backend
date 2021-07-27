@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
+import static ar.edu.unsam.consorciovirtual.utils.Constants.ZONE_ID_ARGENTINA;
 
 @Data
 @Entity

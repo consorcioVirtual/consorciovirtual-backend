@@ -1,8 +1,11 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.domainDTO.ExpensaDeDepartamentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.repository.DocumentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaDeDepartamentoRepository;
+import ar.edu.unsam.consorciovirtual.utils.CreadorDePDF;
+import ar.edu.unsam.consorciovirtual.utils.GestorDeCorreo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +48,7 @@ public class ExpensaDeDepartamentoService {
             return mapearADTOParaListado(expensas);
         }
     }
+
     public List<ExpensaDeDepartamentoDTOParaListado> buscarTodosSinAnuladas() {
         List<ExpensaDeDepartamento> lista = expensaDeDepartamentoRepository.findByAnuladaFalse();
         return mapearADTOParaListado(lista);
@@ -78,4 +82,5 @@ public class ExpensaDeDepartamentoService {
             gestorDeCorreo.enviarReciboDeExpensas(expensa, nombreArchivo);
         }else throw new IllegalArgumentException("La expensa que desea pagar, ya se encuentra paga");
     }
+
 }

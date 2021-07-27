@@ -1,7 +1,11 @@
 package ar.edu.unsam.consorciovirtual.service;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.domainDTO.DepartamentoDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domainDTO.DepartamentoDTOReducido;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
+import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -56,15 +60,16 @@ public class DepartamentoService {
     }
 
 
-    public Departamento modificarDepartamento(Long idLogueado, DepartamentoConUsuarios departamento) {
-        validarModificacion(idLogueado);
+    public Departamento modificarDepartamento(Long idLogueado, DepartamentoConUsuarios departamento) throws DataConsistencyException {
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
+        validarModificacion(idLogueado, updatedDepartment);
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getDepartamento().getId(), usuarioService.getNombreYApellidoById(idLogueado));
         return departamentoRepository.save(updatedDepartment);
     }
 
-    public Departamento registrarDepartamento(DepartamentoConUsuarios departamentoConUsuarios) {
+    public Departamento registrarDepartamento(DepartamentoConUsuarios departamentoConUsuarios) throws DataConsistencyException {
         Departamento newDepartment = asignarPropietarioEInquilino(departamentoConUsuarios);
+        validarDepartamento(newDepartment);
         return departamentoRepository.save(newDepartment);
     }
 
@@ -101,11 +106,13 @@ public class DepartamentoService {
         }
     }
 
-    private void validarModificacion(Long idLogueado){
+    private void validarModificacion(Long idLogueado, Departamento departamento) throws DataConsistencyException {
         if(!usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
             throw new SecurityException("No tiene permisos para modificar departamentos.");
         }
+        validarDepartamento(departamento);
     }
+
     public long count(){
         return departamentoRepository.count();
     }
@@ -135,5 +142,17 @@ public class DepartamentoService {
             departamentos.forEach( Departamento::quitarInquilino );
             departamentoRepository.saveAll(departamentos);
         }
+    }
+
+    private void validarDepartamento(Departamento departamento) throws DataConsistencyException {
+        if(
+           (!ValidationMethods.datoNull(departamento.getTorre()) && ValidationMethods.superaLimiteCaracteres(departamento.getTorre(), 3)) ||
+           ValidationMethods.stringNullOSuperaLimite(departamento.getPiso(), 3) ||
+           ValidationMethods.stringNullOSuperaLimite(departamento.getNroDepartamento(), 3) ||
+           ValidationMethods.numberNullOSuperiorA(departamento.getPorcentajeExpensa().intValue(), 99) ||
+           ValidationMethods.numberNullOSuperiorA(departamento.getMetrosCuadrados(), 9999) ||
+           ValidationMethods.datoNull(departamento.getPropietario()) ||
+           ValidationMethods.datoNull(departamento.getInquilino())
+        ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
     }
 }

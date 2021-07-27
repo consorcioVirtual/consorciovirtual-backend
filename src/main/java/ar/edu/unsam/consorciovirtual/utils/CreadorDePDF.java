@@ -1,18 +1,21 @@
-package ar.edu.unsam.consorciovirtual.domain;
+package ar.edu.unsam.consorciovirtual.utils;
 
+import ar.edu.unsam.consorciovirtual.domain.Departamento;
+import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
+import ar.edu.unsam.consorciovirtual.domain.Gasto;
+import ar.edu.unsam.consorciovirtual.domain.Rubro;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ar.edu.unsam.consorciovirtual.domain.Constants.CARPETA_DE_ARCHIVOS;
+import static ar.edu.unsam.consorciovirtual.utils.Constants.CARPETA_DE_ARCHIVOS;
 
 public class CreadorDePDF {
         private static final Font tituloFont = FontFactory.getFont(FontFactory.HELVETICA, 20, Font.BOLD);
@@ -59,7 +62,7 @@ public class CreadorDePDF {
                         document.add(generarTitulo("Gastos del Período"));
                         document.add( Chunk.NEWLINE );
 
-                        for(int i=0;i<Rubro.values().length;i++) {
+                        for(int i = 0; i< Rubro.values().length; i++) {
                                 String nombreDeGasto = "";
                                 switch(i){
                                         case 0: nombreDeGasto="Sueldo y Cargas Sociales";break;

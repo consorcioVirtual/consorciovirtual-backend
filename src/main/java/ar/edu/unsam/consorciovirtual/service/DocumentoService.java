@@ -1,10 +1,14 @@
 package ar.edu.unsam.consorciovirtual.service;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.domainDTO.DocumentoDTOParaABM;
+import ar.edu.unsam.consorciovirtual.domainDTO.DocumentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.repository.DocumentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.FacturaRepository;
 import ar.edu.unsam.consorciovirtual.repository.GastoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
+import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +33,7 @@ public class DocumentoService {
 
 
     public List<DocumentoDTOParaListado> mapearADTO(List<? extends Documento> documentos){
-        return documentos.stream().map(documento-> DocumentoDTOParaListado.fromDocumento(documento)).collect(Collectors.toList());
+        return documentos.stream().map(DocumentoDTOParaListado::fromDocumento).collect(Collectors.toList());
     }
 
     public List<DocumentoDTOParaListado> buscarTodos(String palabraBuscada){
@@ -74,37 +78,40 @@ public class DocumentoService {
         documentoRepository.saveAll(facturas);
     }
 
-    public void createDocumento(Long idAutor, Documento nuevoDocumento) {
+    public void createDocumento(Long idAutor, Documento nuevoDocumento) throws DataConsistencyException {
         Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permiso para crear documentos"));
-        if(nuevoDocumento.esValido() && (usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor))){
-            nuevoDocumento.setAutor(autor);
+        nuevoDocumento.setAutor(autor);
+        validarDocumento(nuevoDocumento);
+        if(usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor)){
             documentoRepository.save(nuevoDocumento);
-        }else throw new IllegalArgumentException("Los datos ingresados no son válidos, o están incompletos");
+        }else throw new SecurityException("No tiene permisos para crear un nuevo documento");
     }
 
-    public void createDocumentoDeGasto(Long idAutor, Documento nuevoDocumento) {
+    public void createDocumentoDeGasto(Long idAutor, Documento nuevoDocumento) throws DataConsistencyException {
         Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permiso para crear documentos"));
         Gasto gasto = gastoRepository.findGastoByUrl(nuevoDocumento.getEnlaceDeDescarga());
         nuevoDocumento.setTitulo(gasto.getTitulo());
         nuevoDocumento.setDescripcion("Comprobante relacionado al gasto que se menciona en el título, " +
                 "para más información buscar en pestaña de gastos con el mismo nombre");
-        if(nuevoDocumento.esValido() && (usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor))){
-            nuevoDocumento.setAutor(autor);
+        nuevoDocumento.setAutor(autor);
+        validarDocumento(nuevoDocumento);
+        if(usuarioService.usuarioEsAdminDeLaApp(idAutor) || usuarioService.usuarioEsAdminDelConsorcio(idAutor)){
             documentoRepository.save(nuevoDocumento);
             Documento elDocumento = documentoRepository.findByEnlaceDeDescarga(nuevoDocumento.getEnlaceDeDescarga()).orElseThrow(() -> new IllegalArgumentException ("Error al asociar comprobante y gasto"));
             gasto.setComprobante(elDocumento);
             gastoRepository.save(gasto);
-        }else throw new IllegalArgumentException("Los datos ingresados no son válidos");
+        }else throw new IllegalArgumentException("No tiene permisos para crear un nuevo documento");
     }
 
-    public void modificarDocumento(Long idUsuario, Documento documentoActualizado) {
+    public void modificarDocumento(Long idUsuario, Documento documentoActualizado) throws DataConsistencyException {
         Documento documentoViejo = documentoRepository.findById(documentoActualizado.getId()).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
+        validarDocumento(documentoActualizado);
         if(usuarioService.usuarioEsAdminDeLaApp(idUsuario) || documentoViejo.getAutor().getId() == idUsuario){
             documentoViejo.setDescripcion(documentoActualizado.getDescripcion());
             documentoViejo.setTitulo(documentoActualizado.getTitulo());
             documentoViejo.setEnlaceDeDescarga(documentoActualizado.getEnlaceDeDescarga());
             documentoViejo.setFechaModificacion(LocalDate.now());
-        } else throw new IllegalArgumentException("No puede modificar un documento que usted no creo");
+        } else throw new SecurityException("No puede modificar un documento que usted no ha creado");
 
         documentoRepository.save(documentoViejo);
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DOCUMENTO, documentoViejo.getId(), usuarioService.getNombreYApellidoById(idUsuario));
@@ -130,6 +137,16 @@ public class DocumentoService {
         return unDocumento;
     }
 
+    private void validarDocumento(Documento documento) throws DataConsistencyException {
+        if(
+           ValidationMethods.stringNullOVacio(documento.getTitulo()) ||
+           ValidationMethods.stringNullOVacio(documento.getDescripcion()) ||
+           ValidationMethods.stringNullOVacio(documento.getEnlaceDeDescarga()) ||
+           ValidationMethods.datoNull(documento.getFechaCreacion()) ||
+           ValidationMethods.datoNull(documento.getFechaModificacion()) ||
+           ValidationMethods.datoNull(documento.getAutor())
+        ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
+    }
 
     public FacturaDTOParaGasto buscarFacturaPorId(Long id) {
         Factura factura = facturaRepository.findByIdAndBajaLogicaFalse(id).orElseThrow(() -> new RuntimeException("Factura no encontrada"));

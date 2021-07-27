@@ -1,7 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
-import ar.edu.unsam.consorciovirtual.service.GestorDeCorreo;
+import ar.edu.unsam.consorciovirtual.utils.GestorDeCorreo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

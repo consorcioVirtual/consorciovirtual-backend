@@ -1,7 +1,8 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnica;
-import ar.edu.unsam.consorciovirtual.domain.SolicitudTecnicaDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domainDTO.SolicitudTecnicaDTOParaListado;
 import ar.edu.unsam.consorciovirtual.service.SolicitudTecnicaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class SolicitudTecnicaRestController {
     }
 
     @PutMapping("/solicitud/modificar")
-    public SolicitudTecnica modificarSolicitud(@RequestParam Long idLogueado, @RequestBody SolicitudTecnica solicitudTecnica) {
+    public SolicitudTecnica modificarSolicitud(@RequestParam Long idLogueado, @RequestBody SolicitudTecnica solicitudTecnica) throws DataConsistencyException {
         return this.solicitudTecnicaService.modificarSolicitud(idLogueado, solicitudTecnica);
     }
 
     @PutMapping("/solicitud/crear")
-    public SolicitudTecnica crearSolicitud(@RequestBody SolicitudTecnica solicitudTecnica){
+    public SolicitudTecnica crearSolicitud(@RequestBody SolicitudTecnica solicitudTecnica) throws DataConsistencyException {
         return solicitudTecnicaService.registrarSolicitud(solicitudTecnica);
     }
 

@@ -1,7 +1,9 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.domainDTO.ExpensaDeDepartamentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.service.*;
+import ar.edu.unsam.consorciovirtual.utils.GeneradorDeExpensas;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

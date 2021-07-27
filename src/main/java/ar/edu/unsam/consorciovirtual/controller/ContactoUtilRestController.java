@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.Anuncio;
 import ar.edu.unsam.consorciovirtual.domain.ContactoUtil;
 import ar.edu.unsam.consorciovirtual.service.ContactoUtilService;
@@ -27,12 +28,12 @@ public class ContactoUtilRestController {
     }
 
     @PutMapping("/contactosUtiles/crear/{idLogueado}")
-    public void createContacto(@PathVariable Long idLogueado, @RequestBody ContactoUtil nuevoContacto) {
+    public void createContacto(@PathVariable Long idLogueado, @RequestBody ContactoUtil nuevoContacto) throws DataConsistencyException {
         contactoUtilService.crearContacto(idLogueado, nuevoContacto);
     }
 
     @PutMapping("/contactosUtiles/modificar/{idLogueado}")
-    public void modificarContaco(@PathVariable Long idLogueado, @RequestBody ContactoUtil contactoActualizado) {
+    public void modificarContaco(@PathVariable Long idLogueado, @RequestBody ContactoUtil contactoActualizado) throws DataConsistencyException {
         contactoUtilService.modificarContacto(idLogueado, contactoActualizado);
     }
 

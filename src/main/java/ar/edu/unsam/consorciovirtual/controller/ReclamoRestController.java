@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.Reclamo;
 import ar.edu.unsam.consorciovirtual.service.ReclamoService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,12 @@ public class ReclamoRestController {
     }
 
     @PostMapping("/reclamo/crear")
-    public Reclamo crearReclamo(@RequestBody Reclamo reclamo){
+    public Reclamo crearReclamo(@RequestBody Reclamo reclamo) throws DataConsistencyException {
         return reclamoService.registrarReclamo(reclamo);
     }
 
     @PutMapping("/reclamo/modificar")
-    public Reclamo modificarReclamo(@RequestParam Long idLogueado, @RequestBody Reclamo reclamo) {
+    public Reclamo modificarReclamo(@RequestParam Long idLogueado, @RequestBody Reclamo reclamo) throws DataConsistencyException {
         return reclamoService.modificarReclamo(idLogueado, reclamo);
     }
 

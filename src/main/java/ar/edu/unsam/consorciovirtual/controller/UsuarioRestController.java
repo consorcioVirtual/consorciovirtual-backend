@@ -48,7 +48,7 @@ public class UsuarioRestController {
     }
 
     @PutMapping("/usuario/modificar")
-    public void modificarUsuario(@RequestParam Long idLogueado, @RequestBody Usuario usuario) {
+    public void modificarUsuario(@RequestParam Long idLogueado, @RequestBody Usuario usuario) throws DataConsistencyException {
         usuarioService.modificar(idLogueado, usuario);
     }
 

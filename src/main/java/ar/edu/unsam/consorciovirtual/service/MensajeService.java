@@ -1,11 +1,14 @@
 package ar.edu.unsam.consorciovirtual.service;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
+import ar.edu.unsam.consorciovirtual.domain.Gasto;
 import ar.edu.unsam.consorciovirtual.domain.Mensaje;
 import ar.edu.unsam.consorciovirtual.domain.MensajeRequest;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.repository.MensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.RegistroMensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
+import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -27,12 +30,13 @@ public class MensajeService {
         return mensajeRepository.findMensajesFiltrados(palabraBuscada);
     }
 
-    public void createMensaje(MensajeRequest mensaje) {
+    public void createMensaje(MensajeRequest mensaje) throws DataConsistencyException {
         Usuario usuarioEmisor = usuarioRepository.findById(mensaje.getIdEmisor())
-                .orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
+                .orElseThrow(() -> new IllegalArgumentException ("Ha ocurrido un error al enviar el mensaje"));
         Mensaje mensajeNuevo = new Mensaje();
         mensajeNuevo.setMensaje(mensaje.getMensaje());
         mensajeNuevo.setUsuarioEmisor(usuarioEmisor);
+        validarMensaje(mensajeNuevo);
         mensajeRepository.save(mensajeNuevo);
     }
 
@@ -53,4 +57,12 @@ public class MensajeService {
     public void registrarTodos(List<Mensaje> mensajes) {
         mensajeRepository.saveAll(mensajes);
     }
+
+    private void validarMensaje(Mensaje mensaje) throws DataConsistencyException {
+        if (
+            ValidationMethods.stringNullOVacio(mensaje.getMensaje()) ||
+            ValidationMethods.datoNull(mensaje.getUsuarioEmisor())
+        ) throw new DataConsistencyException("Ha ocurrido un error en el envío del mensaje. Intentá de nuevo.");
+    }
+
 }

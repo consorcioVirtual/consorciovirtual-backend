@@ -1,5 +1,6 @@
-package ar.edu.unsam.consorciovirtual.domain;
+package ar.edu.unsam.consorciovirtual.domainDTO;
 
+import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
 import lombok.Data;
 
 import java.time.YearMonth;

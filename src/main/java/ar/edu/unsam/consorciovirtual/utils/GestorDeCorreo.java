@@ -1,4 +1,4 @@
-package ar.edu.unsam.consorciovirtual.service;
+package ar.edu.unsam.consorciovirtual.utils;
 
 import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;

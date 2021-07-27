@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.Mensaje;
 import ar.edu.unsam.consorciovirtual.domain.MensajeRequest;
 import ar.edu.unsam.consorciovirtual.service.MensajeService;
@@ -27,7 +28,7 @@ public class MensajeRestController {
     }
 
     @PostMapping("/mensajes/send")
-    public void createMensaje( @RequestBody MensajeRequest mensaje){
+    public void createMensaje( @RequestBody MensajeRequest mensaje) throws DataConsistencyException {
         mensajeService.createMensaje(mensaje);
     }
 

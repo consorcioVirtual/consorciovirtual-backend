@@ -1,7 +1,8 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.Anuncio;
-import ar.edu.unsam.consorciovirtual.domain.AnuncioDTOParaListado;
+import ar.edu.unsam.consorciovirtual.domainDTO.AnuncioDTOParaListado;
 import ar.edu.unsam.consorciovirtual.service.AnuncioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class AnuncioRestController {
 
     //No se le pasa el autor desde el front, se le carga en el back por idAutor
     @PutMapping("/anuncios/crear/{idAutor}")
-    public void createAnuncio(@PathVariable Long idAutor, @RequestBody Anuncio nuevoAnuncio) {
+    public void createAnuncio(@PathVariable Long idAutor, @RequestBody Anuncio nuevoAnuncio) throws DataConsistencyException {
         anuncioService.crearAnuncio(idAutor, nuevoAnuncio);
     }
 
@@ -43,7 +44,7 @@ public class AnuncioRestController {
     que intenta la modificación para corroborar que es el mismo que lo creo, si no es el miemo tira
     una excepción */
     @PutMapping("/anuncios/modificar/{idLogueado}")
-    public void modificarAnuncio(@PathVariable Long idLogueado, @RequestBody Anuncio anuncioActualizado) {
+    public void modificarAnuncio(@PathVariable Long idLogueado, @RequestBody Anuncio anuncioActualizado) throws DataConsistencyException {
         anuncioService.modificarAnuncio(idLogueado, anuncioActualizado);
     }
 

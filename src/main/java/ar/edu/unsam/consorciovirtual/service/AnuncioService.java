@@ -1,13 +1,15 @@
 package ar.edu.unsam.consorciovirtual.service;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.domainDTO.AnuncioDTOParaListado;
 import ar.edu.unsam.consorciovirtual.repository.AnuncioRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
+import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -64,23 +66,22 @@ public class AnuncioService {
         }
     }
 
-    public void crearAnuncio(Long idAutor, Anuncio nuevoAnuncio) {
+    public void crearAnuncio(Long idAutor, Anuncio nuevoAnuncio) throws DataConsistencyException {
         validarCreacion(idAutor, nuevoAnuncio);
         Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permisos para crear anuncios"));
         nuevoAnuncio.setAutor(autor);
         anuncioRepository.save(nuevoAnuncio);
     }
 
-    private void validarCreacion(Long idAutor, Anuncio nuevoAnuncio) {
+    private void validarCreacion(Long idAutor, Anuncio nuevoAnuncio) throws DataConsistencyException {
         if(!usuarioService.usuarioEsAdminDelConsorcio(idAutor) && !usuarioService.usuarioEsAdminDeLaApp(idAutor)){
             throw new SecurityException("No tiene permisos para crear anuncios.");
         }
-        if(nuevoAnuncio.getFechaVencimiento().isBefore(LocalDate.now())){
-            throw new IllegalArgumentException("La fecha de vencimiento debe ser posterior a hoy");
-        }
+
+        validarAnuncio(nuevoAnuncio);
     }
 
-    public void modificarAnuncio(Long idLogueado, Anuncio anuncioActualizado) {
+    public void modificarAnuncio(Long idLogueado, Anuncio anuncioActualizado) throws DataConsistencyException {
         Anuncio anuncioViejo = anuncioRepository.findById(anuncioActualizado.getId()).orElseThrow(() -> new RuntimeException("Anuncio no encontrado."));
 
         validarModificacion(idLogueado, anuncioViejo);
@@ -92,7 +93,7 @@ public class AnuncioService {
         anuncioRepository.save(anuncioViejo);
     }
 
-    private void validarModificacion(Long idLogueado, Anuncio anuncio){
+    private void validarModificacion(Long idLogueado, Anuncio anuncio) throws DataConsistencyException {
 
         //Se asume que un anuncio puede ser modificado por CUALQUIER USUARIO ADMINISTRADOR sin importar si es o no el autor
         if( !usuarioService.usuarioEsAdminDelConsorcio(idLogueado) && !usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
@@ -103,11 +104,24 @@ public class AnuncioService {
             throw new IllegalArgumentException("No puede modificar un anuncio que no está vigente.");
         }
 
+        validarAnuncio(anuncio);
+
     }
 
     private void agregarUltimaModificacion(@NotNull AnuncioDTOParaListado dto){
         String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.ANUNCIO, dto.getId());
         dto.setUltimaModificacion(fechaUltimaModificacion);
     }
+
+    private void validarAnuncio(Anuncio anuncio) throws DataConsistencyException {
+        if(
+            ValidationMethods.stringNullOVacio(anuncio.getTitulo()) ||
+            ValidationMethods.stringNullOVacio(anuncio.getDescripcion()) ||
+            ValidationMethods.datoNull(anuncio.getFechaCreacion()) ||
+            ValidationMethods.fechaAnteriorAHoyONull(anuncio.getFechaVencimiento()) ||
+            ValidationMethods.datoNull(anuncio.getAutor())
+        ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
+    }
+
 
 }

@@ -7,9 +7,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.ZoneId;
-
-import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
 
 @Data
 @Entity

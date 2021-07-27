@@ -25,7 +25,7 @@ public class Departamento {
     @JsonView(Views.DepartamentoPisoNro.class)
     private String nroDepartamento;
     private Double porcentajeExpensa;
-    private Integer metrosCuadrados;
+    private int metrosCuadrados;
     private String nombrePropietario;
     private String nombreInquilino;
 

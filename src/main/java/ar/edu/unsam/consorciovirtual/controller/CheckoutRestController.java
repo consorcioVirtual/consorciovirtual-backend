@@ -1,8 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 
-import ar.edu.unsam.consorciovirtual.domain.DepartamentoDTOParaListado;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.service.ExpensaDeDepartamentoService;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
@@ -12,8 +10,6 @@ import com.mercadopago.resources.datastructures.preference.PaymentMethods;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.mercadopago.MercadoPago;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

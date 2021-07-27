@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
+import static ar.edu.unsam.consorciovirtual.utils.Constants.ZONE_ID_ARGENTINA;
 
 @Data
 @Entity
@@ -54,4 +54,6 @@ public class Reclamo {
     private Long getIdAutor() {
         return autor.getId();
     }
+
+    public Boolean tieneNotas(){ return !notas.isEmpty(); }
 }

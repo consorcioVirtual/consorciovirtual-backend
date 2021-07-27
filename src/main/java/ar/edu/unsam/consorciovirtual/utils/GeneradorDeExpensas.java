@@ -1,7 +1,8 @@
-package ar.edu.unsam.consorciovirtual.service;
+package ar.edu.unsam.consorciovirtual.utils;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.*;
+import ar.edu.unsam.consorciovirtual.service.DocumentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

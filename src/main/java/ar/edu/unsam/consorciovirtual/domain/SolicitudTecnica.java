@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ar.edu.unsam.consorciovirtual.domain.Constants.ZONE_ID_ARGENTINA;
+import static ar.edu.unsam.consorciovirtual.utils.Constants.ZONE_ID_ARGENTINA;
 
 @Data
 @Entity
@@ -36,6 +36,9 @@ public class SolicitudTecnica {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="idEstado")
     private Estado estado;
+
+    public boolean tieneNotas() { return !notas.isEmpty(); }
+
 
 //    @ManyToOne(optional = false, fetch = FetchType.LAZY)
 //    @JoinColumn(name="idDocumento")

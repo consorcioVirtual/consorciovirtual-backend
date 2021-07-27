@@ -1,7 +1,9 @@
 package ar.edu.unsam.consorciovirtual.service;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.ReclamoRepository;
+import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -39,20 +41,22 @@ public class ReclamoService {
         return reclamoRepository.findById(id).orElseThrow(() -> new RuntimeException("Reclamo no encontrado"));
     }
 
-    public Reclamo modificarReclamo(Long idLogueado, Reclamo reclamo) {
+    public Reclamo modificarReclamo(Long idLogueado, Reclamo reclamo) throws DataConsistencyException {
         if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado)) {
             Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
             reclamo.setAutor(_autor);
             Reclamo updatedRequest = asignarEstado(reclamo);
+            validarReclamo(updatedRequest);
             registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
             return reclamoRepository.save(updatedRequest);
         } else {
-            throw new SecurityException("No tiene permisos");
+            throw new SecurityException("No tiene permisos para modificar un reclamo.");
         }
     }
 
-    public Reclamo registrarReclamo(Reclamo reclamo) {
+    public Reclamo registrarReclamo(Reclamo reclamo) throws DataConsistencyException {
         Reclamo newRequest = asignarAutorYEstado(reclamo);
+        validarReclamo(newRequest);
         return reclamoRepository.save(newRequest);
     }
 
@@ -92,6 +96,26 @@ public class ReclamoService {
     private void agregarUltimaModificacion(@NotNull Reclamo dto){
         String fechaUltimaModificacion = registroModificacionService.getUltimaModificacion(TipoRegistro.RECLAMO, dto.getId());
         dto.setUltimaModificacion(fechaUltimaModificacion);
+    }
+
+    private void validarReclamo(Reclamo reclamo) throws DataConsistencyException {
+        if (
+            ValidationMethods.stringNullOVacio(reclamo.getAsunto()) ||
+            ValidationMethods.datoNull(reclamo.getMensaje()) ||
+            ValidationMethods.datoNull(reclamo.getAutor()) ||
+            ValidationMethods.datoNull(reclamo.getEstado())
+        ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
+
+        if(reclamo.tieneNotas()) validarNotas(reclamo.getNotas());
+    }
+
+    private void validarNotas(List<Nota> notas) throws DataConsistencyException {
+        for (Nota nota : notas) {
+            if(
+               ValidationMethods.datoNull(nota.getAutor()) ||
+               ValidationMethods.stringNullOVacio(nota.getTexto())
+            ) throw new DataConsistencyException("Ha ocurrido un error con las notas asociadas. Verificalas e intentá de nuevo.");
+        }
     }
 
 }

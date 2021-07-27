@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
+import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.Gasto;
 import ar.edu.unsam.consorciovirtual.service.GastoService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class GastoRestController {
     private final GastoService gastoService;
 
     @PutMapping("/gastos/crear")
-    public void ingresarNuevoGasto(@RequestBody Gasto nuevoGasto) {
+    public void ingresarNuevoGasto(@RequestBody Gasto nuevoGasto) throws DataConsistencyException {
         gastoService.ingresarNuevoGasto(nuevoGasto);
     }
 
@@ -35,7 +36,7 @@ public class GastoRestController {
     }
 
     @PutMapping("/gasto/modificar")
-    public Gasto modificarGasto(@RequestParam Long idLogueado, @RequestBody Gasto gasto) {
+    public Gasto modificarGasto(@RequestParam Long idLogueado, @RequestBody Gasto gasto) throws DataConsistencyException {
         return this.gastoService.modificar(idLogueado, gasto);
     }
 

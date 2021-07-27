@@ -10,7 +10,7 @@ import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import ar.edu.unsam.consorciovirtual.domainDTO.UsuarioConDeptoDTO;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
-import com.mercadopago.resources.AdvancedPayment;
+import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -51,15 +51,16 @@ public class UsuarioService {
     public Usuario registrarUsuario(Usuario usuario) throws DataConsistencyException {
         validarAlta(usuario);
         usuario.setPassword(usuario.getDni());
+        validarUsuario(usuario);
 //        gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
         return usuarioRepository.save(usuario);
     }
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
-    public void modificar(Long idLogueado, Usuario usuarioActualizado) {
+    public void modificar(Long idLogueado, Usuario usuarioActualizado) throws DataConsistencyException {
+        validarUsuario(usuarioActualizado);
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
-        //usuarioActualizado.setCorreo(usuarioAnterior.getCorreo());
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
         registroModificacionService.guardarPorTipoYId(TipoRegistro.USUARIO, usuarioActualizado.getId(), getNombreYApellidoById(idLogueado));
         usuarioRepository.save(usuarioActualizado);
@@ -68,20 +69,19 @@ public class UsuarioService {
     public Usuario loguearUsuario(String correo, String password){
         Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
 
-        if(user != null) {
-            return user;
-        } else throw new SecurityException("Usuario o contraseña incorrectos");
+        if(user == null) throw new SecurityException("Usuario o contraseña incorrectos");
+
+        return user;
     }
 
     public void modificarContrasenia(String correo, String password, String newPassword) {
         Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
 
-        if(user == null) {
-            throw new SecurityException("Contraseña incorrecta");
-        } else {
-            user.setPassword(newPassword);
-            usuarioRepository.save(user);
-        }
+        if(user == null) throw new SecurityException("Contraseña incorrecta");
+
+        user.setPassword(newPassword);
+        usuarioRepository.save(user);
+
     }
 
 
@@ -167,6 +167,18 @@ public class UsuarioService {
         inquilinoDTO.setNroDepartamento(depto.getNroDepartamento());
         inquilinoDTO.setTorre(depto.getTorre());
         return inquilinoDTO;
+    }
+
+    private void validarUsuario(Usuario usuario) throws DataConsistencyException {
+        if (
+            ValidationMethods.stringNullOVacio(usuario.getNombre()) ||
+            ValidationMethods.stringNullOVacio(usuario.getApellido()) ||
+            ValidationMethods.stringNullOVacio(usuario.getCorreo()) ||
+            ValidationMethods.stringNullOFueraDeLimites(usuario.getDni(),7,8) ||
+            ValidationMethods.datoNull(usuario.getTipo()) ||
+            ValidationMethods.fechaPosteriorAHoy(usuario.getFechaNacimiento())
+        ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
+
     }
 
 }

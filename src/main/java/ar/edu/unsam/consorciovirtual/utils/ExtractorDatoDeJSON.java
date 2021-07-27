@@ -1,4 +1,4 @@
-package ar.edu.unsam.consorciovirtual.service;
+package ar.edu.unsam.consorciovirtual.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;

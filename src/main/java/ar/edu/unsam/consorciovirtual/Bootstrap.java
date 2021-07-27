@@ -4,6 +4,7 @@ import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
 import ar.edu.unsam.consorciovirtual.repository.RegistroModificacionRepository;
 import ar.edu.unsam.consorciovirtual.service.*;
+import ar.edu.unsam.consorciovirtual.utils.GeneradorDeExpensas;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
