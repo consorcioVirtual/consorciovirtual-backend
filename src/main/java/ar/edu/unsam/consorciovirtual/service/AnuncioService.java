@@ -70,15 +70,14 @@ public class AnuncioService {
         validarCreacion(idAutor, nuevoAnuncio);
         Usuario autor = usuarioRepository.buscarAdministradorPorId(idAutor).orElseThrow(() -> new IllegalArgumentException ("No tiene permisos para crear anuncios"));
         nuevoAnuncio.setAutor(autor);
+        validarAnuncio(nuevoAnuncio);
         anuncioRepository.save(nuevoAnuncio);
     }
 
-    private void validarCreacion(Long idAutor, Anuncio nuevoAnuncio) throws DataConsistencyException {
+    private void validarCreacion(Long idAutor, Anuncio nuevoAnuncio) {
         if(!usuarioService.usuarioEsAdminDelConsorcio(idAutor) && !usuarioService.usuarioEsAdminDeLaApp(idAutor)){
             throw new SecurityException("No tiene permisos para crear anuncios.");
         }
-
-        validarAnuncio(nuevoAnuncio);
     }
 
     public void modificarAnuncio(Long idLogueado, Anuncio anuncioActualizado) throws DataConsistencyException {

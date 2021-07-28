@@ -7,6 +7,8 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import static ar.edu.unsam.consorciovirtual.utils.Constants.ZONE_ID_ARGENTINA;
+
 @Data
 @Entity
 public class Anuncio {
@@ -15,7 +17,7 @@ public class Anuncio {
     private Long id;
     private String titulo;
     private String descripcion;
-    private LocalDate fechaCreacion = LocalDate.now();
+    private LocalDate fechaCreacion = LocalDate.now(ZONE_ID_ARGENTINA);
     private LocalDate fechaVencimiento;
     @JsonIgnore
     private Boolean bajaLogica = false;

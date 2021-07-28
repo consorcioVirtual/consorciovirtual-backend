@@ -151,8 +151,8 @@ public class DepartamentoService {
            ValidationMethods.stringNullOSuperaLimite(departamento.getNroDepartamento(), 3) ||
            ValidationMethods.numberNullOSuperiorA(departamento.getPorcentajeExpensa().intValue(), 99) ||
            ValidationMethods.numberNullOSuperiorA(departamento.getMetrosCuadrados(), 9999) ||
-           ValidationMethods.datoNull(departamento.getPropietario()) ||
-           ValidationMethods.datoNull(departamento.getInquilino())
+           ValidationMethods.datoNull(departamento.getPropietario())
+//           ValidationMethods.datoNull(departamento.getInquilino())
         ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
     }
 }
