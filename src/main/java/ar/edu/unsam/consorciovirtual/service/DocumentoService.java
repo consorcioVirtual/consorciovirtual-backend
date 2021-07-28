@@ -117,6 +117,24 @@ public class DocumentoService {
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DOCUMENTO, documentoViejo.getId(), usuarioService.getNombreYApellidoById(idUsuario));
     }
 
+    public void modificarFacturaDeGasto(Long idFactura, Long idUsuario, Factura nuevaFactura) {
+        Factura facturaVieja = facturaRepository.findById(idFactura).orElseThrow(() -> new RuntimeException("Factura no encontrado"));
+        if(usuarioService.usuarioEsAdminDeLaApp(idUsuario) || facturaVieja.getAutor().getId() == idUsuario){
+            facturaVieja.setFechaFactura(nuevaFactura.getFechaFactura());
+            facturaVieja.setTipoFactura(nuevaFactura.getTipoFactura());
+            facturaVieja.setPuntoDeVenta(nuevaFactura.getPuntoDeVenta());
+            facturaVieja.setNumeroFactura(nuevaFactura.getNumeroFactura());
+            facturaVieja.setCuitReceptor(nuevaFactura.getCuitReceptor());
+            facturaVieja.setCuitProveedor(nuevaFactura.getCuitProveedor());
+            facturaVieja.setCae(nuevaFactura.getCae());
+            facturaVieja.setImporte(nuevaFactura.getImporte());
+        } else throw new SecurityException("No puede modificar un documento que usted no ha creado");
+        if(facturaVieja.esValido()){
+            documentoRepository.save(facturaVieja);
+        }else throw new SecurityException("Los cambios no son válidos");
+
+    }
+
     public void setBajaLogicaDocumento(Long idDocumento, Long idUsuario) {
         Documento documento = documentoRepository.findById(idDocumento).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
         if(usuarioService.usuarioEsAdminDeLaApp(idUsuario) || documento.getAutor().getId() == idUsuario){
@@ -152,4 +170,6 @@ public class DocumentoService {
         Factura factura = facturaRepository.findByIdAndBajaLogicaFalse(id).orElseThrow(() -> new RuntimeException("Factura no encontrada"));
         return FacturaDTOParaGasto.fromFactura(factura);
     }
+
+
 }

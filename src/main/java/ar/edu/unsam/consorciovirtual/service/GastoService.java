@@ -61,8 +61,6 @@ public class GastoService {
     public Gasto modificar(Long idLogueado, Gasto gastoActualizado) throws DataConsistencyException {
         Gasto gastoViejo = gastoRepository.findById(gastoActualizado.getId()).orElseThrow(() -> new RuntimeException("No se encontró el gasto que desea modificar"));
         if(noExisteExpensaEnElPeriodo(gastoActualizado.getPeriodo()) && !gastoViejo.getAnulado()){
-            System.out.println(gastoViejo.getUrl() );
-            System.out.println(gastoActualizado.getUrl() );
             validarGasto(gastoActualizado);
             gastoViejo.getComprobante().setEnlaceDeDescarga(gastoActualizado.getUrl());
             gastoViejo.getComprobante().setTitulo(gastoActualizado.getTitulo());
@@ -82,6 +80,10 @@ public class GastoService {
             gasto.setAnulado(true);
             registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.GASTO, id);
             gastoRepository.save(gasto);
+            Documento comprobante = gasto.getComprobante();
+            comprobante.setTitulo(comprobante.getTitulo() + " (gasto anulado)");
+            comprobante.setDescripcion(comprobante.getDescripcion() + " (El gasto relacionado a este documento fue anulado).");
+            documentoRepository.save(comprobante);
         } else throw new IllegalArgumentException("No puede anular un gasto que ya fue agregado a una expensa");
     }
 

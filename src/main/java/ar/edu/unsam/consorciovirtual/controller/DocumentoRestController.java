@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
+import ar.edu.unsam.consorciovirtual.domain.Factura;
 import ar.edu.unsam.consorciovirtual.domainDTO.DocumentoDTOParaABM;
 import ar.edu.unsam.consorciovirtual.domainDTO.DocumentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.domain.Documento;
@@ -62,6 +63,11 @@ public class DocumentoRestController {
     @PutMapping("/documentos/modificar/{idUsuario}")
     public void modificarDocumento(@PathVariable Long idUsuario, @RequestBody Documento nuevoDocumento) throws DataConsistencyException {
         documentoService.modificarDocumento(idUsuario, nuevoDocumento);
+    }
+
+    @PutMapping("/documentos/modificarDeGasto/{idFactura}/{idUsuario}")
+    public void modificarFacturaDeGasto(@PathVariable Long idFactura, @PathVariable Long idUsuario, @RequestBody Documento nuevaFactura) throws DataConsistencyException {
+        documentoService.modificarFacturaDeGasto(idFactura, idUsuario, (Factura) nuevaFactura);
     }
 
     //El idUsuario se pasa para verificar que sea el mismo que lo creó.
