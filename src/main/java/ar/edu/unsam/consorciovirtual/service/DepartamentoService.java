@@ -64,12 +64,18 @@ public class DepartamentoService {
         Departamento updatedDepartment = asignarPropietarioEInquilino(departamento);
         validarModificacion(idLogueado, updatedDepartment);
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DEPARTAMENTO, departamento.getDepartamento().getId(), usuarioService.getNombreYApellidoById(idLogueado));
+        if(!validarPorcentajeDeExpensas(updatedDepartment.getPorcentajeExpensa())){
+            throw new DataConsistencyException("El porcentaje de expensas del departamento supera el disponible para distribuir.");
+        }
         return departamentoRepository.save(updatedDepartment);
     }
 
     public Departamento registrarDepartamento(DepartamentoConUsuarios departamentoConUsuarios) throws DataConsistencyException {
         Departamento newDepartment = asignarPropietarioEInquilino(departamentoConUsuarios);
         validarDepartamento(newDepartment);
+        if(!validarPorcentajeDeExpensas(newDepartment.getPorcentajeExpensa())){
+            throw new DataConsistencyException("El porcentaje de expensas del departamento supera el disponible para distribuir.");
+        }
         return departamentoRepository.save(newDepartment);
     }
 
@@ -154,5 +160,9 @@ public class DepartamentoService {
            ValidationMethods.datoNull(departamento.getPropietario())
 //           ValidationMethods.datoNull(departamento.getInquilino())
         ) throw new DataConsistencyException("Ha ocurrido un error con los datos ingresados. Verificalos e intentá de nuevo.");
+    }
+
+    private Boolean validarPorcentajeDeExpensas(Double porcentajeDepto){
+        return (departamentoRepository.porcentajeDeExpensasCubierto()+porcentajeDepto) <= 100D;
     }
 }

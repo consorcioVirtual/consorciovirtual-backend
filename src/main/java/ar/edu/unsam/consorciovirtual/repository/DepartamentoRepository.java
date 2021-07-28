@@ -46,4 +46,7 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
     List<Departamento> findByPropietarioAndInquilinoIsNullAndBajaLogicaFalse(Usuario propietario);
 
     List<Departamento> findByInquilinoAndBajaLogicaFalse( Usuario inquilino);
+
+    @Query(value = "SELECT SUM(porcentaje_expensa) FROM departamento", nativeQuery=true)
+    Double porcentajeDeExpensasCubierto();
 }
