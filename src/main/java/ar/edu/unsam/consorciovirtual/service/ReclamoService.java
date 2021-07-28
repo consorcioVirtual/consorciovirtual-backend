@@ -42,17 +42,30 @@ public class ReclamoService {
     }
 
     public Reclamo modificarReclamo(Long idLogueado, Reclamo reclamo) throws DataConsistencyException {
-        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || idLogueado == reclamo.getAutor().getId()) {
-            Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
-            reclamo.setAutor(_autor);
-            Reclamo updatedRequest = asignarEstado(reclamo);
-            validarReclamo(updatedRequest);
-            registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
-            return reclamoRepository.save(updatedRequest);
-        } else {
-            throw new SecurityException("No tiene permisos para modificar un reclamo.");
-        }
+        if (!puedeModificarReclamo(idLogueado, reclamo)) throw new SecurityException("No tiene permisos para modificar un reclamo.");
+        if(reclamoResuelto(reclamo.getId())) throw new DataConsistencyException("No puede modificar un reclamo finalizado o rechazado.");
+
+        Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
+        reclamo.setAutor(_autor);
+        Reclamo updatedRequest = asignarEstado(reclamo);
+
+        validarReclamo(updatedRequest);
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.RECLAMO, reclamo.getId(), usuarioService.getNombreYApellidoById(idLogueado));
+
+        return reclamoRepository.save(updatedRequest);
     }
+
+    private boolean puedeModificarReclamo(Long idLogueado, Reclamo reclamo) {
+         return usuarioService.usuarioEsAdminDeLaApp(idLogueado) ||
+                usuarioService.usuarioEsAdminDelConsorcio(idLogueado) ||
+                idLogueado == reclamo.getAutor().getId();
+    }
+
+    private boolean reclamoResuelto(Long idReclamo){
+        Estado estado = buscarPorId(idReclamo).getEstado();
+        return estado.getNombreEstado().equals("Resuelto") || estado.getNombreEstado().equals("Rechazado");
+    }
+
 
     public Reclamo registrarReclamo(Reclamo reclamo) throws DataConsistencyException {
         Reclamo newRequest = asignarAutorYEstado(reclamo);

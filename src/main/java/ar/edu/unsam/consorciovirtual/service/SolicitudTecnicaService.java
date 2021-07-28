@@ -56,20 +56,28 @@ public class SolicitudTecnicaService {
     }
 
     public SolicitudTecnica buscarPorId(Long id) {
-        return solicitudTecnicaRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado"));
+        return solicitudTecnicaRepository.findById(id).orElseThrow(() -> new RuntimeException("Departamento no encontrado."));
     }
 
     public SolicitudTecnica modificarSolicitud(Long idLogueado, SolicitudTecnica solicitud) throws DataConsistencyException {
-        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsPropietario(idLogueado) || idLogueado == solicitud.getAutor().getId()) {
-            Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
-            solicitud.setAutor(_autor);
-            SolicitudTecnica updatedRequest = asignarEstado(solicitud);
-            validarSolicitud(updatedRequest);
-            registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId(), usuarioService.getNombreYApellidoById(idLogueado));
-            return solicitudTecnicaRepository.save(updatedRequest);
-        } else {
-            throw new SecurityException("No tiene permisos");
-        }
+        if (!puedeModificar(idLogueado, solicitud)) throw new SecurityException("No tiene permisos para modificar esta solicitud técnica.");
+        if(solicitudResuelta(solicitud.getId())) throw new DataConsistencyException("No puede modificar una solicitud técnica finalizada o rechazada.");
+
+        Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
+        solicitud.setAutor(_autor);
+        SolicitudTecnica updatedRequest = asignarEstado(solicitud);
+
+        validarSolicitud(updatedRequest);
+        registroModificacionService.guardarPorTipoYId(TipoRegistro.SOLICITUD_TECNICA, solicitud.getId(), usuarioService.getNombreYApellidoById(idLogueado));
+
+        return solicitudTecnicaRepository.save(updatedRequest);
+    }
+
+    private boolean puedeModificar(Long idLogueado, SolicitudTecnica solicitud) {
+        return  usuarioService.usuarioEsAdminDeLaApp(idLogueado) ||
+                usuarioService.usuarioEsAdminDelConsorcio(idLogueado) ||
+                usuarioService.usuarioEsPropietario(idLogueado) ||
+                idLogueado == solicitud.getAutor().getId();
     }
 
     public SolicitudTecnica registrarSolicitud(SolicitudTecnica solicitud) throws DataConsistencyException {
@@ -77,7 +85,12 @@ public class SolicitudTecnicaService {
         validarSolicitud(newRequest);
         return solicitudTecnicaRepository.save(newRequest);
     }
-    
+
+    private boolean solicitudResuelta(Long idSolicitud){
+        Estado estado = buscarPorId(idSolicitud).getEstado();
+        return estado.getNombreEstado().equals("Resuelto") || estado.getNombreEstado().equals("Rechazado");
+    }
+
     private SolicitudTecnica asignarAutorYEstado(SolicitudTecnica solicitud){
         Usuario _autor = usuarioService.buscarPorId(solicitud.getAutor().getId());
         solicitud.setNombreAutor(_autor.getNombreYApellido());
