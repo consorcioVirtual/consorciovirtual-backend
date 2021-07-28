@@ -36,8 +36,8 @@ public class ReclamoRestController {
     }
 
     @DeleteMapping("/reclamo/eliminar/{id}")
-    public void bajaLogicaReclamo(@PathVariable Long id) {
-        reclamoService.bajaLogicaReclamo(id);
+    public void bajaLogicaReclamo(@PathVariable Long id, @RequestParam Long idLogueado) {
+        reclamoService.bajaLogicaReclamo(id, idLogueado);
     }
 
 }

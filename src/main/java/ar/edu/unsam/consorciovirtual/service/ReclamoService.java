@@ -42,7 +42,7 @@ public class ReclamoService {
     }
 
     public Reclamo modificarReclamo(Long idLogueado, Reclamo reclamo) throws DataConsistencyException {
-        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado)) {
+        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || idLogueado == reclamo.getAutor().getId()) {
             Usuario _autor = reclamoRepository.findById(reclamo.getId()).get().getAutor();
             reclamo.setAutor(_autor);
             Reclamo updatedRequest = asignarEstado(reclamo);
@@ -64,12 +64,18 @@ public class ReclamoService {
         return reclamoRepository.saveAll(listaReclamos);
     }
 
-    public void bajaLogicaReclamo(Long id){
+    public void bajaLogicaReclamo(Long id, Long idLogueado){
         Reclamo reclamo = reclamoRepository.findById(id).get();
-        reclamo.setBajaLogica(true);
-        registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.RECLAMO, id);
 
-        reclamoRepository.save(reclamo);
+        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || idLogueado == reclamo.getAutor().getId()) {
+            reclamo.setBajaLogica(true);
+            registroModificacionService.eliminarTodosPorTipoYId(TipoRegistro.RECLAMO, id);
+
+            reclamoRepository.save(reclamo);
+        } else {
+            throw new SecurityException("No tiene permisos para eliminar este reclamo.");
+        }
+
     }
 
     private Reclamo asignarAutorYEstado(Reclamo reclamo){

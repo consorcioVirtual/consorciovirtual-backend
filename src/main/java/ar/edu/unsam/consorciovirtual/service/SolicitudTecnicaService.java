@@ -60,7 +60,7 @@ public class SolicitudTecnicaService {
     }
 
     public SolicitudTecnica modificarSolicitud(Long idLogueado, SolicitudTecnica solicitud) throws DataConsistencyException {
-        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsPropietario(idLogueado)) {
+        if (usuarioService.usuarioEsAdminDeLaApp(idLogueado) || usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsPropietario(idLogueado) || idLogueado == solicitud.getAutor().getId()) {
             Usuario _autor = solicitudTecnicaRepository.findById(solicitud.getId()).get().getAutor();
             solicitud.setAutor(_autor);
             SolicitudTecnica updatedRequest = asignarEstado(solicitud);
