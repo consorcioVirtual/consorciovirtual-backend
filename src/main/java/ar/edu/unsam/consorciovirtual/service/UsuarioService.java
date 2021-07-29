@@ -59,6 +59,10 @@ public class UsuarioService {
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
 
     public void modificar(Long idLogueado, Usuario usuarioActualizado) throws DataConsistencyException {
+        if(usuarioRepository.existsByCorreoAndBajaLogicaFalseAndIdNot(usuarioActualizado.getCorreo(), usuarioActualizado.getId())){
+            throw new DataConsistencyException("El mail indicado ya está registrado en Consorcio Virtual.");
+        }
+        
         validarUsuario(usuarioActualizado);
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
@@ -67,17 +71,12 @@ public class UsuarioService {
     }
 
     public Usuario loguearUsuario(String correo, String password){
-        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
-
-        if(user == null) throw new SecurityException("Usuario o contraseña incorrectos");
-
+        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password).orElseThrow(() -> new SecurityException("Usuario o contraseña incorrectos."));
         return user;
     }
 
     public void modificarContrasenia(String correo, String password, String newPassword) {
-        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password);
-
-        if(user == null) throw new SecurityException("Contraseña incorrecta");
+        Usuario user = usuarioRepository.findByCorreoAndPasswordAndBajaLogicaFalse(correo, password).orElseThrow(() -> new SecurityException("Contraseña incorrecta."));
 
         user.setPassword(newPassword);
         usuarioRepository.save(user);
@@ -108,7 +107,10 @@ public class UsuarioService {
 
     private void validarAlta(Usuario newUser) throws DataConsistencyException {
         if(usuarioRepository.existsByCorreoAndDniAndBajaLogicaFalse(newUser.getCorreo(), newUser.getDni())){
-            throw new DataConsistencyException("El usuario que desea crear ya existe en Consorcio Virtual.");
+            throw new DataConsistencyException("El usuario que desea crear ya está registrado en Consorcio Virtual.");
+        }
+        if(usuarioRepository.existsByCorreoAndBajaLogicaFalse(newUser.getCorreo())){
+            throw new DataConsistencyException("El mail indicado ya está registrado en Consorcio Virtual.");
         }
     }
 

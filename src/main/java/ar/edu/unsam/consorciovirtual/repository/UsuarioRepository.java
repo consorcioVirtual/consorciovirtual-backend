@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual.repository;
 
 import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,10 +20,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findByTipo(TipoUsuario tipo);
 
-    Usuario findByCorreoAndPasswordAndBajaLogicaFalse(String correo, String password);
+    Optional<Usuario> findByCorreoAndPasswordAndBajaLogicaFalse(String correo, String password);
 
     Boolean existsByCorreoAndDniAndBajaLogicaFalse(String correo, String dni);
 
+    Boolean existsByCorreoAndBajaLogicaFalse(String correo);
+
+    Boolean existsByCorreoAndBajaLogicaFalseAndIdNot(String correo, Long id);
+    Optional<Usuario> findByCorreoAndBajaLogicaFalseAndIdNot(String correo, Long id);
     //Trae un usuario por id que es adm de app o adm de consorcio
     //Se maneja por el número del enum estar atentos a no cambair el orden del mismo
 
