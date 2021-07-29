@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.repository;
 
 import ar.edu.unsam.consorciovirtual.domain.Anuncio;
+import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +21,10 @@ public interface AnuncioRepository extends JpaRepository<Anuncio, Long> {
             "(unAnuncio.titulo LIKE %:palabraBuscada% OR unAnuncio.descripcion LIKE %:palabraBuscada%)", nativeQuery = true)
     List<Anuncio> findByBajaLogicaFalse(@Param("palabraBuscada") String palabraBuscada);
 
-    List<Anuncio> findByBajaLogicaFalseAndAutorNombreContainingOrBajaLogicaFalseAndAutorApellidoContainingOrBajaLogicaFalseAndTituloContaining(String nombre, String apellido, String titulo);
+
+    @Query(value = "SELECT a FROM Anuncio a " +
+            "WHERE a.bajaLogica = false " +
+            "AND (a.autor.nombreCompleto LIKE %:busqueda% " +
+            "OR a.titulo LIKE %:busqueda%)")
+    List<Anuncio> findBySearch(@Param("busqueda") String busqueda);
 }

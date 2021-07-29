@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,6 +22,13 @@ public class Anuncio {
     private LocalDate fechaVencimiento;
     @JsonIgnore
     private Boolean bajaLogica = false;
+
+
+//    @Formula(value = "CONVERT(VARCHAR, fecha_creacion)")
+//    private String formulaFechaCreacion;
+//
+//    @Formula(value = "CONVERT(VARCHAR, fecha_vencimiento)")
+//    private String formulaFechaVencimiento;
 
     @JsonIgnore
     @ManyToOne( fetch = FetchType.LAZY)

@@ -5,6 +5,7 @@ import ar.edu.unsam.consorciovirtual.domainDTO.ExpensaDeDepartamentoDTOParaLista
 import ar.edu.unsam.consorciovirtual.repository.DocumentoRepository;
 import ar.edu.unsam.consorciovirtual.repository.ExpensaDeDepartamentoRepository;
 import ar.edu.unsam.consorciovirtual.utils.CreadorDePDF;
+import ar.edu.unsam.consorciovirtual.utils.FormatConverter;
 import ar.edu.unsam.consorciovirtual.utils.GestorDeCorreo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,9 +35,10 @@ public class ExpensaDeDepartamentoService {
     public List<ExpensaDeDepartamentoDTOParaListado> buscarTodos(Long idLogueado, String palabraBuscada) {
         List<ExpensaDeDepartamento> expensas;
         List<Long> idDeptos;
+        Double montoTotal = FormatConverter.stringToDouble(palabraBuscada);
 
         if (usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)) {
-            expensas = expensaDeDepartamentoRepository.findByUnidadContainingAndAnuladaFalseOrEstadoContainingAndAnuladaFalse(palabraBuscada, palabraBuscada);
+            expensas = expensaDeDepartamentoRepository.findBySearch(palabraBuscada, montoTotal);
             return mapearADTOParaListado(expensas);
         } else if (usuarioService.usuarioEsPropietario(idLogueado)) {
             idDeptos = departamentoService.buscarIdPorPropietario(idLogueado);

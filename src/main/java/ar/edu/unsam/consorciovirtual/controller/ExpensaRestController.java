@@ -3,6 +3,7 @@ package ar.edu.unsam.consorciovirtual.controller;
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.domainDTO.ExpensaDeDepartamentoDTOParaListado;
 import ar.edu.unsam.consorciovirtual.service.*;
+import ar.edu.unsam.consorciovirtual.utils.FormatConverter;
 import ar.edu.unsam.consorciovirtual.utils.GeneradorDeExpensas;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -48,33 +49,26 @@ public class ExpensaRestController {
     @Transactional
     @GetMapping("/expensas/createPorImportePredefinido")
     public void generarExpensasPorImportePredefinido(@RequestParam String periodo, @RequestParam Double importeComunes, @RequestParam Double importeExtraordinarias){
-        this.generadorDeExpensas.generarExpensasPorImportePredefinido(importeComunes, importeExtraordinarias, stringToYearMonth(periodo));
+        this.generadorDeExpensas.generarExpensasPorImportePredefinido(importeComunes, importeExtraordinarias, FormatConverter.stringToYearMonth(periodo));
     }
 
     @Transactional
     @GetMapping("/expensas/anular")
     public void anularExpensasDeUnPeriodo(@RequestParam String periodo){
-        YearMonth periodoABuscar = stringToYearMonth(periodo);
+        YearMonth periodoABuscar = FormatConverter.stringToYearMonth(periodo);
         this.expensaGeneralService.anularExpensasPorPeriodo(periodoABuscar);
     }
 
     @GetMapping("/expensageneral/periodo")
     public ExpensaGeneral buscarPorPeriodoGeneral(@RequestParam String periodo) {
-        YearMonth periodoABuscar = stringToYearMonth(periodo);
+        YearMonth periodoABuscar = FormatConverter.stringToYearMonth(periodo);
         return expensaGeneralService.buscarPorPeriodo(periodoABuscar);
     }
     
     @GetMapping("/expensadepto/periodo")
     public List<ExpensaDeDepartamento> buscarPorPeriodoDepartamento(@RequestParam String periodo) {
-        YearMonth periodoABuscar = stringToYearMonth(periodo);
+        YearMonth periodoABuscar = FormatConverter.stringToYearMonth(periodo);
         return expensaDeDepartamentoService.buscarPorPeriodo(periodoABuscar);
-    }
-
-
-    public YearMonth stringToYearMonth(String periodo){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        var periodoFormat = periodo.replaceAll("^\"+|\"+$", "");
-        return YearMonth.parse(periodoFormat, formatter);
     }
 
     /*El idUsuario es el id del pagador, puede no corresponder con el dueño o inquilino del departamento

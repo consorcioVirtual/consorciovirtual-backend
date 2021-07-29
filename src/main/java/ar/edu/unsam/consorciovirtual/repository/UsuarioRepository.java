@@ -1,5 +1,6 @@
 package ar.edu.unsam.consorciovirtual.repository;
 
+import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import org.checkerframework.checker.nullness.Opt;
@@ -14,9 +15,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByCorreo(String correo);
 
-    @Query(value = "SELECT * FROM usuario as unUsuario " +
-            "WHERE (unUsuario.nombre LIKE %:word% OR unUsuario.apellido LIKE %:word% OR unUsuario.dni LIKE %:word% OR unUsuario.correo LIKE %:word% OR unUsuario.tipo LIKE %:word%) AND (unUsuario.baja_logica = 0)", nativeQuery = true)
-    List<Usuario> findBySearch(String word);
+    @Query(value = "SELECT u FROM Usuario u " +
+            "WHERE u.bajaLogica = false " +
+            "AND (u.nombreCompleto LIKE %:busqueda% " +
+            "OR u.dni LIKE %:busqueda% " +
+            "OR u.correo LIKE %:busqueda% " +
+            "OR u.tipo LIKE %:busqueda%) ")
+    List<Usuario> findBySearch(@Param("busqueda") String busqueda);
 
     List<Usuario> findByTipo(TipoUsuario tipo);
 
