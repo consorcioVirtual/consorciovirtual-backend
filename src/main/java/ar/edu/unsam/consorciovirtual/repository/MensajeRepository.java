@@ -10,4 +10,7 @@ public interface MensajeRepository extends JpaRepository<Mensaje, Long> {
 
     @Query(value="SELECT * FROM mensaje AS m WHERE m.mensaje LIKE %:palabraBuscada% ORDER BY m.id DESC", nativeQuery = true)
     List<Mensaje> findMensajesFiltrados(String palabraBuscada);
+
+    @Query(value=" SELECT * FROM mensaje ORDER BY id DESC LIMIT 1 ", nativeQuery=true)
+    Mensaje findUltimoMensaje();
 }
