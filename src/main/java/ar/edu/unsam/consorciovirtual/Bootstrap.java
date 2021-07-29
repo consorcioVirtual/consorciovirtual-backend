@@ -57,8 +57,8 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoRechazado = createState("Rechazado", "Solicitud tecnica", estadoEnProceso);
 
     //Notas de solicitudes/reclamos
-    private final Nota nota1 = createNota("Juan Perez", "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
-    private final Nota nota2 = createNota("Juan Perez", "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
+    private final Nota nota1 = createNota(maria.getNombre(), maria.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota nota2 = createNota(maria.getNombre(),maria.getId(), "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
     private final List<Nota> notas = List.of(nota1, nota2);
 
     //Solicitudes
@@ -185,9 +185,10 @@ public class Bootstrap implements InitializingBean {
         departamentoService.registrarTodos(departamentos);
     }
 
-    private Nota createNota(String autor, String texto, LocalDateTime fechaHora) {
+    private Nota createNota(String autor, Long idAutor, String texto, LocalDateTime fechaHora) {
         Nota nota = new Nota();
         nota.setAutor(autor);
+        nota.setIdAutor(idAutor);
         nota.setTexto(texto);
         nota.setFechaHora(fechaHora);
 
