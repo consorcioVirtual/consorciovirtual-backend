@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
@@ -15,6 +17,16 @@ public class GestorDeCorreoRestController {
     @PostMapping("/enviarCorreo/usuarioNuevo")
     public void enviarCorreoAnuevoUsuario(@RequestBody Usuario usuario) throws JsonProcessingException {
         gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
+    }
+
+    @PostMapping("/enviarCorreo/notaEnReclamo/{idReclamo}/{idUsuario}")
+    public void enviarCorreoNuevaNotaReclamo(@PathVariable Long idReclamo, @PathVariable Long idUsuario){
+        gestorDeCorreo.enviarMensajeNuevaNota(idReclamo, idUsuario, "Reclamo");
+    }
+
+    @PostMapping("/enviarCorreo/notaEnSolicitud/{idSolicitud}/{idUsuario}")
+    public void enviarCorreoNuevaNotaSolicitud(@PathVariable Long idSolicitud, @PathVariable Long idUsuario){
+        gestorDeCorreo.enviarMensajeNuevaNota(idSolicitud, idUsuario, "Solicitud");
     }
 
 }

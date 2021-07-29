@@ -17,6 +17,7 @@ public class Nota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long idAutor;
     private String autor;
     private String texto;
     private LocalDateTime fechaHora = LocalDateTime.now(ZONE_ID_ARGENTINA);

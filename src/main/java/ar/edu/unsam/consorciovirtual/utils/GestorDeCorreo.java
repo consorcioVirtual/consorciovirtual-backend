@@ -1,8 +1,11 @@
 package ar.edu.unsam.consorciovirtual.utils;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
-import ar.edu.unsam.consorciovirtual.domain.ExpensaDeDepartamento;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.*;
+import ar.edu.unsam.consorciovirtual.repository.NotaRepository;
+import ar.edu.unsam.consorciovirtual.repository.ReclamoRepository;
+import ar.edu.unsam.consorciovirtual.repository.SolicitudTecnicaRepository;
+import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
+import ar.edu.unsam.consorciovirtual.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.transaction.Transactional;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 @RequiredArgsConstructor
@@ -21,6 +26,10 @@ import java.util.Properties;
 public class GestorDeCorreo {
     private final String user = "consorcioVirtualArgentina@gmail.com";
     private final String pass = "GrupoUno";
+    private final ReclamoRepository reclamoRepository;
+    private final SolicitudTecnicaRepository solicitudRepository;
+    private final UsuarioService usuarioService;
+    private final UsuarioRepository usuarioRepository;
 
     private Properties configuracion(){
         // La configuración para enviar correo
@@ -115,7 +124,76 @@ public class GestorDeCorreo {
     }
 
     public void enviarMensajeNuevoUsuario(Usuario usuario){
+        String asunto = "Usted fue registrado en Consorcio Virtual, la mejor solución para consorcios de edificios";
+        String cuerpo = "Sr/Sra. "+ usuario.getNombre() + " " + usuario.getApellido() +":" +
+                "\n\nLe informamos que fue registrado en la aplicación Consorcio Virtual como " +
+                usuario.getTipo() +", " +
+                " puede conectarse a la misma ingresando a www.consorciovirtual.com.ar" +
+                " utilizando los siguientes datos: \n" +
+                "\nUsuario:"+ " " + usuario.getCorreo() +
+                "\nContraseña: su número de DNI (sin puntos)" +
+                "\n\nPara su seguridad, le sugerimos que cambie su contraseña la primera vez" +
+                " que ingrese a la aplicación.\nQue tenga buen día."+
+                "\n\nP.D.: Si usted tiene un problema para ingresar o cree que no debió ser agregado " +
+                "a esta aplicación, por favor notifíquelo a consorcioVirtualArgentina@gmail.com";
+        List<String> remitentes = new ArrayList<String>();
+        remitentes.add(usuario.getCorreo());
 
+        enviarMensajeSinAdjunto(asunto, cuerpo, remitentes);
+    }
+
+    public void enviarMensajeNuevaNota(Long idContenedorNota, Long idUsuario, String tipo) {
+        try {
+            Usuario usuario = null;
+            List<String> remitentes = new ArrayList<String>();
+            String nombreContendor = "";
+            String pestania = "";
+            String numero = idContenedorNota.toString();
+
+            while (numero.length() < 5) {
+                numero = "0" + numero;
+            }
+
+            if (tipo == "Reclamo") {
+                Reclamo reclamo = reclamoRepository.getById(idContenedorNota);
+                usuario = reclamo.getAutor();
+                nombreContendor = "el reclamo";
+                pestania = "Reclamos";
+            }
+            if (tipo == "Solicitud") {
+                SolicitudTecnica solicitud = solicitudRepository.getById(idContenedorNota);
+                usuario = solicitud.getAutor();
+                nombreContendor = "la solicitud";
+                pestania = "Solicitudes Técnicas";
+            }
+
+            if (usuarioService.usuarioEsAdminDelConsorcio(idUsuario)) {
+                remitentes.add(usuario.getCorreo());
+                if (usuario.getTipo() == TipoUsuario.Inquilino) {
+                    String correoPropietario = usuarioService.buscarCorreoDePropietarioPorInquilino(idUsuario);
+                    remitentes.add(correoPropietario);
+                }
+            } else {
+                Usuario admin = usuarioRepository.buscarAdministradorDeConsorcioActivo().orElseThrow(() -> new RuntimeException("No se encontró administrador"));
+                String correoAdministrador = admin.getCorreo();
+                remitentes.add(correoAdministrador);
+            }
+
+            String asunto = "Hay una nueva nota en " + nombreContendor + " nº" + numero;
+            String cuerpo = "Sr/Sra. Propietario/a / Inquilino/a / Administrador/a:" +
+                    "\n\nLe informamos que hay una nueva nota en " + nombreContendor + " nº" + numero +
+                    ". Puede verla ingresando a la web de consorcio virtual en la pestaña " + pestania + "." +
+                    "\nQue tenga buen día." +
+                    "\n\nP.D.: Si usted no forma parte de la apliación web Consorcio Virtual " +
+                    "por favor notifíquelo a consorcioVirtualArgentina@gmail.com";
+
+            enviarMensajeSinAdjunto(asunto, cuerpo, remitentes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void enviarMensajeSinAdjunto(String asunto, String cuerpo, List<String> remitentes){
         Properties properties = configuracion();
         // Obtener la sesion
         Session session = Session.getInstance(properties, null);
@@ -128,25 +206,22 @@ public class GestorDeCorreo {
             mimeMessage.setFrom(new InternetAddress(user, "Consorcio Virtual"));
 
             // Agregar los destinatarios al mensaje
-            mimeMessage.setRecipients(Message.RecipientType.TO, usuario.getCorreo());
-
+            remitentes.forEach(
+                 x-> {
+                     try {
+                         mimeMessage.setRecipients(Message.RecipientType.TO, x);
+                     } catch (MessagingException e) {
+                         e.printStackTrace();
+                     }
+                 }
+            );
 
             // Agregar el asunto al correo
-            mimeMessage.setSubject("Usted fue registrado en Consorcio Virtual, la mejor solución para consorcios de edificios");
+            mimeMessage.setSubject(asunto);
 
             // Creo la parte del mensaje
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            mimeBodyPart.setText("Sr/Sra. "+ usuario.getNombre() + " " + usuario.getApellido() +":" +
-                    "\n\nLe informamos que fue registrado en la aplicación Consorcio Virtual como " +
-                    usuario.getTipo() +", " +
-                    " puede conectarse a la misma ingresando a www.consorciovirtual.com.ar" +
-                    " utilizando los siguientes datos: \n" +
-                    "\nUsuario:"+ " " + usuario.getCorreo() +
-                    "\nContraseña: su número de DNI (sin puntos)" +
-                    "\n\nPara su seguridad, le sugerimos que cambie su contraseña la primera vez" +
-                    " que ingrese a la aplicación.\nQue tenga buen día."+
-                    "\n\nP.D.: Si usted tiene un problema para ingresar o cree que no debió ser agregado " +
-                    "a esta aplicación, por favor notifíquelo a consorcioVirtualArgentina@gmail.com");
+            mimeBodyPart.setText(cuerpo);
 
             // Crear el multipart para agregar la parte del mensaje anterior y el adjunto
             Multipart multipart = new MimeMultipart();
@@ -162,6 +237,7 @@ public class GestorDeCorreo {
             ex.printStackTrace();
         }
         System.out.println("Correo enviado");
-
     }
+
+
 }

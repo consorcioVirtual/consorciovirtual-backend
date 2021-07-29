@@ -181,4 +181,7 @@ public class UsuarioService {
 
     }
 
+    public String buscarCorreoDePropietarioPorInquilino(Long idUsuario) {
+        return usuarioRepository.buscarCorreoDePropietarioPorInquilino(idUsuario);
+    }
 }
