@@ -105,14 +105,14 @@ public class DocumentoService {
 
     public void modificarDocumento(Long idUsuario, Documento documentoActualizado) throws DataConsistencyException {
         Documento documentoViejo = documentoRepository.findById(documentoActualizado.getId()).orElseThrow(() -> new RuntimeException("Documento no encontrado"));
-        validarDocumento(documentoActualizado);
+
         if(usuarioService.usuarioEsAdminDeLaApp(idUsuario) || documentoViejo.getAutor().getId() == idUsuario){
             documentoViejo.setDescripcion(documentoActualizado.getDescripcion());
             documentoViejo.setTitulo(documentoActualizado.getTitulo());
             documentoViejo.setEnlaceDeDescarga(documentoActualizado.getEnlaceDeDescarga());
             documentoViejo.setFechaModificacion(LocalDate.now());
         } else throw new SecurityException("No puede modificar un documento que usted no ha creado");
-
+        validarDocumento(documentoViejo);
         documentoRepository.save(documentoViejo);
         registroModificacionService.guardarPorTipoYId(TipoRegistro.DOCUMENTO, documentoViejo.getId(), usuarioService.getNombreYApellidoById(idUsuario));
     }
@@ -156,6 +156,9 @@ public class DocumentoService {
     }
 
     private void validarDocumento(Documento documento) throws DataConsistencyException {
+
+        System.out.println(documento.getAutor());
+
         if(
            ValidationMethods.stringNullOVacio(documento.getTitulo()) ||
            ValidationMethods.stringNullOVacio(documento.getDescripcion()) ||

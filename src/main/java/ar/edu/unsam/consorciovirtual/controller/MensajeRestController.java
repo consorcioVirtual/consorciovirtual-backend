@@ -33,12 +33,15 @@ public class MensajeRestController {
     }
 
     @PostMapping("/mensajes/cantidad/{usuarioId}")
-    public void getCantidadDeMensajes(@PathVariable Long usuarioId){
+    public Long getCantidadDeMensajes(@PathVariable Long usuarioId){
 
-//        mensajeService.getCantidadMensajes(usuaroId);
+        return mensajeService.getCantidadMensajes(usuarioId);
     }
 
-
+    @PostMapping("/mensajes/registro/{userId}/{mensajeId}")
+    public void setRegistroMensaje(@PathVariable Long userId, @PathVariable Long mensajeId){
+        mensajeService.guardarRegistro(userId,mensajeId);
+    }
 
     //No se le pasa el autor completo desde el front, se le carga en el back por idAutor
     /*No se le pasa el mensajeCitado completo desde el front,

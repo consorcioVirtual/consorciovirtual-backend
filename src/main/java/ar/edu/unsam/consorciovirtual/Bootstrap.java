@@ -2,6 +2,7 @@ package ar.edu.unsam.consorciovirtual;
 
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
+import ar.edu.unsam.consorciovirtual.repository.RegistroMensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.RegistroModificacionRepository;
 import ar.edu.unsam.consorciovirtual.service.*;
 import ar.edu.unsam.consorciovirtual.utils.GeneradorDeExpensas;
@@ -31,6 +32,7 @@ public class Bootstrap implements InitializingBean {
     private final ReclamoService reclamoService;
     private final ContactoUtilService contactoUtilService;
     private final RegistroModificacionRepository registroModificacionRepository;
+    private final RegistroMensajeRepository registroMensajeRepository;
 
 
     //Usuarios
@@ -57,8 +59,8 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoRechazado = createState("Rechazado", "Solicitud tecnica", estadoEnProceso);
 
     //Notas de solicitudes/reclamos
-    private final Nota nota1 = createNota("Juan Perez", "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
-    private final Nota nota2 = createNota("Juan Perez", "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
+    private final Nota nota1 = createNota(maria.getNombre(), maria.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota nota2 = createNota(maria.getNombre(),maria.getId(), "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
     private final List<Nota> notas = List.of(nota1, nota2);
 
     //Solicitudes
@@ -125,6 +127,16 @@ public class Bootstrap implements InitializingBean {
     private final ContactoUtil contactoUtil1 = createContactoUtil("Emergencia", "911", "Emergencia", "Emergencias");
     private final ContactoUtil contactoUtil2 = createContactoUtil("pepe", "155555555", "Gasista", "Para emergencias 24hs");
 
+    //Registro de Mensaje
+    private final RegistroMensaje regSantil = createRegistroMensaje(santil,1L);
+    private final RegistroMensaje regSantilr = createRegistroMensaje(santilr,2L);
+    private final RegistroMensaje regSantir = createRegistroMensaje(santir,3L);
+    private final RegistroMensaje regNahuel = createRegistroMensaje(nahue,4L);
+    private final RegistroMensaje regPablo = createRegistroMensaje(pablo,5L);
+    private final RegistroMensaje regMaria = createRegistroMensaje(maria,6L);
+    private final RegistroMensaje regRober = createRegistroMensaje(rober,7L);
+    private final RegistroMensaje regJuan = createRegistroMensaje(juan,8L);
+
     //Métodos
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -140,6 +152,7 @@ public class Bootstrap implements InitializingBean {
         createAllFacturas();
         createAllReclamos();
         createAllContactosUtiles();
+        createAllRegistros();
         generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
         generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
@@ -185,9 +198,10 @@ public class Bootstrap implements InitializingBean {
         departamentoService.registrarTodos(departamentos);
     }
 
-    private Nota createNota(String autor, String texto, LocalDateTime fechaHora) {
+    private Nota createNota(String autor, Long idAutor, String texto, LocalDateTime fechaHora) {
         Nota nota = new Nota();
         nota.setAutor(autor);
+        nota.setIdAutor(idAutor);
         nota.setTexto(texto);
         nota.setFechaHora(fechaHora);
 
@@ -327,6 +341,15 @@ public class Bootstrap implements InitializingBean {
         contactoUtilService.registrarTodos(contactos);
     }
 
+    private RegistroMensaje createRegistroMensaje(Usuario usuario, Long usuarioId){
+        RegistroMensaje registroMensaje = new RegistroMensaje();
+        registroMensaje.setUsuarioId(usuarioId);
+        registroMensaje.setUltimoMensaje(0L);
+        return registroMensaje;
+    }
 
-
+    private void createAllRegistros(){
+        List<RegistroMensaje> registros = List.of(regSantil,regSantilr,regSantir,regJuan,regMaria,regNahuel,regRober,regPablo);
+        registroMensajeRepository.saveAll(registros);
+    }
 }

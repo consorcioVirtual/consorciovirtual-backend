@@ -1,10 +1,7 @@
 package ar.edu.unsam.consorciovirtual.service;
 
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
-import ar.edu.unsam.consorciovirtual.domain.Gasto;
-import ar.edu.unsam.consorciovirtual.domain.Mensaje;
-import ar.edu.unsam.consorciovirtual.domain.MensajeRequest;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.MensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.RegistroMensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
@@ -40,9 +37,12 @@ public class MensajeService {
         mensajeRepository.save(mensajeNuevo);
     }
 
-//    public Integer getCantidadMensajes(Long usuarioId) {
-//
-//    }
+    public Long getCantidadMensajes(Long usuarioId) {
+        RegistroMensaje registro = registroMensajeRepository.getById(usuarioId);
+        Mensaje ultimoMensaje = mensajeRepository.findUltimoMensaje();
+        System.out.println(ultimoMensaje.getId() - registro.getUltimoMensaje());
+        return ultimoMensaje.getId() - registro.getUltimoMensaje();
+    }
 
 //    public void createMensaje(Long idAutor, Mensaje mensajeNuevo, Long idMensajeCitado) {
 //        Usuario autor = usuarioRepository.findById(idAutor).orElseThrow(() -> new IllegalArgumentException ("Error con el usuario que quiere crear el mensaje"));
@@ -65,4 +65,9 @@ public class MensajeService {
         ) throw new DataConsistencyException("Ha ocurrido un error en el envío del mensaje. Intentá de nuevo.");
     }
 
+    public void guardarRegistro(Long usuarioId,Long mensajeId){
+        RegistroMensaje registro = registroMensajeRepository.findById(usuarioId).get();
+        registro.setUltimoMensaje(mensajeId);
+        registroMensajeRepository.save(registro);
+    }
 }

@@ -11,6 +11,9 @@ import javax.persistence.Id;
 @Entity
 public class RegistroMensaje {
 
+
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     @Id
     private Long usuarioId;
     private Long ultimoMensaje;
