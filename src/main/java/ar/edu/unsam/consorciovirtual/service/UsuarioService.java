@@ -3,12 +3,10 @@ package ar.edu.unsam.consorciovirtual.service;
 import javax.transaction.Transactional;
 
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
-import ar.edu.unsam.consorciovirtual.domain.TipoRegistro;
-import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
-import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.domainDTO.UsuarioConDeptoDTO;
 import ar.edu.unsam.consorciovirtual.repository.DepartamentoRepository;
+import ar.edu.unsam.consorciovirtual.repository.RegistroMensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
 import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,7 @@ public class UsuarioService {
     private final RegistroModificacionService registroModificacionService;
 //    private final DepartamentoService departamentoService;
     private final DepartamentoRepository departamentoRepository;
+    private final RegistroMensajeRepository registroMensajeRepository;
 //    private final GestorDeCorreo gestorDeCorreo;
 
 //    public static Usuario usuarioLogueado;
@@ -53,7 +52,9 @@ public class UsuarioService {
         usuario.setPassword(usuario.getDni());
         validarUsuario(usuario);
 //        gestorDeCorreo.enviarMensajeNuevoUsuario(usuario);
-        return usuarioRepository.save(usuario);
+        Usuario usuarioCreado = usuarioRepository.save(usuario);
+        crearRegistroDeUsuario(usuarioCreado);
+        return usuarioCreado;
     }
 
     public List<Usuario> registrarTodos(List <Usuario> listaUsuarios) { return usuarioRepository.saveAll(listaUsuarios); }
@@ -185,5 +186,12 @@ public class UsuarioService {
 
     public String buscarCorreoDePropietarioPorInquilino(Long idUsuario) {
         return usuarioRepository.buscarCorreoDePropietarioPorInquilino(idUsuario);
+    }
+
+    public void crearRegistroDeUsuario(Usuario usuario){
+        RegistroMensaje registroMensaje = new RegistroMensaje();
+        registroMensaje.setUsuarioId(usuario.getId());
+        registroMensaje.setUltimoMensaje(0L);
+        registroMensajeRepository.save(registroMensaje);
     }
 }

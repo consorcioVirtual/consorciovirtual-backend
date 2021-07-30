@@ -135,15 +135,15 @@ public class Bootstrap implements InitializingBean {
     private final RegistroMensaje regPropietario1A = createRegistroMensaje(propietario1A,1L);
     private final RegistroMensaje regPropietario1B = createRegistroMensaje(propietario1B,2L);
     private final RegistroMensaje regPropietario1C = createRegistroMensaje(propietario1C,3L);
-    private final RegistroMensaje regPropietario2A = createRegistroMensaje(propietario2A,1L);
-    private final RegistroMensaje regPropietario2B = createRegistroMensaje(propietario2B,2L);
-    private final RegistroMensaje regPropietario2C = createRegistroMensaje(propietario2C,3L);
-    private final RegistroMensaje retRegPropietario3ABC = createRegistroMensaje(propietario3ABC,4L);
-    private final RegistroMensaje regAdminApp = createRegistroMensaje(administradorApp,5L);
-    private final RegistroMensaje getRegAdminConsorcio = createRegistroMensaje(administradorConsorcio,6L);
-    private final RegistroMensaje regInquilino1A = createRegistroMensaje(inquilino1A,7L);
-    private final RegistroMensaje regInquilino3A = createRegistroMensaje(inquilino3A,7L);
-    private final RegistroMensaje regInquilino3B = createRegistroMensaje(inquilino3B,7L);
+    private final RegistroMensaje regPropietario2A = createRegistroMensaje(propietario2A,4L);
+    private final RegistroMensaje regPropietario2B = createRegistroMensaje(propietario2B,5L);
+    private final RegistroMensaje regPropietario2C = createRegistroMensaje(propietario2C,6L);
+    private final RegistroMensaje retRegPropietario3ABC = createRegistroMensaje(propietario3ABC,7L);
+    private final RegistroMensaje regAdminApp = createRegistroMensaje(administradorApp,8L);
+    private final RegistroMensaje getRegAdminConsorcio = createRegistroMensaje(administradorConsorcio,9L);
+    private final RegistroMensaje regInquilino1A = createRegistroMensaje(inquilino1A,10L);
+    private final RegistroMensaje regInquilino3A = createRegistroMensaje(inquilino3A,11L);
+    private final RegistroMensaje regInquilino3B = createRegistroMensaje(inquilino3B,12L);
 
     //Métodos
     @Override
