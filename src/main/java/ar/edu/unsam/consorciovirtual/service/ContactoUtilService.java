@@ -29,7 +29,7 @@ public class ContactoUtilService {
     }
 
     public List<ContactoUtil> buscarTodos(String palabraBuscada) {
-        return contactoUtilRepository.findAllByBajaLogicaFalseAndServicioContaining(palabraBuscada);
+        return contactoUtilRepository.buscarTodos(palabraBuscada);
     }
 
     public void crearContacto(Long idLogueado, ContactoUtil nuevoContacto) throws DataConsistencyException {

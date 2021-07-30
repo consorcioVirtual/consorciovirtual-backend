@@ -36,14 +36,14 @@ public class Bootstrap implements InitializingBean {
 
 
     //Usuarios
-    private final Usuario santir = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
-    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yahoo.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
-    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
-    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
-    private final Usuario nahue = createUser("Nahue", "Ramos", "nahueramos@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
-    private final Usuario juan = createUser("Juan", "Perez", "inquilino", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
-    private final Usuario rober = createUser("Roberto", "Perez", "inquilino2", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
-    private final Usuario maria = createUser("Maria", "Perez", "test", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio);
+    private final Usuario santir = createUser("Santiago", "Ranieri", "santi.ranieri@il.coma", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yaoo.coma", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
+    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gma.coa", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario);
+    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmal.cma", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario nahue = createUser("Nahue", "Ramos", "nahuelramos518@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador);
+    private final Usuario juan = createUser("Juan", "Perez", "inquilino@algo.algo", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
+    private final Usuario rober = createUser("Roberto", "Perez", "inquilino2@algo.algo", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino);
+    private final Usuario maria = createUser("Maria", "Perez", "test@algo.algo", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio);
 
     //Departamentos
     private final Departamento depto1 = createDepartamento(null, "1", "D", 6.5, 35, santil, juan);
