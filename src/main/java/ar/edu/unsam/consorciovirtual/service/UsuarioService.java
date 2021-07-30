@@ -98,9 +98,9 @@ public class UsuarioService {
         if(idLogueado.equals(idABorrar)){
             throw new DataConsistencyException("No es posible eliminarte a ti mismo.");
         }
-        if(!usuarioEsAdminDeLaApp(idLogueado)){
-            throw new SecurityException("No tiene permisos para eliminar un usuario.");
-        }
+//        if(!usuarioEsAdminDeLaApp(idLogueado) ){
+//            throw new SecurityException("No tiene permisos para eliminar un usuario.");
+//        }
         if(usuarioSeRelacionaConDeptos(idABorrar)){
             throw new DataConsistencyException("No es posible eliminar un usuario que es propietario de un departamento.");
         }
