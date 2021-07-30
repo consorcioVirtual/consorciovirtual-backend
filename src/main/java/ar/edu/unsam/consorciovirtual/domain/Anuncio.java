@@ -23,13 +23,6 @@ public class Anuncio {
     @JsonIgnore
     private Boolean bajaLogica = false;
 
-
-//    @Formula(value = "CONVERT(VARCHAR, fecha_creacion)")
-//    private String formulaFechaCreacion;
-//
-//    @Formula(value = "CONVERT(VARCHAR, fecha_vencimiento)")
-//    private String formulaFechaVencimiento;
-
     @JsonIgnore
     @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name="idAutor")

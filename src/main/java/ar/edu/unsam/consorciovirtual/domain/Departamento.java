@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Formula;
 
 import java.util.List;
@@ -31,13 +32,13 @@ public class Departamento {
     private String nombreInquilino;
 //    private String estadoDeCuenta;
 
-    @Formula(value = "concat(piso, ' ', nro_departamento)")
+    @ColumnTransformer(read = "concat(piso, ' ', nro_departamento)")
     private String unidad1;
 
-    @Formula(value = "concat(piso, '°', nro_departamento)")
+    @ColumnTransformer(read = "concat(piso, '°', nro_departamento)")
     private String unidad2;
 
-    @Formula(value = "concat(piso, nro_departamento)")
+    @ColumnTransformer(read = "concat(piso, nro_departamento)")
     private String unidad3;
 
     @JsonIgnore
