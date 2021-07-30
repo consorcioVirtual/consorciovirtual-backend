@@ -26,7 +26,7 @@ public class Reclamo {
     @Transient
     public String ultimaModificacion;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reclamo_id")
     private List<Nota> notas;
 

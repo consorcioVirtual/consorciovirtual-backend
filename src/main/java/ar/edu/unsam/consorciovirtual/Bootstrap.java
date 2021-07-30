@@ -66,24 +66,24 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoRechazado = createState("Rechazado", "Solicitud tecnica", estadoEnProceso);
 
     //Notas de solicitudes/reclamos
-   /* private final Nota notaSolicitud1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota notaSolicitud1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
     private final Nota notaSolicitud2 = createNota(administradorConsorcio.getNombre(),administradorConsorcio.getId(), "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
     private final List<Nota> notasSolicitud = List.of(notaSolicitud1, notaSolicitud2);
 
     private final Nota notaReclamo1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "Ya se hablo en la reunión de consorcio", LocalDateTime.of(2021, 8, 15, 10, 30));
     private final Nota notaReclamo2 = createNota(administradorConsorcio.getNombre(),administradorConsorcio.getId(), "Volví a hablarlo y va a empezar a cerrarla", LocalDateTime.of(2021, 7, 2, 15, 52));
     private final List<Nota> notasReclamos = List.of(notaReclamo1, notaReclamo2);
-*/
+
 
     //Solicitudes
-    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), null, propietario1A, estadoPendienteResolucion);
+    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notasSolicitud, propietario1A, estadoPendienteResolucion);
     private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 07, 12),null, propietario3ABC, estadoEnProceso);
     private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 29), null, inquilino3B, estadoRechazado);
     private final SolicitudTecnica solicitud4 = createSolicitudTecnica("Interna", "Caño roto", "Se rompió un caño de agua en mi baño, se me inunda todo", LocalDate.of(2021, 07, 17),null, inquilino3A, estadoPendienteAprobacion);
 
     //Reclamos
     private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), propietario2A, estadoEnProceso, null);
-    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), propietario3ABC, estadoPendienteResolucion, null);
+    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), propietario3ABC, estadoPendienteResolucion, notasReclamos);
     private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), propietario2C, estadoResuelto, null);
 
     //Gastos
