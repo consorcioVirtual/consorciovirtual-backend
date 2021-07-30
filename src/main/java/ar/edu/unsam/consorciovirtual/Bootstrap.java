@@ -86,30 +86,30 @@ public class Bootstrap implements InitializingBean {
     private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), propietario2C, estadoResuelto, null);
 
     //Gastos
-//    private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
-//            YearMonth.of(2021,5),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
-//    private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-//            YearMonth.of(2021,5),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-//    private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-//            YearMonth.of(2021,5),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
-//    private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
-//            YearMonth.of(2021,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
-//    private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
-//            YearMonth.of(2021,5),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
-//
+    private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
+            YearMonth.of(2021,5),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
+    private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+            YearMonth.of(2021,5),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+            YearMonth.of(2021,5),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
+            YearMonth.of(2021,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
+    private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
+            YearMonth.of(2021,5),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
+
 //    //Gastos prueba para generar expensa (no cambiar periodo)
-//    private final Gasto gasto11 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-//            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-//    private final Gasto gasto12 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-//            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
-//    private final Gasto gasto13 = createGasto("Fotocopias", Rubro.ADMINISTRACION, "Común",
-//            YearMonth.of(2021,3),2000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-//    private final Gasto gasto14 = createGasto("Boleta de agua", Rubro.SERVICIOSPUBICOS, "Común",
-//            YearMonth.of(2021,3),840.40, LocalDate.of(2021,03,25), new ArrayList<>());
-//    private final Gasto gasto15 = createGasto("Productos de limpieza", Rubro.LIMPIEZA, "Común",
-//            YearMonth.of(2021,3),6000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-//    private final Gasto gasto16 = createGasto("Arreglo del 2C", Rubro.REPARACIONESENUNIDADES, "Común",
-//            YearMonth.of(2021,3),37000.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto11 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+            YearMonth.of(2021,6),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto12 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+            YearMonth.of(2021,6),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto13 = createGasto("Fotocopias", Rubro.ADMINISTRACION, "Común",
+            YearMonth.of(2021,6),2000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+   private final Gasto gasto14 = createGasto("Boleta de agua", Rubro.SERVICIOSPUBICOS, "Común",
+            YearMonth.of(2021,6),840.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto15 = createGasto("Productos de limpieza", Rubro.LIMPIEZA, "Común",
+            YearMonth.of(2021,6),6000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+   private final Gasto gasto16 = createGasto("Arreglo del 2C", Rubro.REPARACIONESENUNIDADES, "Común",
+           YearMonth.of(2021,6),37000.40, LocalDate.of(2021,03,25), new ArrayList<>());
 
     //Anuncios
     private final Anuncio anuncio1 = createAnuncio("Desinfección", "Se desnfectara el 01/08",
@@ -279,8 +279,8 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllGastos() {
-//        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5, gasto11, gasto12, gasto13, gasto14, gasto15, gasto16);
-//        gastoService.registrarTodos(gastos);
+        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5, gasto11, gasto12, gasto13, gasto14, gasto15, gasto16);
+        gastoService.registrarTodos(gastos);
     }
 
     private Anuncio createAnuncio(String titulo, String descripcion, LocalDate fechaCreacion, LocalDate fechaVencimiento, Usuario autor){

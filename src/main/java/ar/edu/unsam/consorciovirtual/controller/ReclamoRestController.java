@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +18,8 @@ public class ReclamoRestController {
     private final ReclamoService reclamoService;
 
     @GetMapping("/reclamos")
-    public List<Reclamo> buscarTodos(@RequestParam Long idLogueado, @RequestParam(defaultValue="") String palabraBuscada) {
-        return reclamoService.buscarTodos(idLogueado, palabraBuscada);
+    public Set<Reclamo> buscarTodos(@RequestParam Long idLogueado, @RequestParam(defaultValue="") String palabraBuscada) {
+        return reclamoService.buscarTodos(idLogueado, palabraBuscada).stream().collect(Collectors.toSet());
     }
 
     @GetMapping("/reclamo/{id}")
