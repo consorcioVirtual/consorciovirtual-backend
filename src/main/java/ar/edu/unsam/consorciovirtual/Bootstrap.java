@@ -33,18 +33,18 @@ public class Bootstrap implements InitializingBean {
 
 
     //Usuarios
-    private final Usuario propietario1A = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "110082132");
+    private final Usuario propietario1A = createUser("Roberto", "Rivas", "propietario1A@test.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "110082132");
     private final Usuario propietario1B = createUser("Santiago", "Lopez Roth", "saanti1535@gmail.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1167990094");
     private final Usuario propietario1C = createUser("Santiago", "Lorenzo", "santiilorenzo9499@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1127900091");
     private final Usuario propietario2A = createUser("Pablo", "Vigliero", "pablovigliero@gmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1133265545");
     private final Usuario propietario2B = createUser("Nahuel", "Ramos", "nahuelramos518@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1167990090");
-    private final Usuario propietario2C = createUser("Cecilia", "Lara", "santiilorenzo9499@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Propietario, "1157992177");
-    private final Usuario propietario3ABC = createUser("Roberto", "Rivas", "santiilorenzo9499@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Propietario, "1167990090");
-    private final Usuario administradorApp = createUser("Graciela", "Suarez", "nahueeh@live.com.ar", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador, "1167992292");
-    private final Usuario administradorConsorcio = createUser("Maria", "Suarez", "nahueeh@live.com.ar", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio, "1167992292");
-    private final Usuario inquilino1A = createUser("Roberto", "Perez", "santi.ranieri@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
-    private final Usuario inquilino3A = createUser("Juan", "Perez", "nramos@estudiantes.unsam.edu.ar", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
-    private final Usuario inquilino3B = createUser("Paula", "Perez", "saanti1535@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
+    private final Usuario propietario2C = createUser("Cecilia", "Lara", "propietario2C@test.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Propietario, "1157992177");
+    private final Usuario propietario3ABC = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Propietario, "1167990090");
+    private final Usuario administradorApp = createUser("Graciela", "Suarez", "administradorapp@test.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador, "1167992292");
+    private final Usuario administradorConsorcio = createUser("Maria", "Suarez", "administradorconsorcio@test.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio, "1167992292");
+    private final Usuario inquilino1A = createUser("Roberto", "Perez", "inquilino1A@test.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
+    private final Usuario inquilino3A = createUser("Juan", "Perez", "inquilino3A@test.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
+    private final Usuario inquilino3B = createUser("Paula", "Perez", "inquilino3B@test.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
 
 
     //Departamentos (El que se cree tiene que tener un 11 como porcentaje de expensas)
@@ -66,19 +66,18 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoRechazado = createState("Rechazado", "Solicitud tecnica", estadoEnProceso);
 
     //Notas de solicitudes/reclamos
-    private final Nota notaSolicitud1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
-    private final Nota notaSolicitud2 = createNota(administradorConsorcio.getNombre(),administradorConsorcio.getId(), "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
-    private final List<Nota> notasSolicitud = List.of(notaSolicitud1, notaSolicitud2);
+    private final Nota notaSolicitud1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 5, 15, 10, 30));
+    private final List<Nota> notasSolicitud = List.of(notaSolicitud1);
 
-    private final Nota notaReclamo1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "Ya se hablo en la reunión de consorcio", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota notaReclamo1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "Ya se hablo en la reunión de consorcio", LocalDateTime.of(2021, 6, 15, 10, 30));
     private final Nota notaReclamo2 = createNota(administradorConsorcio.getNombre(),administradorConsorcio.getId(), "Volví a hablarlo y va a empezar a cerrarla", LocalDateTime.of(2021, 7, 2, 15, 52));
     private final List<Nota> notasReclamos = List.of(notaReclamo1, notaReclamo2);
 
 
     //Solicitudes
-    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notasSolicitud, propietario1A, estadoPendienteResolucion);
+    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 05, 11), notasSolicitud, propietario1A, estadoPendienteResolucion);
     private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 07, 12),null, propietario3ABC, estadoEnProceso);
-    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 29), null, inquilino3B, estadoRechazado);
+    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "Los pájaros cantan muy fuerte", "Poden los árboles!!!!!!!!!!", LocalDate.of(2021, 06, 29), null, inquilino3B, estadoRechazado);
     private final SolicitudTecnica solicitud4 = createSolicitudTecnica("Interna", "Caño roto", "Se rompió un caño de agua en mi baño, se me inunda todo", LocalDate.of(2021, 07, 17),null, inquilino3A, estadoPendienteAprobacion);
 
     //Reclamos
@@ -87,41 +86,41 @@ public class Bootstrap implements InitializingBean {
     private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), propietario2C, estadoResuelto, null);
 
     //Gastos
-    private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
-            YearMonth.of(2021,5),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
-    private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            YearMonth.of(2021,5),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-    private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            YearMonth.of(2021,5),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
-    private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
-            YearMonth.of(2021,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
-    private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
-            YearMonth.of(2021,5),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
-
-    //Gastos prueba para generar expensa (no cambiar periodo)
-    private final Gasto gasto11 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-    private final Gasto gasto12 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
-    private final Gasto gasto13 = createGasto("Fotocopias", Rubro.ADMINISTRACION, "Común",
-            YearMonth.of(2021,3),2000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-    private final Gasto gasto14 = createGasto("Boleta de agua", Rubro.SERVICIOSPUBICOS, "Común",
-            YearMonth.of(2021,3),840.40, LocalDate.of(2021,03,25), new ArrayList<>());
-    private final Gasto gasto15 = createGasto("Productos de limpieza", Rubro.LIMPIEZA, "Común",
-            YearMonth.of(2021,3),6000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-    private final Gasto gasto16 = createGasto("Arreglo del 2C", Rubro.REPARACIONESENUNIDADES, "Común",
-            YearMonth.of(2021,3),37000.40, LocalDate.of(2021,03,25), new ArrayList<>());
+//    private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
+//            YearMonth.of(2021,5),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
+//    private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+//            YearMonth.of(2021,5),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+//    private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+//            YearMonth.of(2021,5),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+//    private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
+//            YearMonth.of(2021,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
+//    private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
+//            YearMonth.of(2021,5),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
+//
+//    //Gastos prueba para generar expensa (no cambiar periodo)
+//    private final Gasto gasto11 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
+//            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+//    private final Gasto gasto12 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
+//            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+//    private final Gasto gasto13 = createGasto("Fotocopias", Rubro.ADMINISTRACION, "Común",
+//            YearMonth.of(2021,3),2000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+//    private final Gasto gasto14 = createGasto("Boleta de agua", Rubro.SERVICIOSPUBICOS, "Común",
+//            YearMonth.of(2021,3),840.40, LocalDate.of(2021,03,25), new ArrayList<>());
+//    private final Gasto gasto15 = createGasto("Productos de limpieza", Rubro.LIMPIEZA, "Común",
+//            YearMonth.of(2021,3),6000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+//    private final Gasto gasto16 = createGasto("Arreglo del 2C", Rubro.REPARACIONESENUNIDADES, "Común",
+//            YearMonth.of(2021,3),37000.40, LocalDate.of(2021,03,25), new ArrayList<>());
 
     //Anuncios
     private final Anuncio anuncio1 = createAnuncio("Desinfección", "Se desnfectara el 01/08",
-            LocalDate.of(2021,03,05), LocalDate.of(2021,8,05), administradorConsorcio);
+            LocalDate.of(2021,7,05), LocalDate.of(2021,8,05), administradorConsorcio);
     private final Anuncio anuncio2 = createAnuncio("Expensas", "En mayo habrá expensas extraordinarias",
             LocalDate.of(2021,04,25), LocalDate.of(2021,05,25), administradorConsorcio);
     private final Anuncio anuncio3 = createAnuncio("Ruidos Molestos", "Se reitera que no se pueden hacer ruidos molestos los días de semana luego de las  21:00hs",
             LocalDate.of(2021,01,01), LocalDate.of(2021,12,31), administradorApp);
 
     //Mensajes
-    private final Mensaje mensaje1 = createMensaje("Hola, alguien vió unas llaves", propietario2A);
+    private final Mensaje mensaje1 = createMensaje("Hola, alguien vió unas llaves?", propietario2A);
     private final Mensaje mensaje2 = createMensaje("Las perdí ayer", propietario2A);
     private final Mensaje mensaje3 = createMensaje("Creo que el el del tercero dijo que encontró unas", inquilino1A);
 
@@ -280,8 +279,8 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllGastos() {
-        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5, gasto11, gasto12, gasto13, gasto14, gasto15, gasto16);
-        gastoService.registrarTodos(gastos);
+//        List<Gasto> gastos = List.of(gasto1, gasto2, gasto3, gasto4, gasto5, gasto11, gasto12, gasto13, gasto14, gasto15, gasto16);
+//        gastoService.registrarTodos(gastos);
     }
 
     private Anuncio createAnuncio(String titulo, String descripcion, LocalDate fechaCreacion, LocalDate fechaVencimiento, Usuario autor){

@@ -47,6 +47,7 @@ public class GeneradorDeExpensas {
     @Transactional
     private void generarExpensas(Double importeComun, Double importeExtraordinaria, YearMonth periodo) {
         if(expensaGeneralRepository.findByPeriodoAndAnuladaFalse(periodo).isEmpty()) {
+            if(departamentoRepository.porcentajeDeExpensasCubierto() != 100) throw new IllegalArgumentException("El procentaje de expensa no es el 100%");
             ExpensaGeneral expensaGeneral = new ExpensaGeneral();
             expensaGeneral.setPeriodo(periodo);
             expensaGeneral.setValorTotalExpensaExtraordinaria(importeExtraordinaria);
@@ -78,7 +79,7 @@ public class GeneradorDeExpensas {
                 //Guarda la expensa.
                 expensaDeDepartamentoRepository.save(unaExpensa);
                 //Se envía el correo con el archivo adjunto (comentado hasta el día del final para no llenar de mail las casillas)
-                //gestorDeCorreo.enviarResumenDeExpensa(departamentos.get(x), nombreArchivo, periodo);
+                gestorDeCorreo.enviarResumenDeExpensa(departamentos.get(x), nombreArchivo, periodo);
             }
         } else throw new IllegalArgumentException("Ya existe una expensa activa para el período seleccionado");
 
