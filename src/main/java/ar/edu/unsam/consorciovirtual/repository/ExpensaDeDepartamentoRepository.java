@@ -13,15 +13,8 @@ import java.util.List;
 public interface ExpensaDeDepartamentoRepository extends JpaRepository<ExpensaDeDepartamento, Long> {
     List<ExpensaDeDepartamento> findByAnuladaFalse();
 
-
-    @Query("SELECT e FROM ExpensaDeDepartamento e " +
-            "WHERE e.anulada = false " +
-            "AND (e.departamento.unidad1 LIKE %:busqueda% " +
-            "OR e.departamento.unidad2 LIKE %:busqueda% " +
-            "OR e.departamento.unidad3 LIKE %:busqueda% " +
-            "OR e.estado LIKE %:busqueda% " +
-            "OR e.montoTotal = :montoTotal)")
-    List<ExpensaDeDepartamento> findBySearch(@Param("busqueda") String busqueda, @Param("montoTotal") Double montoTotal);
+    //TODO: Falta filtrado por períodos. Se va a hacer un desplegable en el front para que venga el tipo de dato que necesitamos
+    List<ExpensaDeDepartamento> findByUnidadContainingAndAnuladaFalseOrEstadoContainingAndAnuladaFalse(String unidad, String estado);
 
     List<ExpensaDeDepartamento> findByPeriodoAndAnuladaFalse(YearMonth periodo);
 
@@ -30,9 +23,7 @@ public interface ExpensaDeDepartamentoRepository extends JpaRepository<ExpensaDe
     @Query("SELECT ex FROM ExpensaDeDepartamento ex " +
             "WHERE ex.anulada = false " +
             "AND ex.departamento.id IN :idDeptos " +
-            "AND (ex.departamento.unidad1 LIKE %:unidad% " +
-            "OR ex.departamento.unidad2 LIKE %:unidad% " +
-            "OR ex.departamento.unidad3 LIKE %:unidad% " +
+            "AND (ex.unidad LIKE %:unidad% " +
                 "OR ex.estado LIKE %:estado%)")
     List<ExpensaDeDepartamento> buscarPorIdDeptosYFiltro(@Param("idDeptos") List<Long> idDeptos, @Param("unidad") String unidad, @Param("estado") String estado);
 }

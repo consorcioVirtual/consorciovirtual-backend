@@ -3,7 +3,6 @@ package ar.edu.unsam.consorciovirtual.service;
 import ar.edu.unsam.consorciovirtual.businessExceptions.DataConsistencyException;
 import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.repository.ReclamoRepository;
-import ar.edu.unsam.consorciovirtual.utils.FormatConverter;
 import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -23,17 +22,15 @@ public class ReclamoService {
     private final RegistroModificacionService registroModificacionService;
 
     public List<Reclamo> buscarTodos(Long idLogueado, String palabraBuscada) {
-        Long idReclamo = FormatConverter.stringToLong(palabraBuscada);
-        System.out.println("-------------------------------------");
-        System.out.println(idReclamo);
+        Long idReclamo = busquedaToLong(palabraBuscada);
         List<Reclamo> reclamos;
 
         if (usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)) {
-            reclamos = reclamoRepository.findBySearch(idReclamo, palabraBuscada);
+            reclamos = reclamoRepository.findByIdAndBajaLogicaFalseOrAutorNombreContainingAndBajaLogicaFalseOrAutorApellidoContainingAndBajaLogicaFalseAndBajaLogicaFalseOrAsuntoContainingAndBajaLogicaFalseOrEstadoNombreEstadoContainingAndBajaLogicaFalse(idReclamo, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         } else if (usuarioService.usuarioEsPropietario(idLogueado)) {
             reclamos = reclamoRepository.buscarPropiosODeMisInquilinos(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada);
         } else {
-            reclamos = reclamoRepository.buscarPropios(idLogueado, idReclamo, palabraBuscada);
+            reclamos = reclamoRepository.buscarPropios(idLogueado, idReclamo, palabraBuscada, palabraBuscada, palabraBuscada);
         }
 
         reclamos.forEach(this::agregarUltimaModificacion);
@@ -105,6 +102,14 @@ public class ReclamoService {
         Estado _estado = estadoService.buscarPorNombre(reclamo.getEstado().getNombreEstado());
         reclamo.setEstado(_estado);
         return reclamo;
+    }
+
+    private Long busquedaToLong(String palabraBuscada) {
+        try {
+            return Long.valueOf(palabraBuscada);
+        } catch (NumberFormatException ex){
+            return null;
+        }
     }
 
     private void agregarUltimaModificacion(@NotNull Reclamo dto){

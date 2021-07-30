@@ -3,8 +3,6 @@ package ar.edu.unsam.consorciovirtual.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,9 +29,6 @@ public class ExpensaDeDepartamento {
     private ExpensaGeneral expensaGeneral;
     private String estado = "Pendiente"; // Ni bien se genera una expensa, esta está como pendiente
     private String unidad;
-
-    @ColumnTransformer(read = "valor_departamento_comun + valor_departamento_extraordinaria")
-    private String montoTotal;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)

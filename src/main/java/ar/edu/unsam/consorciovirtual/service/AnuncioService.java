@@ -5,7 +5,6 @@ import ar.edu.unsam.consorciovirtual.domain.*;
 import ar.edu.unsam.consorciovirtual.domainDTO.AnuncioDTOParaListado;
 import ar.edu.unsam.consorciovirtual.repository.AnuncioRepository;
 import ar.edu.unsam.consorciovirtual.repository.UsuarioRepository;
-import ar.edu.unsam.consorciovirtual.utils.FormatConverter;
 import ar.edu.unsam.consorciovirtual.utils.ValidationMethods;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -34,8 +33,7 @@ public class AnuncioService {
     }
 
     public List<AnuncioDTOParaListado> buscarTodos(String palabraBuscada){
-//        LocalDate fecha = FormatConverter.stringToLocalDate(palabraBuscada);
-        List<Anuncio> anuncios = anuncioRepository.findBySearch(palabraBuscada);
+        List<Anuncio> anuncios = anuncioRepository.findByBajaLogicaFalseAndAutorNombreContainingOrBajaLogicaFalseAndAutorApellidoContainingOrBajaLogicaFalseAndTituloContaining(palabraBuscada, palabraBuscada, palabraBuscada);
         return mapearADTO(anuncios);
     }
 

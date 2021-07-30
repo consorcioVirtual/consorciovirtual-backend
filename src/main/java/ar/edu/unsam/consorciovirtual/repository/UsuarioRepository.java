@@ -1,6 +1,5 @@
 package ar.edu.unsam.consorciovirtual.repository;
 
-import ar.edu.unsam.consorciovirtual.domain.Departamento;
 import ar.edu.unsam.consorciovirtual.domain.TipoUsuario;
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
 import org.checkerframework.checker.nullness.Opt;
@@ -15,13 +14,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByCorreo(String correo);
 
-    @Query(value = "SELECT u FROM Usuario u " +
-            "WHERE u.bajaLogica = false " +
-            "AND (u.nombreCompleto LIKE %:busqueda% " +
-            "OR u.dni LIKE %:busqueda% " +
-            "OR u.correo LIKE %:busqueda% " +
-            "OR u.tipo LIKE %:busqueda%) ")
-    List<Usuario> findBySearch(@Param("busqueda") String busqueda);
+    @Query(value = "SELECT * FROM usuario as unUsuario " +
+            "WHERE (unUsuario.nombre LIKE %:word% OR unUsuario.apellido LIKE %:word% OR unUsuario.dni LIKE %:word% OR unUsuario.correo LIKE %:word% OR unUsuario.tipo LIKE %:word%) AND (unUsuario.baja_logica = 0)", nativeQuery = true)
+    List<Usuario> findBySearch(String word);
 
     List<Usuario> findByTipo(TipoUsuario tipo);
 
@@ -53,7 +48,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "WHERE (u.nombre LIKE %:word% OR u.apellido LIKE %:word% OR u.dni LIKE %:word% OR u.correo LIKE %:word% ) AND u.tipo = 'Inquilino' AND (u.baja_logica = 0)", nativeQuery = true)
     List<Usuario> findBySearchInquilino(String word);
 
-    @Query(value = "select u.*, 0 AS clazz_ from usuario as u JOIN departamento as d ON u.id = d.id_inquilino WHERE d.id_propietario = :idPropietario AND (u.nombre LIKE %:word% OR u.apellido LIKE %:word% OR u.dni LIKE %:word% OR u.correo LIKE %:word%) AND u.baja_logica = false", nativeQuery = true)
+    @Query(value = "select u.id, u.nombre, u.apellido, u.fecha_nacimiento, u.dni, u.baja_logica, u.correo, u.password, u.tipo from usuario u " +
+            "inner join departamento d ON u.id = d.id_inquilino AND d.id_propietario = :idPropietario AND " +
+            "(u.nombre LIKE %:word% OR u.apellido LIKE %:word% OR u.dni LIKE %:word% OR u.correo LIKE %:word%) AND u.baja_logica = 0", nativeQuery = true)
     List<Usuario> findBySearchInquilinosDeUsuario(String word, @Param("idPropietario") Long idPropietario);
 
     //QUERYS CORREO

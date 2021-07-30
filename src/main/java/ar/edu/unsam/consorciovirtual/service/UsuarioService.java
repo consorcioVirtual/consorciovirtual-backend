@@ -62,7 +62,7 @@ public class UsuarioService {
         if(usuarioRepository.existsByCorreoAndBajaLogicaFalseAndIdNot(usuarioActualizado.getCorreo(), usuarioActualizado.getId())){
             throw new DataConsistencyException("El mail indicado ya está registrado en Consorcio Virtual.");
         }
-
+        
         validarUsuario(usuarioActualizado);
         Usuario usuarioAnterior = usuarioRepository.findById(usuarioActualizado.getId()).get();
         usuarioActualizado.setPassword(usuarioAnterior.getPassword());
@@ -80,6 +80,7 @@ public class UsuarioService {
 
         user.setPassword(newPassword);
         usuarioRepository.save(user);
+
     }
 
 

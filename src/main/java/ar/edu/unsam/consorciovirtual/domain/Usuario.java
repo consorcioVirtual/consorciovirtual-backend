@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Data;
-import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,9 +37,6 @@ public class Usuario {
     private String dni;
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipo;
-
-    @ColumnTransformer(read = "concat(nombre, ' ', apellido)")
-    private String nombreCompleto;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)

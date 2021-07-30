@@ -26,9 +26,9 @@ public class DepartamentoService {
     public List<DepartamentoDTOParaListado> buscarTodos(String palabraBuscada, Long idLogueado) {
         List<Departamento> departamentos;
         if(usuarioService.usuarioEsAdminDelConsorcio(idLogueado) || usuarioService.usuarioEsAdminDeLaApp(idLogueado)){
-            departamentos = departamentoRepository.buscarConFiltro(palabraBuscada);
+            departamentos = departamentoRepository.findByNroDepartamentoContainingAndBajaLogicaFalseOrNombrePropietarioContainingAndBajaLogicaFalseOrNombreInquilinoContainingAndBajaLogicaFalseOrPisoContainingAndBajaLogicaFalse(palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         } else {
-            departamentos = departamentoRepository.buscarPorUsuarioYFiltro(idLogueado, palabraBuscada);
+            departamentos = departamentoRepository.buscarPorUsuarioYFiltro(idLogueado, palabraBuscada, palabraBuscada, palabraBuscada, palabraBuscada);
         }
 
        List<DepartamentoDTOParaListado> dtos = departamentos.stream().map(DepartamentoDTOParaListado::fromDepartamento).collect(Collectors.toList());

@@ -7,8 +7,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -30,16 +28,6 @@ public class Departamento {
     private int metrosCuadrados;
     private String nombrePropietario;
     private String nombreInquilino;
-//    private String estadoDeCuenta;
-
-    @ColumnTransformer(read = "concat(piso, ' ', nro_departamento)")
-    private String unidad1;
-
-    @ColumnTransformer(read = "concat(piso, '°', nro_departamento)")
-    private String unidad2;
-
-    @ColumnTransformer(read = "concat(piso, nro_departamento)")
-    private String unidad3;
 
     @JsonIgnore
     private Boolean bajaLogica = false;
@@ -63,12 +51,10 @@ public class Departamento {
         return getListaDeExpensas().stream().anyMatch(exp -> !exp.getAnulada() && !exp.estaPaga());
     }
 
-
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.READ_ONLY, namespace = "estadoDeCuenta")
     public String getEstadoDeCuenta(){
         String estadoDeCuenta;
-
         if (tieneExpensasImpagas()){
             estadoDeCuenta="Pendiente";
         }else{
@@ -78,7 +64,7 @@ public class Departamento {
     }
 
     public String getUnidad(){
-        return piso + "° " + nroDepartamento;
+        return piso + nroDepartamento;
     }
 
     public void quitarInquilino(){
@@ -90,11 +76,6 @@ public class Departamento {
         setPropietario(null);
         setNombrePropietario(null);
     }
-
-//    @PrePersist
-//    private void formarUnidad(){
-//        unidad = getUnidad();
-//    }
 
     public Boolean esPropietario(Usuario usuario){
         return getPropietario().getId().equals(usuario.getId());
