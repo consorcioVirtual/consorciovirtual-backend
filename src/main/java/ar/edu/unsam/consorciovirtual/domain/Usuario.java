@@ -35,6 +35,7 @@ public class Usuario {
     private String apellido;
     private String correo;
     private String dni;
+    private String telefono;
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipo;
 
