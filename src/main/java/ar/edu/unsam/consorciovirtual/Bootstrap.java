@@ -5,7 +5,6 @@ import ar.edu.unsam.consorciovirtual.repository.EstadoRepository;
 import ar.edu.unsam.consorciovirtual.repository.RegistroMensajeRepository;
 import ar.edu.unsam.consorciovirtual.repository.RegistroModificacionRepository;
 import ar.edu.unsam.consorciovirtual.service.*;
-import ar.edu.unsam.consorciovirtual.utils.GeneradorDeExpensas;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,6 @@ public class Bootstrap implements InitializingBean {
     private final GastoService gastoService;
     private final AnuncioService anuncioService;
     private final MensajeService mensajeService;
-    private final DocumentoService documentoService;
-    private final GeneradorDeExpensas generadorDeExpensas;
     private final ReclamoService reclamoService;
     private final ContactoUtilService contactoUtilService;
     private final RegistroModificacionRepository registroModificacionRepository;
@@ -36,20 +33,30 @@ public class Bootstrap implements InitializingBean {
 
 
     //Usuarios
-    private final Usuario santir = createUser("Santiago", "Ranieri", "santi.ranieri@il.coma", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador, "110082132");
-    private final Usuario santilr = createUser("Santiago", "Lopez Roth", "santi_kpo97@yaoo.coma", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1167990094");
-    private final Usuario santil = createUser("Santiago", "Lorenzo", "santilorenzo@gma.coa", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1127900091");
-    private final Usuario pablo = createUser("Pablo", "Vigliero", "pablitovig@hotmal.cma", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador, "1133265545");
-    private final Usuario nahue = createUser("Nahue", "Ramos", "nahuelramos518@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Administrador, "1167990090");
-    private final Usuario juan = createUser("Juan", "Perez", "inquilino@algo.algo", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1157992177");
-    private final Usuario rober = createUser("Roberto", "Perez", "inquilino2@algo.algo", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
-    private final Usuario maria = createUser("Maria", "Perez", "test@algo.algo", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio, "1167992292");
+    private final Usuario propietario1A = createUser("Santiago", "Ranieri", "santi.ranieri@gmail.com", "38830200", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "110082132");
+    private final Usuario propietario1B = createUser("Santiago", "Lopez Roth", "saanti1535@gmail.com", "40123423", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1167990094");
+    private final Usuario propietario1C = createUser("Santiago", "Lorenzo", "santiilorenzo9499@gmail.com", "42543231", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1127900091");
+    private final Usuario propietario2A = createUser("Pablo", "Vigliero", "pablovigliero@gmail.com", "36350120", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1133265545");
+    private final Usuario propietario2B = createUser("Nahuel", "Ramos", "nahuelramos518@gmail.com", "36765908", LocalDate.of(1995, 8, 25),  "123", TipoUsuario.Propietario, "1167990090");
+    private final Usuario propietario2C = createUser("Cecilia", "Lara", "santiilorenzo9499@gmail.com", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Propietario, "1157992177");
+    private final Usuario propietario3ABC = createUser("Roberto", "Rivas", "santiilorenzo9499@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Propietario, "1167990090");
+    private final Usuario administradorApp = createUser("Graciela", "Suarez", "nahueeh@live.com.ar", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador, "1167992292");
+    private final Usuario administradorConsorcio = createUser("Maria", "Suarez", "nahueeh@live.com.ar", "32332211", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Administrador_consorcio, "1167992292");
+    private final Usuario inquilino1A = createUser("Roberto", "Perez", "santi.ranieri@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
+    private final Usuario inquilino3A = createUser("Juan", "Perez", "nramos@estudiantes.unsam.edu.ar", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
+    private final Usuario inquilino3B = createUser("Paula", "Perez", "saanti1535@gmail.com", "32332212", LocalDate.of(1995, 8, 25), "123", TipoUsuario.Inquilino, "1167990090");
 
-    //Departamentos
-    private final Departamento depto1 = createDepartamento(null, "1", "D", 6.5, 35, santil, juan);
-    private final Departamento depto2 = createDepartamento("1", "5", "E", 3.5, 15, santilr, maria);
-    private final Departamento depto3 = createDepartamento("1", "6", "A", 4.5, 20, santilr, rober);
-    private final Departamento depto4 = createDepartamento("1", "2", "C", 8.0, 45, santir, null);
+
+    //Departamentos (El que se cree tiene que tener un 11 como porcentaje de expensas)
+    private final Departamento depto1A = createDepartamento("1", "1", "A", 10.5, 35, propietario1A, inquilino1A);
+    private final Departamento depto1B = createDepartamento("1", "1", "B", 10.5, 15, propietario1B, null);
+    private final Departamento depto1C = createDepartamento("1", "1", "C", 7.5, 20, propietario1C, null);
+    private final Departamento depto2A = createDepartamento("1", "2", "A", 12.0, 45, propietario2A, null);
+    private final Departamento depto2B = createDepartamento("1", "2", "B", 8.0, 45, propietario2B, null);
+    private final Departamento depto2C = createDepartamento("1", "2", "C", 12.0, 45, propietario2C, null);
+    private final Departamento depto3A = createDepartamento("1", "3", "A", 7.5, 45, propietario3ABC, inquilino3A);
+    private final Departamento depto3B = createDepartamento("1", "3", "B", 9.5, 45, propietario3ABC, inquilino3B);
+    private final Departamento depto3C = createDepartamento("1", "3", "C", 11.5, 45, propietario3ABC, null);
 
     //Estados
     private final Estado estadoPendienteAprobacion = createState("Pendiente de aprobación", "Solicitud tecnica", null);
@@ -59,83 +66,84 @@ public class Bootstrap implements InitializingBean {
     private final Estado estadoRechazado = createState("Rechazado", "Solicitud tecnica", estadoEnProceso);
 
     //Notas de solicitudes/reclamos
-    private final Nota nota1 = createNota(maria.getNombre(), maria.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
-    private final Nota nota2 = createNota(maria.getNombre(),maria.getId(), "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
-    private final List<Nota> notas = List.of(nota1, nota2);
+   /* private final Nota notaSolicitud1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "El técnico visitará el edificio el jueves", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota notaSolicitud2 = createNota(administradorConsorcio.getNombre(),administradorConsorcio.getId(), "El técnico solucionó el problema", LocalDateTime.of(2021, 7, 2, 15, 52));
+    private final List<Nota> notasSolicitud = List.of(notaSolicitud1, notaSolicitud2);
+
+    private final Nota notaReclamo1 = createNota(administradorConsorcio.getNombre(), administradorConsorcio.getId(), "Ya se hablo en la reunión de consorcio", LocalDateTime.of(2021, 8, 15, 10, 30));
+    private final Nota notaReclamo2 = createNota(administradorConsorcio.getNombre(),administradorConsorcio.getId(), "Volví a hablarlo y va a empezar a cerrarla", LocalDateTime.of(2021, 7, 2, 15, 52));
+    private final List<Nota> notasReclamos = List.of(notaReclamo1, notaReclamo2);
+*/
 
     //Solicitudes
-    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), notas, santir, estadoPendienteResolucion);
-    private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 07, 12), notas, nahue, estadoEnProceso);
-    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 29), notas, juan, estadoRechazado);
-    private final SolicitudTecnica solicitud4 = createSolicitudTecnica("Interna", "Caño roto", "Se rompió un caño de agua en mi baño, se me inunda todo", LocalDate.of(2021, 07, 17), notas, juan, estadoPendienteAprobacion);
+    private final SolicitudTecnica solicitud1 = createSolicitudTecnica("Interna", "Me llueve el techo", "Cuando el vecino de arriba baldea el piso se me llueve el techo", LocalDate.of(2021, 06, 11), null, propietario1A, estadoPendienteResolucion);
+    private final SolicitudTecnica solicitud2 = createSolicitudTecnica("Interna", "El piso filtra muy rápido", "Cuando baldeo el piso se me escurre re rápido el agua, ni idea a donde irá", LocalDate.of(2021, 07, 12),null, propietario3ABC, estadoEnProceso);
+    private final SolicitudTecnica solicitud3 = createSolicitudTecnica("Interna", "El piso filtra muy rápidito", "Cuando baldeo el piso se me escurre re rápiditoooo el agua, ni idea a donde irá", LocalDate.of(2021, 06, 29), null, inquilino3B, estadoRechazado);
+    private final SolicitudTecnica solicitud4 = createSolicitudTecnica("Interna", "Caño roto", "Se rompió un caño de agua en mi baño, se me inunda todo", LocalDate.of(2021, 07, 17),null, inquilino3A, estadoPendienteAprobacion);
 
     //Reclamos
-    private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), santir, estadoEnProceso, notas);
-    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), nahue, estadoPendienteResolucion, notas);
-    private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), santilr, estadoResuelto, notas);
+    private final Reclamo reclamo1 = createReclamo("Mucho ruido en el edificio", "Despues de las 12 de la noche en el depto 24 ponen musica a todo volumen, perjudicando a los que tenemos que trabajar", LocalDate.of(2021,03,01), propietario2A, estadoEnProceso, null);
+    private final Reclamo reclamo2 = createReclamo("El encargado deja la puerta abierta", "Varias veces el encargado sale del edificio y deja la puerta abierta, poniendo en riesgo la seguridad del edificio", LocalDate.of(2021,07,03), propietario3ABC, estadoPendienteResolucion, null);
+    private final Reclamo reclamo3 = createReclamo("Olor a gas en la entrada", "Cuando entro al edificio siento mucho olor a gas, puede haber una perdida", LocalDate.of(2021,11,13), propietario2C, estadoResuelto, null);
 
     //Gastos
     private final Gasto gasto1 = createGasto("Un gasto de limpieza", Rubro.LIMPIEZA, "Común",
-            YearMonth.of(2021,1),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
+            YearMonth.of(2021,5),500.25, LocalDate.of(2021,03,15), new ArrayList<>());
     private final Gasto gasto2 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            YearMonth.of(2020,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+            YearMonth.of(2021,5),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
     private final Gasto gasto3 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            YearMonth.of(2014,8),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+            YearMonth.of(2021,5),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
     private final Gasto gasto4 = createGasto("Gastos varios", Rubro.OTROS, "Común",
-            YearMonth.of(2019,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
+            YearMonth.of(2021,5),310.60, LocalDate.of(2021,03,31), new ArrayList<>());
     private final Gasto gasto5 = createGasto("Cuenta bancaria", Rubro.GASTOSBANCARIOS, "Común",
-            YearMonth.of(2019,2),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
+            YearMonth.of(2021,5),3200.00, LocalDate.of(2021,03,02), new ArrayList<>());
 
     //Gastos prueba para generar expensa (no cambiar periodo)
     private final Gasto gasto11 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
             YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
     private final Gasto gasto12 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
             YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
-    private final Gasto gasto13 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-    private final Gasto gasto14 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
-    private final Gasto gasto15 = createGasto("Sueldo Empleado", Rubro.SUELDOYCARGASSOCIALES, "Común",
-            YearMonth.of(2021,3),50000.00, LocalDate.of(2021,03,01), new ArrayList<>());
-    private final Gasto gasto16 = createGasto("Pintar el edificio", Rubro.MANTENIMIENTOPARTESCOMUNES, "Extraordinaria",
-            YearMonth.of(2021,3),25300.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto13 = createGasto("Fotocopias", Rubro.ADMINISTRACION, "Común",
+            YearMonth.of(2021,3),2000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto14 = createGasto("Boleta de agua", Rubro.SERVICIOSPUBICOS, "Común",
+            YearMonth.of(2021,3),840.40, LocalDate.of(2021,03,25), new ArrayList<>());
+    private final Gasto gasto15 = createGasto("Productos de limpieza", Rubro.LIMPIEZA, "Común",
+            YearMonth.of(2021,3),6000.00, LocalDate.of(2021,03,01), new ArrayList<>());
+    private final Gasto gasto16 = createGasto("Arreglo del 2C", Rubro.REPARACIONESENUNIDADES, "Común",
+            YearMonth.of(2021,3),37000.40, LocalDate.of(2021,03,25), new ArrayList<>());
 
     //Anuncios
     private final Anuncio anuncio1 = createAnuncio("Desinfección", "Se desnfectara el 01/08",
-            LocalDate.of(2021,03,05), LocalDate.of(2021,12,02), pablo);
+            LocalDate.of(2021,03,05), LocalDate.of(2021,8,05), administradorConsorcio);
     private final Anuncio anuncio2 = createAnuncio("Expensas", "En mayo habrá expensas extraordinarias",
-            LocalDate.of(2021,04,25), LocalDate.of(2021,05,25), nahue);
+            LocalDate.of(2021,04,25), LocalDate.of(2021,05,25), administradorConsorcio);
     private final Anuncio anuncio3 = createAnuncio("Ruidos Molestos", "Se reitera que no se pueden hacer ruidos molestos los días de semana luego de las  21:00hs",
-            LocalDate.of(2021,01,01), LocalDate.of(2021,12,31), santir);
+            LocalDate.of(2021,01,01), LocalDate.of(2021,12,31), administradorApp);
 
     //Mensajes
-    private final Mensaje mensaje1 = createMensaje("Es el primer mensaje", santil);
-    private final Mensaje mensaje2 = createMensaje("Es el segundo mensaje", santilr);
-    private final Mensaje mensajeCitando1 = createMensaje("Es el primer mensaje que cita a otro", pablo);
+    private final Mensaje mensaje1 = createMensaje("Hola, alguien vió unas llaves", propietario2A);
+    private final Mensaje mensaje2 = createMensaje("Las perdí ayer", propietario2A);
+    private final Mensaje mensaje3 = createMensaje("Creo que el el del tercero dijo que encontró unas", inquilino1A);
 
-    //Facturas
-    private final Factura factura1 = createFactura("factura 1", "una descripción 1",
-            "enlace", santil, LocalDate.of(2021,01,01),
-            "00000001", "0001", "11-11111111-1", "22-22222222-2",
-            "11111111111111", 10000.50);
-    private final Factura factura2 = createFactura("factura 2", "una descripción 2",
-            "enlaceFicticio", santil, LocalDate.of(2021,01,01),
-            "00000002", "0001", "11-11111111-1", "22-22222222-2",
-            "11111111111111", 354.00);
 
     //Contactos utiles
-    private final ContactoUtil contactoUtil1 = createContactoUtil("Emergencia", "911", "Emergencia", "Emergencias");
-    private final ContactoUtil contactoUtil2 = createContactoUtil("pepe", "155555555", "Gasista", "Para emergencias 24hs");
+    private final ContactoUtil contactoUtil1 = createContactoUtil("Emergencia", "911", "Emergencia", "Emergencias Generales");
+    private final ContactoUtil contactoUtil2 = createContactoUtil("Pedro Ramirez", "155555555", "Plomero", "Para emergencias 24hs");
+    private final ContactoUtil contactoUtil3 = createContactoUtil("Electro", "4233 6587", "Electricista", "Si no atienden queda acá a unas cuadras el local");
 
     //Registro de Mensaje
-    private final RegistroMensaje regSantil = createRegistroMensaje(santil,1L);
-    private final RegistroMensaje regSantilr = createRegistroMensaje(santilr,2L);
-    private final RegistroMensaje regSantir = createRegistroMensaje(santir,3L);
-    private final RegistroMensaje regNahuel = createRegistroMensaje(nahue,4L);
-    private final RegistroMensaje regPablo = createRegistroMensaje(pablo,5L);
-    private final RegistroMensaje regMaria = createRegistroMensaje(maria,6L);
-    private final RegistroMensaje regRober = createRegistroMensaje(rober,7L);
-    private final RegistroMensaje regJuan = createRegistroMensaje(juan,8L);
+    private final RegistroMensaje regPropietario1A = createRegistroMensaje(propietario1A,1L);
+    private final RegistroMensaje regPropietario1B = createRegistroMensaje(propietario1B,2L);
+    private final RegistroMensaje regPropietario1C = createRegistroMensaje(propietario1C,3L);
+    private final RegistroMensaje regPropietario2A = createRegistroMensaje(propietario2A,1L);
+    private final RegistroMensaje regPropietario2B = createRegistroMensaje(propietario2B,2L);
+    private final RegistroMensaje regPropietario2C = createRegistroMensaje(propietario2C,3L);
+    private final RegistroMensaje retRegPropietario3ABC = createRegistroMensaje(propietario3ABC,4L);
+    private final RegistroMensaje regAdminApp = createRegistroMensaje(administradorApp,5L);
+    private final RegistroMensaje getRegAdminConsorcio = createRegistroMensaje(administradorConsorcio,6L);
+    private final RegistroMensaje regInquilino1A = createRegistroMensaje(inquilino1A,7L);
+    private final RegistroMensaje regInquilino3A = createRegistroMensaje(inquilino3A,7L);
+    private final RegistroMensaje regInquilino3B = createRegistroMensaje(inquilino3B,7L);
 
     //Métodos
     @Override
@@ -149,12 +157,9 @@ public class Bootstrap implements InitializingBean {
         createAllGastos();
         createAllAnuncios();
         createAllMensajes();
-        createAllFacturas();
         createAllReclamos();
         createAllContactosUtiles();
         createAllRegistros();
-        generadorDeExpensas.generarExpensasPorImportePredefinido(200000.00, 15000.00, YearMonth.of(2021,04));
-        generadorDeExpensas.generarExpensasPorImporteDeGastos(YearMonth.of(2021,03));
     }
 
 
@@ -173,7 +178,8 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllusers() {
-        List<Usuario> usuarios = List.of(santir, santilr, santil, pablo, nahue, juan, maria, rober);
+        List<Usuario> usuarios = List.of(propietario1A, propietario1B, propietario1C, propietario2A, propietario2B, propietario2C, propietario3ABC,
+                inquilino1A, inquilino3A, inquilino3B, administradorApp, administradorConsorcio);
         usuarioService.registrarTodos(usuarios);
     }
 
@@ -195,7 +201,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllDepartamentos() {
-        List<Departamento> departamentos = List.of(depto1, depto2, depto3, depto4);
+        List<Departamento> departamentos = List.of(depto1A, depto1B, depto1C, depto2A, depto2B, depto2C, depto3A, depto3B, depto3C);
         departamentoService.registrarTodos(departamentos);
     }
 
@@ -301,7 +307,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllMensajes() {
-        List<Mensaje> mensajes = List.of(mensaje1, mensaje2, mensajeCitando1);
+        List<Mensaje> mensajes = List.of(mensaje1, mensaje2, mensaje3);
         mensajeService.registrarTodos(mensajes);
     }
 
@@ -323,11 +329,6 @@ public class Bootstrap implements InitializingBean {
         return nuevaFactura;
     }
 
-    private void createAllFacturas() {
-        List<Factura> facturas = List.of(factura1, factura2);
-        documentoService.registrarTodos(facturas);
-    }
-
     private ContactoUtil createContactoUtil(String _nombre, String _telefono, String _servicio, String _anotacion){
         ContactoUtil nuevoContacto = new ContactoUtil();
         nuevoContacto.setNombre(_nombre);
@@ -338,7 +339,7 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllContactosUtiles() {
-        List<ContactoUtil> contactos = List.of(contactoUtil1, contactoUtil2);
+        List<ContactoUtil> contactos = List.of(contactoUtil1, contactoUtil2, contactoUtil3);
         contactoUtilService.registrarTodos(contactos);
     }
 
@@ -350,7 +351,8 @@ public class Bootstrap implements InitializingBean {
     }
 
     private void createAllRegistros(){
-        List<RegistroMensaje> registros = List.of(regSantil,regSantilr,regSantir,regJuan,regMaria,regNahuel,regRober,regPablo);
+        List<RegistroMensaje> registros = List.of(regInquilino1A, regInquilino3A, regInquilino3B, regAdminApp, getRegAdminConsorcio, regPropietario1A,
+                regPropietario1B, regPropietario1C, regPropietario2A, regPropietario2B, regPropietario2C, retRegPropietario3ABC);
         registroMensajeRepository.saveAll(registros);
     }
 }
