@@ -1,6 +1,7 @@
 package ar.edu.unsam.consorciovirtual.controller;
 
 import ar.edu.unsam.consorciovirtual.domain.Usuario;
+import ar.edu.unsam.consorciovirtual.utils.ExtractorDatoDeJSON;
 import ar.edu.unsam.consorciovirtual.utils.GestorDeCorreo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ public class GestorDeCorreoRestController {
     @PostMapping("/enviarCorreo/notaEnSolicitud/{idSolicitud}/{idUsuario}")
     public void enviarCorreoNuevaNotaSolicitud(@PathVariable Long idSolicitud, @PathVariable Long idUsuario){
         gestorDeCorreo.enviarMensajeNuevaNota(idSolicitud, idUsuario, "Solicitud");
+    }
+
+    @PostMapping("/enviarCorreo/nuevoAnuncio/{idUsuario}")
+    public void enviarCorreoNuevoAnuncio(@PathVariable Long idUsuario, @RequestParam() String titulo){
+        gestorDeCorreo.enviarMensajeNuevoAnuncio(titulo, idUsuario);
     }
 
 }

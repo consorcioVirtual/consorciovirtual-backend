@@ -53,9 +53,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "(u.nombre LIKE %:word% OR u.apellido LIKE %:word% OR u.dni LIKE %:word% OR u.correo LIKE %:word%) AND u.baja_logica = 0", nativeQuery = true)
     List<Usuario> findBySearchInquilinosDeUsuario(String word, @Param("idPropietario") Long idPropietario);
 
+    //QUERYS CORREO
     @Query(value = "SELECT unPropietario.correo , 0 AS clazz_ FROM usuario as unPropietario JOIN " +
             "departamento as unDepartamento WHERE :idInquilino = unDepartamento.id_inquilino AND " +
             "unDepartamento.id_propietario = unPropietario.id", nativeQuery = true)
     String buscarCorreoDePropietarioPorInquilino(@Param("idInquilino") Long idInquilino);
+
+    @Query(value = "SELECT unUsuario.correo FROM usuario as unUsuario WHERE unUsuario.id <> :idUsuario " +
+            "AND unUsuario.baja_logica = false;", nativeQuery = true)
+    List<String> buscarTodosLosCorreosMenosUno(Long idUsuario);
 }
 

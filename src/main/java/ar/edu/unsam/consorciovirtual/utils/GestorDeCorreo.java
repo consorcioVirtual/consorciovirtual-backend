@@ -193,6 +193,23 @@ public class GestorDeCorreo {
         }
     }
 
+    public void enviarMensajeNuevoAnuncio(String titulo, Long idUsuario) {
+        try{
+            String asunto = "Se creó un nuevo anuncio en la cartelera virtual de tu consorcio";
+            String cuerpo = "Sr/Sra. Propietario/a / Inquilino/a / Administrador/a:" +
+                    "\n\nLe informamos que se creo el anuncio "+ titulo +", en la cartelera virtual de su consorcio"+
+                    ". Puede ver más detalles ingresando a la web de consorcio virtual en la pestaña de Anuncios." +
+                    "\nQue tenga buen día." +
+                    "\n\nP.D.: Si usted no forma parte de la apliación web Consorcio Virtual " +
+                    "por favor notifíquelo a consorcioVirtualArgentina@gmail.com";
+
+            List<String> remitentes= usuarioRepository.buscarTodosLosCorreosMenosUno(idUsuario);
+            enviarMensajeSinAdjunto(asunto, cuerpo, remitentes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void enviarMensajeSinAdjunto(String asunto, String cuerpo, List<String> remitentes){
         Properties properties = configuracion();
         // Obtener la sesion
@@ -207,13 +224,13 @@ public class GestorDeCorreo {
 
             // Agregar los destinatarios al mensaje
             remitentes.forEach(
-                 x-> {
-                     try {
-                         mimeMessage.setRecipients(Message.RecipientType.TO, x);
-                     } catch (MessagingException e) {
-                         e.printStackTrace();
-                     }
-                 }
+                    x-> {
+                        try {
+                            mimeMessage.addRecipients(Message.RecipientType.TO, x);
+                        } catch (MessagingException e) {
+                            e.printStackTrace();
+                        }
+                    }
             );
 
             // Agregar el asunto al correo
