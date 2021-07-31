@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### mongoDB ##
+mongo-volume/
+
+## Expensas ##
+archivos/expensas/
+
+## PDF ##
+*.pdf
+expensas/
+archivos/
+

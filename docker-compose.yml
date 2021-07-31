@@ -1,0 +1,28 @@
+version: "3.7"
+
+
+services:
+  #MYSQL --------------------------------
+  mysql-server:
+    container_name: mysql
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+        - 3307:3306 
+    environment:
+        MYSQL_DATABASE: 'consorcio_virtual'
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+
+  #MONGODB --------------------------------
+  mongodb_contenedor:
+    container_name: mongodb
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=consorcio_virtual
+      - MONGO_INITDB_ROOT_USERNAME=consorcio_virtual
+      - MONGO_INITDB_ROOT_PASSWORD=consorcio_virtual
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - 27017:27017
